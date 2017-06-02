@@ -1,0 +1,5 @@
+proc/master_controller()
+	mob_controller()
+	var/r = rand(10, 20)
+	sleep(r*time_scale)
+	spawn() master_controller()

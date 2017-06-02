@@ -1,0 +1,33 @@
+// DM Environment file for Roquelike.dme.
+// All manual changes should be made outside the BEGIN_ and END_ blocks.
+// New source code should be placed in .dm files: choose File/New --> Code File.
+
+// BEGIN_INTERNALS
+// END_INTERNALS
+
+// BEGIN_FILE_DIR
+#define FILE_DIR .
+// END_FILE_DIR
+
+// BEGIN_PREFERENCES
+// END_PREFERENCES
+
+// BEGIN_INCLUDE
+#include "Roquelike.dm"
+#include "game.dmm"
+#include "code\test functions.dm"
+#include "code\controllers\master controller.dm"
+#include "code\hud\hud.dm"
+#include "code\hud\ui.dm"
+#include "code\mob\combat.dm"
+#include "code\mob\damage system.dm"
+#include "code\mob\drawing.dm"
+#include "code\mob\mob controller.dm"
+#include "code\mob\movement.dm"
+#include "code\mob\stats.dm"
+#include "code\mob\ai\test.dm"
+#include "code\obj\cloth_and_armor.dm"
+#include "code\obj\weapons.dm"
+#include "code\turf\base turfs.dm"
+// END_INCLUDE
+
