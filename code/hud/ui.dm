@@ -165,10 +165,10 @@ obj/hud_background3
 // Display HUD Datums
 
 display_hud/left_hand
-	start_x = 7
+	start_x = 8
 	start_y = 1
 
-	end_x = 7
+	end_x = 8
 	end_y = 1
 
 	pixel_offset_x = 1
@@ -177,10 +177,10 @@ display_hud/left_hand
 	vertical = 0
 
 display_hud/right_hand
-	start_x = 8
+	start_x = 9
 	start_y = 1
 
-	end_x = 8
+	end_x = 9
 	end_y = 1
 
 	pixel_offset_x = 1

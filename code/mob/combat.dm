@@ -34,25 +34,32 @@ mob/proc/attack(a, b)
 		return
 	//for(var/mob/M in view(3,src)
 		//ai_defend_attack()
-	attack_num++
+	current_attacks++
 	if(attack_style == "fast")
 		if(stamina <=10)
 			usr<< "Ты не находишь в себе сил на эту атаку"
 			draw_clear()
+			current_attacks=0
 			return
 		stamina -= 10
 	if(attack_style == "normal")
 		if(stamina <=5)
 			usr<< "Ты не находишь в себе сил на эту атаку"
 			draw_clear()
+			current_attacks=0
 			return
 		stamina -= 5
 	if(attack_style == "strong")
 		if(stamina <=15)
 			usr<< "Ты не находишь в себе сил на эту атаку"
 			draw_clear()
+			current_attacks=0
 			return
 		stamina -= 15
+	if(alive != 1)
+		return
+	if(current_attacks == 2)
+		return
 	if(a == 0 && b == 1)
 		draw_attack("n", (calculate_strike_time()*time_scale))
 	if(a == 0 && b == -1)
@@ -69,12 +76,10 @@ mob/proc/attack(a, b)
 		draw_attack("sw", (calculate_strike_time()*time_scale))
 	if(a == 1 && b == -1)
 		draw_attack("se", (calculate_strike_time()*time_scale))
-	if(alive != 1 || current_attacks >= attack_num)
-		return
 	for(var/mob/m in view(1,src))
 		if(m.x == x+a && m.y == y+b)
 			spawn() m.dam(src)
-	attack_num--
+	current_attacks=0
 
 
 mob/var/def_num = 1
@@ -227,7 +232,7 @@ mob/proc/recreate()
 	i.Turn(-90)
 	src.icon = i
 	recreating = 0
-	if(hp >= 0)
+	if(hp <= 0)
 		die()
 
 mob/proc/die()

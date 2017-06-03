@@ -61,96 +61,34 @@ mob/proc/found_task()
 				world<< "[name] смотрит на [target.name]"
 				say("Иди сюда - убивать тебя буду!")
 				has_task = 1
-		if(target != null && alive == 1)
-			if(ai_imitate_human != 1) // НА РЕСТАРВРАЦИИ
-				while(x != target.x || y != target.y)
-					if(target.run == 1)
-						run = 1
-					else run = 0
-					if(target.alive == 0)
-						run = 0
-						target = null
-						has_task = 0
-						return
-					step_to(src,locate(target.x,target.y,1), 1)
-					if(get_dist(target,src) == 1)
-						attack(get_dir_a(target),get_dir_b(target))
-					sleep(calcutale_step())
-			else
-				if(prob(70))
-					var/turf/move_target
-					for(var/turf/T in view(3,target))
-						if(get_dist(src, T) < 2) continue
-						if(!move_target_list) move_target_list = new
-						move_target_list += T
-					move_target = pick(move_target_list)
-					move_target_list = null
-					if(x != move_target.x || y != move_target.y)
-						if(ai_move_delay == 0)
-							step_to(src,locate(move_target.x,move_target.y,1), 1)
-							ai_move_delay += calcutale_step()
-						if(ai_attack_delay <= 0 || get_dist(src, target) == 1)
-							attack(get_dir_a(target),get_dir_b(target))
-							ai_attack_delay += 10
-						has_task = 0
-				else
-					if(x != target.x || y != target.y)
-						if(target.run == 1 && stamina > stamina_max/2)
-							run = 1
-						else run = 0
-						if(target.alive == 0)
-							run = 0
-							target = null
-							has_task = 0
-							return
-						if(ai_move_delay == 0)
-							step_to(src,locate(target.x,target.y,1), 1)
-							if(get_dist(target,src) == 1)
-								if(ai_attack_delay <= 0)
-									attack(get_dir_a(target),get_dir_b(target))
-									ai_attack_delay += 10
-									has_task = 0
-		if(has_task == 0 && alive == 1) //imitate walking
-			has_task = 1
-			ai_imitate_walking()
-			has_task = 0
-	/*if(ai_coolness == "oligofren")
-		if(bloodlust == 1 && has_task == 0)
-			for(var/mob/M in view(14, src))
-				if(M.team != team && M.alive == 1)
-					if(!targets) targets = new
-					targets += M
-			if(targets != null)
-				target = pick(targets)
-				world<< "[name] смотрит на [target.name]"
-				say("Я тя щас выебу иди сюда сука.")
-				has_task = 1
-		if(target != null && alive == 1)
-			while(x != target.x || y != target.y)
-				if(target.alive == 0)
-					target = null
-					has_task = 0
-					return
-				step_to(src,locate(target.x,target.y,1), 1)
-				if(get_dist(target,src) == 1)
-					attack(get_dir_a(target),get_dir_b(target))
-				sleep(calcutale_step())
-		if(has_task == 0) //imitate walking
-			has_task = 1
-			ai_imitate_walking()
-			has_task = 0*/
-	spawn(ai_reaction_time) found_task()
+				spawn() fight_ai()
+	if(has_task == 0 && alive == 1) //imitate walking
+		has_task = 1
+		ai_imitate_walking()
+		has_task = 0
+		spawn(ai_reaction_time) found_task()
 
-//уровни ИИ: Даун->Олигофрен->Дебил->Почти человек->Среднячок->Смертоносный->Демон
-/*
-Даун - ходит по прямой и пиздит. Ноу моар
-Олигофрен - может ставить блоки, если в него целят, рашит бегом, если стамина >70
-Дебил - держится на расстоянии, имитируя человечка
-Почти человек - поумнее, побыстрее
-Среднячок - Не отстаёт от человека характеристиками
-Смертоносный - Один на один запиздит чуть ли не любого
-Демон - может сражаться с несколькими противниками, ограничен только своими физическими статами. При наличии бесконечной стаминки теоритически способен запиздить произвольное кол-во игроков, атакующих его.
-*/
+mob/proc/fight_ai()
+	if(target != null && alive == 1)
+		if(x != target.x || y != target.y)
+			if(target.run == 1)
+				run = 1
+			else run = 0
+			if(target.alive == 0)
+				run = 0
+				target = null
+				has_task = 0
+				spawn(ai_reaction_time) found_task()
+				return
+			step_to(src,locate(target.x,target.y,1), 1)
+			if(get_dist(target,src) == 1)
+				if(prob(stamina*100/stamina_max)) attack(get_dir_a(target),get_dir_b(target))
+				else spawn() defend(get_dir_a(target),get_dir_b(target))
+				step_rand(src)
+			sleep(ai_reaction_time)//sleep(calcutale_step())
+			spawn() fight_ai()
+
+
 
 mob/proc/ai_imitate_walking()
 	if(prob(10))
