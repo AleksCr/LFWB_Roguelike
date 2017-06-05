@@ -7,6 +7,7 @@
 
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "sounds"
 // END_FILE_DIR
 
 // BEGIN_PREFERENCES
@@ -29,5 +30,6 @@
 #include "code\obj\cloth_and_armor.dm"
 #include "code\obj\weapons.dm"
 #include "code\turf\base turfs.dm"
+#include "sounds\sound.dm"
 // END_INCLUDE
 

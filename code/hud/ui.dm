@@ -47,7 +47,7 @@ client
 
 
 
-mob/var/hand
+mob/var/hand = "right"
 mob/var/hand_alt
 
 mob/verb/hand_check()
@@ -83,6 +83,9 @@ obj/hud/armor
 	icon_state = "hud_armor"
 	screen_loc = "3,2"
 	layer = TURF_LAYER
+	Click()
+		..()
+
 obj/hud/pocket
 	icon = 'test.dmi'
 	icon_state = "hud_pocket"
@@ -177,16 +180,29 @@ display_hud/left_hand
 	vertical = 0
 
 display_hud/right_hand
-	start_x = 9
+	start_x = 3
+	start_y = 2
+
+	end_x = 3
+	end_y = 2
+
+	pixel_offset_x = 1
+	pixel_offset_y = 1
+
+	vertical = 0
+
+display_hud/armor
+	start_x = 8
 	start_y = 1
 
-	end_x = 9
+	end_x = 8
 	end_y = 1
 
 	pixel_offset_x = 1
 	pixel_offset_y = 1
 
 	vertical = 0
+
 
 display_hud/backpack
 	// Starting screen_loc is the top left corner where objects begin accumulating.
@@ -207,27 +223,19 @@ display_hud/backpack
 	// If this is true, objects will be added by column first instead of by rows.
 	vertical = 0
 
-
-display_hud/clothes
-	start_x = 1
-	start_y = 3
-
-	end_x = 3
-	end_y = 2
-
-	pixel_offset_x = 16
-	pixel_offset_y = 16
-
-	vertical = 1
-
-
-display_hud/keys
-	start_x = 1
-	start_y = 1
-
-	end_x = 4
-	end_y = 1
-
+mob/verb/ARMORADD()
+	if(hand == "left") active_hand = left_hand
+	else active_hand = right_hand
+	var/obj/O
+	for(var/obj/i as obj in src.active_hand) O = i
+	var/list/L
+	var/display_hud/HUD
+	HUD.Add(src, O, L)
+		//switch(listname)
+		//if("backpack")
+		//	L = mob.contents
+			//HUD = src.backpack
+		//	O.icon_state = "item[rand(1,4)]"
 
 mob
 	verb/Get(obj/O as obj)

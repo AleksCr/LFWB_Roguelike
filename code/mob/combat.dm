@@ -79,6 +79,9 @@ mob/proc/attack(a, b)
 	for(var/mob/m in view(1,src))
 		if(m.x == x+a && m.y == y+b)
 			spawn() m.dam(src)
+		else
+			var/sound/S = sound('sounds/punchmiss.ogg')
+			play_sound(S)
 	current_attacks=0
 
 
@@ -138,8 +141,6 @@ mob/proc/dam(var/mob/M)
 	var/obj/item/weapon/O
 	for(var/obj/item/weapon/i as obj in M.active_hand)
 		O=i
-		world<< "WEAPON [i.name]"
-		world<< "WEAPON [O.name]"
 	if(defending == 1)
 		if(M.x != x+def_a || M.y != y+def_b)
 			world<< "  сожалению, [name] ставит блок не с той стороны!"
@@ -152,9 +153,13 @@ mob/proc/dam(var/mob/M)
 			r += 10
 		if(r <= 24 )
 			world<< "[name] блокирует атаку!"
+			var/sound/S = sound('sounds/parry.ogg')
+			play_sound(S)
 			return
 		if(r >= 25 && r <= 29)
 			world<< "[name] блокирует атаку ценой сбитого блока!"
+			var/sound/S = sound('sounds/parry.ogg')
+			play_sound(S)
 			defending = 0
 			draw_clear()
 			return
@@ -188,9 +193,13 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		bleed_size = wep.bleed_def
 		hp -= hp_dam * wep.dam_modifer
 		stamina -= hp_dam*rand(3,10) * wep.stamina_dam_modifer
+		var/sound/S = sound('sounds/sword_hit1.ogg')
+		play_sound(S)
 	else
 		hp -= hp_dam
 		stamina -= hp_dam*rand(3,10)
+		var/sound/S = sound('sounds/punch4.ogg')
+		play_sound(S)
 	if(stamina <= 0 && recreating == 0 && alive == 1)
 		recreating = 1
 		spawn() recreate()
@@ -199,13 +208,12 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		die()
 
 
-client/Click(object,location,control,params)
-	..()
-	params=params2list(params)
-	if(params["middle"])
-		if(get_dist(usr,location) == 1)
-			usr.stamina -= 10
-			usr.loc = location
+mob/proc/dodge(var/dox, var/doy)
+	var/sound/S = sound('sounds/jump_male.ogg')
+	usr.play_sound(S)
+	usr.stamina -= 10
+	usr.x += dox
+	usr.y += doy
 
 
 //mob/var/blood = 500
