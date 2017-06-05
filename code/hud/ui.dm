@@ -23,6 +23,7 @@ client
 
 		display_hud/left_hand/left_hand_h = new()
 		display_hud/right_hand/right_hand_h = new()
+		display_hud/armor/armor_h = new()
 		//display_hud/drop/drop_h = new()
 
 
@@ -68,7 +69,7 @@ mob
 
 		// Lists for housing clothes and keys HUD lists.
 		list/clothes = list()
-		list/keys = list()
+		list/armor = list()
 		list/active_hand() = list()
 		list/left_hand() = list()
 		list/right_hand() = list()
@@ -85,6 +86,13 @@ obj/hud/armor
 	layer = TURF_LAYER
 	Click()
 		..()
+		if(usr.hand == "left") usr.active_hand = usr.left_hand
+		else usr.active_hand = usr.right_hand
+		var/obj/O
+		for(var/obj/i as obj in usr.active_hand) O = i
+		usr.client.armor_h.Add(usr, O, usr.armor)
+		O.loc = usr
+		world<< "CLICK!"
 
 obj/hud/pocket
 	icon = 'test.dmi'
@@ -180,11 +188,11 @@ display_hud/left_hand
 	vertical = 0
 
 display_hud/right_hand
-	start_x = 3
-	start_y = 2
+	start_x = 9
+	start_y = 1
 
-	end_x = 3
-	end_y = 2
+	end_x = 9
+	end_y = 1
 
 	pixel_offset_x = 1
 	pixel_offset_y = 1
@@ -192,11 +200,11 @@ display_hud/right_hand
 	vertical = 0
 
 display_hud/armor
-	start_x = 8
-	start_y = 1
+	start_x = 3
+	start_y = 2
 
-	end_x = 8
-	end_y = 1
+	end_x = 3
+	end_y = 2
 
 	pixel_offset_x = 1
 	pixel_offset_y = 1
@@ -223,14 +231,32 @@ display_hud/backpack
 	// If this is true, objects will be added by column first instead of by rows.
 	vertical = 0
 
-mob/verb/ARMORADD()
-	if(hand == "left") active_hand = left_hand
-	else active_hand = right_hand
+client/verb/EQUIP(obj/O as obj)
+	src.armor_h.Add(src, O, usr.armor)
+	O.loc = usr
+	src.right_hand_h.Remove(usr, O, usr.right_hand)
+
+/*mob/verb/BLAAAAAAAAAAAAAAAAAA(obj/O as obj)
+	O.loc = usr
+	if(O.loc == usr) */
+
+client/verb/UNEPQUIP(var/obj/O)
+	//var/obj/O
+	for(var/obj/i as obj in usr.armor)
+		O = i
+	src.right_hand_h.Remove(usr, O, usr.right_hand)
+	src.armor_h.Remove(usr, O, usr.armor)
+	/*if(usr.hand == "left") usr.active_hand = usr.left_hand
+	else usr.active_hand = usr.right_hand
 	var/obj/O
-	for(var/obj/i as obj in src.active_hand) O = i
-	var/list/L
-	var/display_hud/HUD
-	HUD.Add(src, O, L)
+	for(var/obj/i as obj in usr.active_hand) O = i
+	src.armor_h.Add(usr, O, usr.armor)
+	src.right_hand_h.Remove(usr, O, usr.active_hand)
+	O.loc = usr.loc
+	sleep(10)
+	world<< "O is [O.name]"
+	src.armor_h.Add(usr, O, usr.armor)
+	*/
 		//switch(listname)
 		//if("backpack")
 		//	L = mob.contents
@@ -242,13 +268,13 @@ mob
 		if(hand == "left")
 			if(src.client.left_hand_h.Add(src, O, src.left_hand))
 				src << "You acquired [O]!"
-				O.loc = src.contents
+				O.loc = src
 			else
 				src << "You don't have any more room!"
 		if(hand == "right")
 			if(src.client.right_hand_h.Add(src, O, src.right_hand))
 				src << "You acquired [O]!"
-				O.loc = src.contents
+				O.loc = src
 			else
 				src << "You don't have any more room!"
 

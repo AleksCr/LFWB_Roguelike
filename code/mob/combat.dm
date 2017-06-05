@@ -209,6 +209,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 
 
 mob/proc/dodge(var/dox, var/doy)
+	if(stamina <= 0) return
 	var/sound/S = sound('sounds/jump_male.ogg')
 	usr.play_sound(S)
 	usr.stamina -= 10

@@ -5,6 +5,7 @@ obj/item/armor
 	icon = 'test.dmi'
 	Click()
 		..()
+		if(src.loc == usr) usr.client.UNEPQUIP(src)
 		usr.Get(src)
 
 obj/item/armor/cloth
