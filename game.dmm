@@ -1,21 +1,26 @@
 "a" = (/turf/floor,/area)
-"b" = (/obj/item/weapon/dagger,/turf/floor,/area)
-"c" = (/obj/item/armor/breastplate,/turf/floor,/area)
-"d" = (/mob,/turf/floor,/area)
+"b" = (/obj/item/holders/belt,/turf/floor,/area)
+"c" = (/obj/item/armor/helmet,/turf/floor,/area)
+"d" = (/obj/item/weapon/dagger,/turf/floor,/area)
+"e" = (/obj/item/armor/boots,/turf/floor,/area)
+"f" = (/obj/item/armor/hands,/turf/floor,/area)
+"g" = (/obj/item/armor/cloth,/turf/floor,/area)
+"h" = (/obj/item/armor/breastplate,/turf/floor,/area)
+"i" = (/mob,/turf/floor,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
-aaaaaaaaaaaaaa
-aaabaaaaaaaaaa
-aaaaaaaacaaaaa
-aaaaaaabaaaaaa
-aaaaaaaaaaaaaa
-aaaaaaaaaaaaaa
+aaaaaabcaaaaaa
+aaadaefaaaaaaa
+aaaaaaaghaaaaa
+aaaaaaadaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
-aadaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaiaaaaaaaaaaa
 "}

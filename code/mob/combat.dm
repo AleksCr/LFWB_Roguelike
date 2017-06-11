@@ -189,23 +189,58 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	else attack_suc = rand(1,5)
 	attack_suc = attack_suc/10
 	var/hp_dam = attack_suc*M.st
+	var/list/body_zones = list("head","torso","legs","hands")
+	var/attack_zone = pick(body_zones)
+	world<< "attack zone: [attack_zone]"
+	var/attack_hp_final = 0
+	var/attack_stamina_final = 0
+	var/bleed_final = 0
 	if(wep != null)
-		bleed_size = wep.bleed_def
-		hp -= hp_dam * wep.dam_modifer
-		stamina -= hp_dam*rand(3,10) * wep.stamina_dam_modifer
+		bleed_final = wep.bleed_def
+		attack_hp_final -= hp_dam * wep.dam_modifer
+		attack_stamina_final -= hp_dam*rand(3,10) * wep.stamina_dam_modifer
 		var/sound/S = sound('sounds/sword_hit1.ogg')
 		play_sound(S)
 	else
-		hp -= hp_dam
-		stamina -= hp_dam*rand(3,10)
+		attack_hp_final -= hp_dam
+		attack_stamina_final -= hp_dam*rand(3,10)
 		var/sound/S = sound('sounds/punch4.ogg')
 		play_sound(S)
+	var/obj/item/armor/a
+	if(attack_zone == "torso")
+		for(var/obj/item/armor/i in src.armor) a = i
+	if(attack_zone == "head")
+		for(var/obj/item/armor/i in src.helmet) a = i
+	if(attack_zone == "legs")
+		for(var/obj/item/armor/i in src.legs) a = i
+	if(attack_zone == "hands")
+		for(var/obj/item/armor/i in src.hands) a = i
+	if(a)
+		if(prob(a.coverage))
+			if(a.min_damage >= abs(attack_hp_final))
+				bleed_final = 0
+				attack_stamina_final = 0
+				attack_hp_final = 0
+				world<<"[a.name] [src.name] полностью блокирует удар!"; M<<"Брон&#255; [src.name] полностью блокирует удар!"
+			else
+				attack_hp_final += a.min_damage
+				attack_stamina_final /= 2
+				world<<"[a.name] [src.name] частично блокирует удар!"; M<<"Брон&#255; [src.name] частично блокирует удар!"
+			var/sound/S = sound('sounds/parry.ogg')
+			play_sound(S)
+		else
+			world<<"[M.name] проводит хитрый удар в разрез брони!"
+	stamina += attack_stamina_final
+	hp += attack_hp_final
+	bleed_size = bleed_final
 	if(stamina <= 0 && recreating == 0 && alive == 1)
 		recreating = 1
 		spawn() recreate()
 	usr<< "M.st = [M.st] hp_dam = [hp_dam]; [src] stamina [stamina]"
 	if(hp <= 0)
 		die()
+
+mob/proc/armor_calc(var/attack_hp_final, var/attack_stamina_final)
 
 
 mob/proc/dodge(var/dox, var/doy)
