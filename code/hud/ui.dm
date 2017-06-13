@@ -85,6 +85,10 @@ mob
 		list/left_hand() = list()
 		list/right_hand() = list()
 
+obj/hud
+	Click()
+		..()
+		spawn(5) usr.draw_cloth()
 obj/hud/cloth
 	icon = 'test.dmi'
 	icon_state = "hud_cloth"
@@ -394,6 +398,7 @@ proc/equip(var/t as text)
 
 
 client/verb/UNEQUIP(var/obj/O)
+	spawn(5) usr.draw_cloth()
 	if(istype(O,/obj/item/armor/breastplate))
 		src.armor_h.Remove(usr, O, usr.armor)
 	if(istype(O,/obj/item/armor/cloth))

@@ -266,15 +266,16 @@ mob/proc/bleed()
 		die()
 
 mob/proc/recreate()
-	var/icon/i = new(src.icon,src.icon_state)
-	i.Turn(90)
-	src.icon = i
+	var/matrix/M = matrix()//var/icon/i = new(src.icon,src.icon_state)
+	M.Turn(90)
+	src.transform = M//src.icon = i
 	while(stamina <= 0 && hp >=0)
 		sleep(10)
 		if(alive == 0)
 			return
-	i.Turn(-90)
-	src.icon = i
+	M.Turn(-90)
+	//i += overlays
+	src.transform = M//src.icon = i
 	recreating = 0
 	if(hp <= 0)
 		die()

@@ -7,6 +7,8 @@
 
 // BEGIN_FILE_DIR
 #define FILE_DIR .
+#define FILE_DIR "img"
+#define FILE_DIR "img/test"
 #define FILE_DIR "sounds"
 // END_FILE_DIR
 
@@ -20,6 +22,7 @@
 #include "code\controllers\master controller.dm"
 #include "code\hud\hud.dm"
 #include "code\hud\ui.dm"
+#include "code\libs\overlays.dm"
 #include "code\mob\combat.dm"
 #include "code\mob\damage system.dm"
 #include "code\mob\drawing.dm"
