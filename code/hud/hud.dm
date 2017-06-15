@@ -68,8 +68,8 @@ display_hud
 			var/mob/M = C
 
 			// If the mob doesn't have a client, don't do anything.
-			if(!M.client)
-				return
+			//if(!M.client)
+			//	return
 
 			C = M.client
 
@@ -135,7 +135,8 @@ display_hud
 		// This slot was not found to be occupied, so its safe to give the object
 		// this screen_loc value and add it to the client's screen.
 		A.screen_loc = src.SetLoc(x, y)
-		C.screen += A
+		if(C != null)
+			C.screen += A
 		L += A
 		return 1
 
@@ -149,16 +150,16 @@ display_hud
 	proc/Remove(client/C, atom/movable/A, list/L)
 
 		// If no client or mob is specified, then don't do anything.
-		if(!C)
-			return
+		//if(!C)
+		//	return
 
 		// If the "client" specified is a mob, then change it to the mob's client.
 		if(!istype(C, /client) && ismob(C))
 			var/mob/M = C
 
 			// If the mob doesn't have a client, don't do anything.
-			if(!M.client)
-				return
+			//if(!M.client)
+			//	return
 
 			C = M.client
 
@@ -167,12 +168,13 @@ display_hud
 			return
 
 		A.screen_loc = null
-		C.screen -= A
+		if(C != null)
+			C.screen -= A
 		L -= A
 
 		// In case removal fails for some reason...
-		if(A in C.screen || A in L)
-			return 0
+		//if(A in C.screen || A in L)
+		//	return 0
 
 		// Successfully removed the object from the list and the HUD.
 		return 1

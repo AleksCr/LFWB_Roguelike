@@ -290,3 +290,9 @@ mob/proc/die()
 	density = 0
 	icon = 'test.dmi'
 	icon_state = "corpse"
+	for(var/obj/o as obj in src.active_hand)
+		Drop()
+	for(var/obj/o in src)
+		Get(o)
+		Drop()
+	draw_mob()

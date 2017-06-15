@@ -53,7 +53,9 @@ obj/overlay/cloth/var
 
 
 
-mob/proc/draw_cloth()
+mob/proc/draw_mob()
+	del o_right
+	del o_left
 	del o_armor
 	del o_helmet
 	del o_boots
@@ -69,6 +71,32 @@ mob/proc/draw_cloth()
 		o_boots = overlay('clothes.dmi', i.overpic)
 	for(var/obj/item/armor/i in src.hands)
 		o_hands = overlay('clothes.dmi', i.overpic)
+	for(var/obj/item/i in src.right_hand)
+		if(istype(i,/obj/item/weapon/dagger))
+			o_right = overlay('meele_weapons.dmi', "knife_r")
+		if(istype(i,/obj/item/weapon/sword))
+			o_right = overlay('meele_weapons.dmi', "claymore_r")
+		if(istype(i,/obj/item/weapon/axe))
+			o_right = overlay('meele_weapons.dmi', "axe_r")
+		if(istype(i,/obj/item/weapon/spear))
+			o_right = overlay('meele_weapons.dmi', "spear_r")
+		if(istype(i,/obj/item/weapon/hammer))
+			o_right = overlay('meele_weapons.dmi', "hammer_r")
+		if(istype(i,/obj/item/weapon/club))
+			o_right = overlay('meele_weapons.dmi', "club_r")
+	for(var/obj/item/i in src.left_hand)
+		if(istype(i,/obj/item/weapon/dagger))
+			o_left = overlay('meele_weapons.dmi', "knife_l")
+		if(istype(i,/obj/item/weapon/sword))
+			o_left = overlay('meele_weapons.dmi', "claymore_l")
+		if(istype(i,/obj/item/weapon/axe))
+			o_left = overlay('meele_weapons.dmi', "axe_l")
+		if(istype(i,/obj/item/weapon/spear))
+			o_left = overlay('meele_weapons.dmi', "spear_l")
+		if(istype(i,/obj/item/weapon/hammer))
+			o_left = overlay('meele_weapons.dmi', "hammer_l")
+		if(istype(i,/obj/item/weapon/club))
+			o_left = overlay('meele_weapons.dmi', "club_l")
 
 
 

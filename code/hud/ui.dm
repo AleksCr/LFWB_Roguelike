@@ -49,6 +49,8 @@ client
 		src.screen += belt
 		src.screen += hud_drop
 
+mob/var/display_hud/right_hand/right_hand_mob = new()
+mob/var/display_hud/right_hand/left_hand_mob = new()
 
 mob/verb/check_armor()
 	for(var/obj/O in src) world<< "[O.name]"
@@ -88,7 +90,7 @@ mob
 obj/hud
 	Click()
 		..()
-		spawn(5) usr.draw_cloth()
+		spawn(5) usr.draw_mob()
 obj/hud/cloth
 	icon = 'test.dmi'
 	icon_state = "hud_cloth"
@@ -398,7 +400,7 @@ proc/equip(var/t as text)
 
 
 client/verb/UNEQUIP(var/obj/O)
-	spawn(5) usr.draw_cloth()
+	spawn(5) usr.draw_mob()
 	if(istype(O,/obj/item/armor/breastplate))
 		src.armor_h.Remove(usr, O, usr.armor)
 	if(istype(O,/obj/item/armor/cloth))
@@ -416,17 +418,18 @@ client/verb/UNEQUIP(var/obj/O)
 mob
 	verb/Get(obj/O as obj)
 		if(hand == "left")
-			if(src.client.left_hand_h.Add(src, O, src.left_hand))
+			if(src.left_hand_mob.Add(src, O, src.left_hand))
 				src << "You acquired [O]!"
 				O.loc = src
 			else
 				src << "You don't have any more room!"
 		if(hand == "right")
-			if(src.client.right_hand_h.Add(src, O, src.right_hand))
-				src << "You acquired [O]!"
+			if(src.right_hand_mob.Add(src, O, src.right_hand))
+				world << "You acquired [O]!"
 				O.loc = src
 			else
-				src << "You don't have any more room!"
+				world << "You don't have any more room!"
+			draw_mob()
 
 mob
 	verb/Drop()
@@ -435,11 +438,12 @@ mob
 		var/obj/O
 		for(var/obj/i as obj in src.active_hand)
 			O = i
-		if(src.client.left_hand_h.Remove(src, O, src.active_hand))
+		if(src.left_hand_mob.Remove(src, O, src.active_hand))
 			O.loc = src.loc
-			src << "You dropped [O]."
+			world << "You dropped [O]."
 		else
-			src << "You can not drop [O]!"
+			world << "You can not drop [O]!"
+		draw_mob()
 
 
 

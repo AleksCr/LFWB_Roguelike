@@ -64,8 +64,12 @@ mob/verb/spawn_special_ai()
 	M.x = 1
 	M.y = 1
 	M.z = 1
+	var/obj/item/weapon/dagger/w = new
+	w.x = M.x; w.y = M.y; w.z = M.z
+	sleep(5)
+	M.Get(w)
 	M.team = "3"
-	switch(input("Сколько дадим ума страдальцу?") in list("Даун","Олигофрен","Дебил","Почти человек","СреднЯчок","Смертоносный","Демон"))
+	/*switch(input("Choose a weapon for you opponent") in list("dagger","Олигофрен","Дебил","Почти человек","СреднЯчок","Смертоносный","Демон"))
 		if("Даун")
 			usr<< "Мне приказали. Я делаю."
 			ai_coolness = "dawn"
@@ -86,7 +90,7 @@ mob/verb/spawn_special_ai()
 			ai_coolness = "dawn"
 		if("Демон")
 			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "dawn"
+			ai_coolness = "dawn"*/
 
 mob/verb/puk()
 	alpha = 100
