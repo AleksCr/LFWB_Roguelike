@@ -132,10 +132,12 @@ display_hud
 		if(occupied)
 			return 0
 
+
 		// This slot was not found to be occupied, so its safe to give the object
 		// this screen_loc value and add it to the client's screen.
-		A.screen_loc = src.SetLoc(x, y)
+		world<< "[usr.name] ai = [usr.ai]"
 		if(C != null)
+			A.screen_loc = src.SetLoc(x, y)
 			C.screen += A
 		L += A
 		return 1

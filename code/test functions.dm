@@ -60,37 +60,43 @@ mob/verb/spawn_ai_human_another_team()
 mob/var/ai_coolness = "dawn"
 
 mob/verb/spawn_special_ai()
+	var/obj/item/weapon/w
+	switch(input("Choose a weapon for you opponent") in list("dagger","sword","axe","spear","hammer","club"))
+		if("dagger")
+			var/obj/item/weapon/dagger/wo = new
+			w = wo
+		if("sword")
+			var/obj/item/weapon/sword/wo = new
+			w = wo
+		if("axe")
+			var/obj/item/weapon/axe/wo = new
+			w = wo
+		if("spear")
+			var/obj/item/weapon/spear/wo = new
+			w = wo
+		if("hammer")
+			var/obj/item/weapon/hammer/wo = new
+			w = wo
+		if("club")
+			var/obj/item/weapon/club/wo = new
+			w = wo
 	var/mob/M = new
 	M.x = 1
 	M.y = 1
 	M.z = 1
-	var/obj/item/weapon/dagger/w = new
 	w.x = M.x; w.y = M.y; w.z = M.z
+	var/obj/item/armor/cloth/c = new
+	c.loc = M.loc
+	sleep(1)
+	M.Get(c)
+	sleep(1)
+	M.mob_equip("cloth")
 	sleep(5)
+	M.Drop()
 	M.Get(w)
+	M.draw_mob()
 	M.team = "3"
-	/*switch(input("Choose a weapon for you opponent") in list("dagger","Олигофрен","Дебил","Почти человек","СреднЯчок","Смертоносный","Демон"))
-		if("Даун")
-			usr<< "Мне приказали. Я делаю."
-			ai_coolness = "dawn"
-		if("Олигофрен")
-			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "oligofren"
-		if("Дебил")
-			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "dawn"
-		if("Почти человек")
-			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "dawn"
-		if("СреднЯчок")
-			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "dawn"
-		if("Смертоносный")
-			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "dawn"
-		if("Демон")
-			usr<< "До таких высот наши ученые ещё не дошли"
-			ai_coolness = "dawn"*/
+
 
 mob/verb/puk()
 	alpha = 100

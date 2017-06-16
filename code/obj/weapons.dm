@@ -24,7 +24,7 @@ obj/item/weapon
 		icon = 'meele_weapons.dmi'
 		icon_state = "axe"
 	spear
-		dam_modifer = 2.5
+		dam_modifer = 2
 		bleed_def = 0.3
 		icon = 'meele_weapons.dmi'
 		icon_state = "spear"

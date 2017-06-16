@@ -18,10 +18,12 @@ mob/Login()
 
 var/bloodlust = 0
 mob/verb/RAAGEEE()
-	world<< "Ðßßßßßßßßßßßß"
 	if(bloodlust == 1)
 		bloodlust = 0
-	else bloodlust = 1
+		world<< "Âñêîðå âðàãè óñïîêî&#255;òñ&#255;"
+	else
+		bloodlust = 1
+		world<< "Òåïåðü îíè çë&#255;òñ&#255;"
 
 mob/var/mob/target
 //mob/var/turf/move_target

@@ -51,6 +51,7 @@ client
 
 mob/var/display_hud/right_hand/right_hand_mob = new()
 mob/var/display_hud/right_hand/left_hand_mob = new()
+mob/var/display_hud/cloth/clothes_mob = new()
 
 mob/verb/check_armor()
 	for(var/obj/O in src) world<< "[O.name]"
@@ -372,6 +373,34 @@ proc/equip(var/t as text)
 		usr.client.clothes_h.Add(usr, O, usr.clothes); return
 	usr.active_hand_add(O)
 
+mob/proc/mob_equip(var/t as text)
+	if(usr.hand == "left") src.active_hand = src.left_hand
+	else src.active_hand = src.right_hand
+	var/obj/O
+	for(var/obj/i as obj in src.active_hand)
+		O = i
+		world<< "O is [O.name]"
+	src.active_hand_remove(O)
+	O.loc = usr
+	if(t == "armor" && istype(O,/obj/item/armor/breastplate))
+		usr.client.armor_h.Add(usr, O, usr.armor); return
+	if(t == "helmet" && istype(O,/obj/item/armor/helmet))
+		usr.client.helmet_h.Add(usr, O, usr.helmet); return
+	if(t == "hands" && istype(O,/obj/item/armor/hands))
+		usr.client.hands_h.Add(usr, O, usr.hands); return
+	if(t == "legs" && istype(O,/obj/item/armor/boots))
+		usr.client.legs_h.Add(usr, O, usr.legs); return
+	if(t == "belt" && istype(O,/obj/item/holders))
+		usr.client.belt_h.Add(usr, O, usr.belt); return
+	if(t == "pocket")
+		usr.client.pocket_h.Add(usr, O, usr.pocket); return
+	if(t == "another_pocket")
+		usr.client.another_pocket_h.Add(usr, O, usr.another_pocket); return
+	if(t == "cloth" && istype(O,/obj/item/armor/cloth))
+		world<< "ANUKA"
+		src.clothes_mob.Add(src, O, src.clothes); return
+	src.active_hand_add(O)
+
 
 /*proc/equip(var/t as text)
 	if(usr.hand == "left") usr.active_hand = usr.left_hand
@@ -440,9 +469,9 @@ mob
 			O = i
 		if(src.left_hand_mob.Remove(src, O, src.active_hand))
 			O.loc = src.loc
-			world << "You dropped [O]."
+			src << "You dropped [O]."
 		else
-			world << "You can not drop [O]!"
+			src << "You can not drop [O]!"
 		draw_mob()
 
 
