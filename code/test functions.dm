@@ -85,14 +85,16 @@ mob/verb/spawn_special_ai()
 	M.y = 1
 	M.z = 1
 	w.x = M.x; w.y = M.y; w.z = M.z
-	var/obj/item/armor/cloth/c = new
-	c.loc = M.loc
-	sleep(1)
-	M.Get(c)
-	sleep(1)
-	M.mob_equip("cloth")
-	sleep(5)
-	M.Drop()
+	switch(input("Choose a suit for you opponent") in list("nothing","cloth","full armor"))
+		if("cloth" || "full armor")
+			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
+			var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.mob_equip("legs")
+		if("full armor")
+			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
+			var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.mob_equip("legs")
+			var/obj/item/armor/hands/ha = new(src.loc); M.Get(ha); M.mob_equip("hands")
+			var/obj/item/armor/helmet/he = new(src.loc); M.Get(he); M.mob_equip("helmet")
+			var/obj/item/armor/breastplate/br = new(src.loc); M.Get(br); M.mob_equip("armor")
 	M.Get(w)
 	M.draw_mob()
 	M.team = "3"

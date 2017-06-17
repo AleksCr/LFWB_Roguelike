@@ -135,7 +135,6 @@ display_hud
 
 		// This slot was not found to be occupied, so its safe to give the object
 		// this screen_loc value and add it to the client's screen.
-		world<< "[usr.name] ai = [usr.ai]"
 		if(C != null)
 			A.screen_loc = src.SetLoc(x, y)
 			C.screen += A

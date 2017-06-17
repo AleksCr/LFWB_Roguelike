@@ -19,8 +19,8 @@ client/show_popup_menus = 0
 
 mob
 	step_size = 32
-	icon = 'test.dmi'
-	icon_state = "body_m_s"
+	icon = 'mob.dmi'
+	icon_state = "torso"
 
 obj
 	step_size = 32

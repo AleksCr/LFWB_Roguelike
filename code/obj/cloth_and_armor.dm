@@ -61,6 +61,7 @@ mob/proc/draw_mob()
 	del o_boots
 	del o_hands
 	del o_cloth
+	draw_bodyparts()
 	for(var/obj/item/armor/i in src.clothes)
 		o_cloth = overlay('clothes.dmi', i.icon_state)
 	for(var/obj/item/armor/i in src.armor)
