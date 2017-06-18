@@ -453,18 +453,20 @@ client/verb/UNEQUIP(var/obj/O)
 mob
 	verb/Get(obj/O as obj)
 		if(hand == "left")
-			if(src.left_hand_mob.Add(src, O, src.left_hand))
-				src << "You acquired [O]!"
-				O.loc = src
-			else
-				src << "You don't have any more room!"
+			for(var/obj/bodypart/human/left_arm/h in bodyparts)
+				if(src.left_hand_mob.Add(src, O, src.left_hand))
+					src << "You acquired [O]!"
+					O.loc = src
+				else
+					src << "You don't have any more room!"
 		if(hand == "right")
-			if(src.right_hand_mob.Add(src, O, src.right_hand))
-				world << "You acquired [O]!"
-				O.loc = src
-			else
-				world << "You don't have any more room!"
-			draw_mob()
+			for(var/obj/bodypart/human/right_arm/h in bodyparts)
+				if(src.right_hand_mob.Add(src, O, src.right_hand))
+					world << "You acquired [O]!"
+					O.loc = src
+				else
+					world << "You don't have any more room!"
+		draw_mob()
 
 mob
 	verb/Drop()

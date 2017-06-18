@@ -42,8 +42,13 @@ mob/Move()
 
 mob/proc/calcutale_step()
 	var/step_time
+	var/movement_mod = 4
+	for(var/obj/bodypart/human/right_leg/h in bodyparts)
+		movement_mod /= 2
+	for(var/obj/bodypart/human/left_leg/h in bodyparts)
+		movement_mod /= 2
 	if(run == 0)
-		step_time = delay*time_scale
+		step_time = delay*time_scale*movement_mod
 	else
-		step_time = delay/10*time_scale
+		step_time = delay/10*time_scale*movement_mod
 	return step_time

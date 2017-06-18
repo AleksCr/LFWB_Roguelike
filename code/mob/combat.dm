@@ -189,7 +189,27 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	else attack_suc = rand(1,5)
 	attack_suc = attack_suc/10
 	var/hp_dam = attack_suc*M.st
-	var/list/body_zones = list("head","torso","legs","hands")
+	var/list/body_zones = list("head","torso")
+	for(var/obj/bodypart/human/right_leg/h in bodyparts)
+		if("legs" in body_zones)
+			break
+		else
+			body_zones += "legs"
+	for(var/obj/bodypart/human/left_leg/h in bodyparts)
+		if("legs" in body_zones)
+			break
+		else
+			body_zones += "legs"
+	for(var/obj/bodypart/human/right_arm/h in bodyparts)
+		if("hands" in body_zones)
+			break
+		else
+			body_zones += "hands"
+	for(var/obj/bodypart/human/left_arm/h in bodyparts)
+		if("hands" in body_zones)
+			break
+		else
+			body_zones += "hands"
 	var/attack_zone = pick(body_zones)
 	world<< "attack zone: [attack_zone]"
 	var/attack_hp_final = 0
@@ -214,7 +234,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	if(attack_zone == "legs")
 		for(var/obj/item/armor/i in src.legs) a = i
 	if(attack_zone == "hands")
-		for(var/obj/item/armor/i in src.hands) a = i
+		for(var/obj/item/armor/i in src.hands) a = i//; Drop()
 	if(a)
 		if(prob(a.coverage))
 			if(a.min_damage >= abs(attack_hp_final))
@@ -230,15 +250,55 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			play_sound(S)
 		else
 			world<<"[M.name] проводит хитрый удар в разрез брони!"
-	stamina += attack_stamina_final
-	hp += attack_hp_final
-	bleed_size = bleed_final
+	if(attack_zone == "torso")
+		for(var/obj/item/armor/i in src.armor) a = i
+	if(attack_zone == "head")
+		var/obj/bodypart/human/head/he
+		for(var/obj/bodypart/human/head/h in bodyparts)
+			he = h
+			//he.hp += attack_hp_final
+		if(he.hp <= 0)
+			bodyparts -= he
+			hand = "left"; Drop(); hand = "right"; Drop(); die()
+	if(attack_zone == "legs")
+		var/list/leg_limbs = list()
+		var/obj/bodypart/human/attacked_leg
+		for(var/obj/bodypart/human/right_leg/h in bodyparts)
+			leg_limbs += h
+		for(var/obj/bodypart/human/left_leg/h in bodyparts)
+			leg_limbs += h
+		if(!leg_limbs.len)
+			return
+		attacked_leg = pick(leg_limbs)
+		attacked_leg.hp += attack_hp_final
+		if(attacked_leg.hp <= 0)
+			bodyparts -= attacked_leg
+	if(attack_zone == "hands")
+		var/list/hand_limbs = list()
+		var/obj/bodypart/human/attacked_hand
+		for(var/obj/bodypart/human/right_arm/h in bodyparts)
+			hand_limbs += h
+		for(var/obj/bodypart/human/left_arm/h in bodyparts)
+			hand_limbs += h
+		if(!hand_limbs.len)
+			return
+		attacked_hand = pick(hand_limbs)
+		attacked_hand.hp += attack_hp_final
+		if(attacked_hand.hp <= 0)
+			bodyparts -= attacked_hand
+			hand = "left"; Drop(); hand = "right"; Drop()
+	//stamina += attack_stamina_final
+	//hp += attack_hp_final
+	//bleed_size = bleed_final
 	if(stamina <= 0 && recreating == 0 && alive == 1)
 		recreating = 1
 		spawn() recreate()
 	usr<< "M.st = [M.st] hp_dam = [hp_dam]; [src] stamina [stamina]"
+	draw_mob()
 	if(hp <= 0)
 		die()
+
+//mob/proc/damage_limb(var/obj/bodypart/b, var/)
 
 mob/proc/armor_calc(var/attack_hp_final, var/attack_stamina_final)
 

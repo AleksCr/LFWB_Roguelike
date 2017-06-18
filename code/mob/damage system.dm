@@ -1,6 +1,7 @@
 mob/var/list/bodyparts = list()
 obj/bodypart
 	icon = 'mob.dmi'
+	var/hp = 10
 obj/bodypart/human/head
 obj/bodypart/human/right_arm
 obj/bodypart/human/left_arm
@@ -42,6 +43,7 @@ mob/verb/draw_bodyparts()
 mob/verb/loose_random_bodypart()
 	var/obj/o = pick(bodyparts)
 	bodyparts -= o
+	//if(var/obj/bodypart/human/right_arm/h in bodyparts)
 	draw_mob()
 
 mob/New()

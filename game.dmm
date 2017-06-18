@@ -11,7 +11,6 @@
 "k" = (/obj/item/armor/cloth,/turf/floor,/area)
 "l" = (/obj/item/armor/breastplate,/turf/floor,/area)
 "m" = (/obj/item/weapon/axe,/turf/floor,/area)
-"n" = (/mob,/turf/floor,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaa
@@ -27,5 +26,5 @@ aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
-aanaaaaaaaaaaa
+aaaaaaaaaaaaaa
 "}
