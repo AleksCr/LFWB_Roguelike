@@ -2,6 +2,7 @@ mob/var/list/bodyparts = list()
 obj/bodypart
 	icon = 'mob.dmi'
 	var/hp = 10
+	var/slash_hp = 10
 obj/bodypart/human/head
 obj/bodypart/human/right_arm
 obj/bodypart/human/left_arm
@@ -53,3 +54,6 @@ mob/New()
 	var/obj/bodypart/human/left_arm/la = new; bodyparts += la
 	var/obj/bodypart/human/right_leg/rl = new; bodyparts += rl
 	var/obj/bodypart/human/left_leg/ll = new; bodyparts += ll
+	for(var/obj/bodypart/human/b in bodyparts)
+		b.hp = hp_max; b.slash_hp = hp_max/3;
+	draw_mob()

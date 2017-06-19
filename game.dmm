@@ -6,11 +6,12 @@
 "f" = (/obj/item/weapon/dagger,/turf/floor,/area)
 "g" = (/obj/item/armor/boots,/turf/floor,/area)
 "h" = (/obj/item/armor/hands,/turf/floor,/area)
-"i" = (/obj/item/weapon/hammer,/turf/floor,/area)
-"j" = (/obj/item/weapon/club,/turf/floor,/area)
-"k" = (/obj/item/armor/cloth,/turf/floor,/area)
-"l" = (/obj/item/armor/breastplate,/turf/floor,/area)
-"m" = (/obj/item/weapon/axe,/turf/floor,/area)
+"i" = (/mob{ai = 0},/turf/floor,/area)
+"j" = (/obj/item/weapon/hammer,/turf/floor,/area)
+"k" = (/obj/item/weapon/club,/turf/floor,/area)
+"l" = (/obj/item/armor/cloth,/turf/floor,/area)
+"m" = (/obj/item/armor/breastplate,/turf/floor,/area)
+"n" = (/obj/item/weapon/axe,/turf/floor,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaa
@@ -18,9 +19,9 @@ aaaaaaaaaaaaaa
 aaaaabaaaaaaaa
 aaacaaaaaaaaaa
 aaaaaadeaaaaaa
-aaafaghaaaaaaa
-aaijaaaklaaaaa
-aaaaamafaaaaaa
+aaafaghaiaaaaa
+aajkaaalmaaaaa
+aaaaanafaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa

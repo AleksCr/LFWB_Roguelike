@@ -82,6 +82,13 @@ mob/proc/attack(a, b)
 		else
 			var/sound/S = sound('sounds/punchmiss.ogg')
 			play_sound(S)
+	if(hand == "left") active_hand = left_hand
+	else active_hand = right_hand
+	var/obj/item/weapon/O
+	for(var/obj/item/weapon/i as obj in active_hand)
+		O=i
+	if(O != null)
+		sleep(O.cooldown)
 	current_attacks=0
 
 
@@ -189,6 +196,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	else attack_suc = rand(1,5)
 	attack_suc = attack_suc/10
 	var/hp_dam = attack_suc*M.st
+
+
+	///////////¬€¡Œ– ¿“¿ ”≈ÃŒ… «ŒÕ€
+
+
 	var/list/body_zones = list("head","torso")
 	for(var/obj/bodypart/human/right_leg/h in bodyparts)
 		if("legs" in body_zones)
@@ -210,6 +222,10 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			break
 		else
 			body_zones += "hands"
+
+
+	////////”◊≈“ Œ–”∆»ﬂ
+
 	var/attack_zone = pick(body_zones)
 	world<< "attack zone: [attack_zone]"
 	var/attack_hp_final = 0
@@ -235,6 +251,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		for(var/obj/item/armor/i in src.legs) a = i
 	if(attack_zone == "hands")
 		for(var/obj/item/armor/i in src.hands) a = i//; Drop()
+
+
+	///////////////////////////œ–Œ¡»“»≈ ¡–ŒÕ»
+
+
 	if(a)
 		if(prob(a.coverage))
 			if(a.min_damage >= abs(attack_hp_final))
@@ -250,16 +271,25 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			play_sound(S)
 		else
 			world<<"[M.name] ÔÓ‚Ó‰ËÚ ıËÚ˚È Û‰‡ ‚ ‡ÁÂÁ ·ÓÌË!"
+
+	/////////////////”–ŒÕ ¬  ŒÕ≈◊ÕŒ—“‹
+
 	if(attack_zone == "torso")
-		for(var/obj/item/armor/i in src.armor) a = i
+		hp += attack_hp_final
 	if(attack_zone == "head")
 		var/obj/bodypart/human/head/he
 		for(var/obj/bodypart/human/head/h in bodyparts)
 			he = h
-			//he.hp += attack_hp_final
-		if(he.hp <= 0)
+			if(wep && wep.damtype == "slash") he.slash_hp += attack_hp_final
+			else he.hp += attack_hp_final
+		if(he.slash_hp <= 0)
+			slash_limb("head")
 			bodyparts -= he
-			hand = "left"; Drop(); hand = "right"; Drop(); die()
+			die()
+		if(he.hp <= 0)
+			explode_limb("head")
+			bodyparts -= he
+			die()
 	if(attack_zone == "legs")
 		var/list/leg_limbs = list()
 		var/obj/bodypart/human/attacked_leg
@@ -270,9 +300,20 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		if(!leg_limbs.len)
 			return
 		attacked_leg = pick(leg_limbs)
-		attacked_leg.hp += attack_hp_final
+		if(wep && wep.damtype == "slash") attacked_leg.slash_hp += attack_hp_final
+		else attacked_leg.hp += attack_hp_final
+		if(attacked_leg.slash_hp <= 0)
+			bodyparts -= attacked_leg
+			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
+				slash_limb("right leg")
+			else
+				slash_limb("left leg")
 		if(attacked_leg.hp <= 0)
 			bodyparts -= attacked_leg
+			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
+				explode_limb("right leg")
+			else
+				explode_limb("left leg")
 	if(attack_zone == "hands")
 		var/list/hand_limbs = list()
 		var/obj/bodypart/human/attacked_hand
@@ -283,9 +324,21 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		if(!hand_limbs.len)
 			return
 		attacked_hand = pick(hand_limbs)
-		attacked_hand.hp += attack_hp_final
+		if(wep && wep.damtype == "slash") attacked_hand.slash_hp += attack_hp_final
+		else attacked_hand.hp += attack_hp_final
+		if(attacked_hand.slash_hp <= 0)
+			bodyparts -= attacked_hand
+			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
+				slash_limb("right arm")
+			else
+				slash_limb("left arm")
+			hand = "left"; Drop(); hand = "right"; Drop()
 		if(attacked_hand.hp <= 0)
 			bodyparts -= attacked_hand
+			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
+				explode_limb("right arm")
+			else
+				explode_limb("left arm")
 			hand = "left"; Drop(); hand = "right"; Drop()
 	//stamina += attack_stamina_final
 	//hp += attack_hp_final
@@ -297,6 +350,33 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	draw_mob()
 	if(hp <= 0)
 		die()
+
+obj/choped_limb
+	icon = 'mob.dmi'
+
+mob/proc/slash_limb(var/limb as text)
+	var/sound/S = sound('sounds/chop.ogg')
+	usr.play_sound(S)
+	var/obj/choped_limb/cl = new
+	if(limb == "head")
+		cl.name = "head"; cl.icon_state = "head_underlay"
+	if(limb == "left arm")
+		cl.name = "left arm"; cl.icon_state = "left_arm_c"
+	if(limb == "right arm")
+		cl.name = "right arm"; cl.icon_state = "right_arm_c"
+	if(limb == "left leg")
+		cl.name = "left leg"; cl.icon_state = "left_leg_c"
+	if(limb == "right leg")
+		cl.name = "right leg"; cl.icon_state = "right_leg_c"
+	var/list/near_turfs = list()
+	for(var/turf/t in orange(1))
+		near_turfs += t
+	var/turf/end_turf = pick(near_turfs)
+	cl.x = end_turf.x; cl.y = end_turf.y; cl.z = end_turf.z
+
+mob/proc/explode_limb(var/limb as text)
+	var/sound/S = sound('sounds/chop3.ogg')
+	usr.play_sound(S)
 
 //mob/proc/damage_limb(var/obj/bodypart/b, var/)
 
@@ -348,11 +428,15 @@ mob/proc/die()
 	alive = 0
 	allow_move = 0
 	density = 0
-	icon = 'test.dmi'
-	icon_state = "corpse"
+	//icon = 'mob.dmi'
+	//icon_state = "corpse"
 	for(var/obj/o as obj in src.active_hand)
 		Drop()
 	for(var/obj/o in src)
 		Get(o)
 		Drop()
+	draw_mob()
+	var/matrix/M = matrix()//var/icon/i = new(src.icon,src.icon_state)
+	M.Turn(90)
+	src.transform = M
 	draw_mob()
