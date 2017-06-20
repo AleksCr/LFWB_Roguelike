@@ -101,4 +101,4 @@ mob/verb/spawn_special_ai()
 
 
 mob/verb/puk()
-	alpha = 100
+	bleed()

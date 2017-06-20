@@ -24,7 +24,7 @@ mob/proc/calculate_strike_time()
 	if(attack_style == "normal")
 		time = 6
 	if(attack_style == "strong")
-		time = 10
+		time = 6
 	return time
 
 mob/var/attack_num = 1
@@ -85,7 +85,7 @@ mob/proc/attack(a, b)
 	if(hand == "left") active_hand = left_hand
 	else active_hand = right_hand
 	var/obj/item/weapon/O
-	for(var/obj/item/weapon/i as obj in active_hand)
+	for(var/obj/item/weapon/i in active_hand)
 		O=i
 	if(O != null)
 		sleep(O.cooldown)
@@ -242,6 +242,8 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		attack_stamina_final -= hp_dam*rand(3,10)
 		var/sound/S = sound('sounds/punch4.ogg')
 		play_sound(S)
+	if(M.attack_style == "strong")
+		attack_hp_final *= 1.5
 	var/obj/item/armor/a
 	if(attack_zone == "torso")
 		for(var/obj/item/armor/i in src.armor) a = i
@@ -275,6 +277,14 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	/////////////////УРОН В КОНЕЧНОСТЬ
 
 	if(attack_zone == "torso")
+		var/organ_hit_dam = hp_max / 5
+		world<< "organ_hit_dam [organ_hit_dam]"
+		if(wep && wep.damtype == "stab")
+			organ_hit_dam /= 2
+		if(!ribs)
+			organ_hit_dam /= 2
+		if(abs(attack_hp_final) >= organ_hit_dam)
+			damage_random_organ()
 		hp += attack_hp_final
 	if(attack_zone == "head")
 		var/obj/bodypart/human/head/he
@@ -282,6 +292,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			he = h
 			if(wep && wep.damtype == "slash") he.slash_hp += attack_hp_final
 			else he.hp += attack_hp_final
+		if(!he.fracture && abs(attack_hp_final) >= he.hp)
+			he.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
+			world<<"Черепушка [src.name] ломаетс&#255; со звучным хрустом!";
+		if(!he.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= he.slash_hp)
+			he.artery = 1; var/list/str = list('sounds/throat.ogg','sounds/throat2.ogg','sounds/throat3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
 		if(he.slash_hp <= 0)
 			slash_limb("head")
 			bodyparts -= he
@@ -302,6 +317,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		attacked_leg = pick(leg_limbs)
 		if(wep && wep.damtype == "slash") attacked_leg.slash_hp += attack_hp_final
 		else attacked_leg.hp += attack_hp_final
+		if(!attacked_leg.fracture && abs(attack_hp_final) >= attacked_leg.hp)
+			attacked_leg.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
+			world<<"Ножка [src.name] ломаетс&#255; со звучным хрустом!";
+		if(!attacked_leg.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= attacked_leg.slash_hp)
+			attacked_leg.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_leg.slash_hp <= 0)
 			bodyparts -= attacked_leg
 			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
@@ -326,6 +346,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		attacked_hand = pick(hand_limbs)
 		if(wep && wep.damtype == "slash") attacked_hand.slash_hp += attack_hp_final
 		else attacked_hand.hp += attack_hp_final
+		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
+			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
+			world<<"Ручка [src.name] ломаетс&#255; со звучным хрустом!";
+		if(!attacked_hand.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= attacked_hand.slash_hp)
+			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_hand.slash_hp <= 0)
 			bodyparts -= attacked_hand
 			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
@@ -392,15 +417,24 @@ mob/proc/dodge(var/dox, var/doy)
 	usr.y += doy
 
 
-//mob/var/blood = 500
+mob/var/blood = 500
 mob/var/bleed_size = 0
 
 obj/blood_drip
 	icon = 'test.dmi'
 	icon_state = "blood_drips"
 
-mob/proc/bleed()
-	new/obj/blood_drip(src.loc)
+obj/blood_pool
+	icon = 'mob.dmi'
+	icon_state = "pool5"
+	var/pool_size
+
+mob/proc/bleed(var/btype)
+	/*if(btype == 1)
+		for(var/obj/blood_drip/b in orange(0))
+		new/obj/blood_drip(src.loc)
+	if(btype == 2 || btype == 2)
+		new/obj/blood_pool(src.loc)*/
 	hp -= bleed_size
 	if(hp <= 0)
 		die()

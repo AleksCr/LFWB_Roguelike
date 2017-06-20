@@ -61,6 +61,11 @@ mob/proc/draw_mob()
 	del o_boots
 	del o_hands
 	del o_cloth
+	del artery_head
+	del artery_right_arm
+	del artery_left_arm
+	del artery_right_leg
+	del artery_left_leg
 	draw_bodyparts()
 	for(var/obj/item/armor/i in src.clothes)
 		o_cloth = overlay('clothes.dmi', i.icon_state)
@@ -98,6 +103,17 @@ mob/proc/draw_mob()
 			o_left = overlay('meele_weapons.dmi', "hammer_l")
 		if(istype(i,/obj/item/weapon/club))
 			o_left = overlay('meele_weapons.dmi', "club_l")
+	/////////////////“”“ –»—Œ¬¿“‹ ¿–“≈–»»
+	for(var/obj/bodypart/human/head/h in bodyparts)
+		if(h.artery) artery_head = overlay('mob.dmi', "head_s1")
+	for(var/obj/bodypart/human/right_arm/h in bodyparts)
+		if(h.artery) artery_right_arm = overlay('mob.dmi', "r_arm_s1")
+	for(var/obj/bodypart/human/left_arm/h in bodyparts)
+		if(h.artery) artery_left_arm = overlay('mob.dmi', "l_arm_s1")
+	for(var/obj/bodypart/human/right_leg/h in bodyparts)
+		if(h.artery) artery_right_leg = overlay('mob.dmi', "r_leg_s1")
+	for(var/obj/bodypart/human/left_leg/h in bodyparts)
+		if(h.artery) artery_left_leg = overlay('mob.dmi', "l_leg_s1")
 
 
 
