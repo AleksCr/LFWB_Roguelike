@@ -277,11 +277,14 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	/////////////////УРОН В КОНЕЧНОСТЬ
 
 	if(attack_zone == "torso")
+		if(!ribs && abs(attack_hp_final) >= hp)
+			ribs = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S);
+			world<<"Ребра [src.name] ломаютс&#255; со звучным хрустом!";
 		var/organ_hit_dam = hp_max / 5
 		world<< "organ_hit_dam [organ_hit_dam]"
 		if(wep && wep.damtype == "stab")
 			organ_hit_dam /= 2
-		if(!ribs)
+		if(ribs)
 			organ_hit_dam /= 2
 		if(abs(attack_hp_final) >= organ_hit_dam)
 			damage_random_organ()
@@ -348,7 +351,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		else attacked_hand.hp += attack_hp_final
 		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
 			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Ручка [src.name] ломаетс&#255; со звучным хрустом!";
+			world<<"Ручка [src.name] ломаетс&#255; со звучным хрустом!"; Drop()
 		if(!attacked_hand.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= attacked_hand.slash_hp)
 			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_hand.slash_hp <= 0)
@@ -367,7 +370,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			hand = "left"; Drop(); hand = "right"; Drop()
 	//stamina += attack_stamina_final
 	//hp += attack_hp_final
-	//bleed_size = bleed_final
+	bleed_size = bleed_final
 	if(stamina <= 0 && recreating == 0 && alive == 1)
 		recreating = 1
 		spawn() recreate()
@@ -416,28 +419,6 @@ mob/proc/dodge(var/dox, var/doy)
 	usr.x += dox
 	usr.y += doy
 
-
-mob/var/blood = 500
-mob/var/bleed_size = 0
-
-obj/blood_drip
-	icon = 'test.dmi'
-	icon_state = "blood_drips"
-
-obj/blood_pool
-	icon = 'mob.dmi'
-	icon_state = "pool5"
-	var/pool_size
-
-mob/proc/bleed(var/btype)
-	/*if(btype == 1)
-		for(var/obj/blood_drip/b in orange(0))
-		new/obj/blood_drip(src.loc)
-	if(btype == 2 || btype == 2)
-		new/obj/blood_pool(src.loc)*/
-	hp -= bleed_size
-	if(hp <= 0)
-		die()
 
 mob/proc/recreate()
 	var/matrix/M = matrix()//var/icon/i = new(src.icon,src.icon_state)

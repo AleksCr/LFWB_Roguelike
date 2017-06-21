@@ -12,6 +12,12 @@ proc/mob_controller()
 			var/sound/S = sound(pick(str))
 			for(var/mob/MS in world)
 				MS<<S
+		if(M.blood< 300)
+			M.hp -= 5
+			var/str = pick('gasp_male1.ogg','gasp_male2.ogg','gasp_male3.ogg','gasp_male4.ogg','gasp_male5.ogg','gasp_male6.ogg','gasp_male7.ogg')
+			var/sound/S = sound(pick(str))
+			for(var/mob/MS in world)
+				MS<<S
 		if(M.bleed_size > 0)
 			M.bleed(1)
 		for(var/obj/bodypart/human/h in M.bodyparts)

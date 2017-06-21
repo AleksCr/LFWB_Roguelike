@@ -1,27 +1,16 @@
 "a" = (/turf/floor,/area)
 "b" = (/obj/item/weapon/sword,/turf/floor,/area)
-"c" = (/obj/item/weapon/spear,/turf/floor,/area)
-"d" = (/obj/item/holders/belt,/turf/floor,/area)
-"e" = (/obj/item/armor/helmet,/turf/floor,/area)
-"f" = (/obj/item/weapon/dagger,/turf/floor,/area)
-"g" = (/obj/item/armor/boots,/turf/floor,/area)
-"h" = (/obj/item/armor/hands,/turf/floor,/area)
-"i" = (/mob{ai = 0},/turf/floor,/area)
-"j" = (/obj/item/weapon/hammer,/turf/floor,/area)
-"k" = (/obj/item/weapon/club,/turf/floor,/area)
-"l" = (/obj/item/armor/cloth,/turf/floor,/area)
-"m" = (/obj/item/armor/breastplate,/turf/floor,/area)
-"n" = (/obj/item/weapon/axe,/turf/floor,/area)
+"c" = (/mob{ai = 0},/turf/floor,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaa
 aaaaabaaaaaaaa
-aaacaaaaaaaaaa
-aaaaaadeaaaaaa
-aaafaghaiaaaaa
-aajkaaalmaaaaa
-aaaaanafaaaaaa
+aaaaaaaacaaaaa
+aaaaaaaaaaaaaa
+aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa

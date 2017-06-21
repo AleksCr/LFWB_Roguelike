@@ -454,14 +454,14 @@ mob
 	verb/Get(obj/O as obj)
 		if(hand == "left")
 			for(var/obj/bodypart/human/left_arm/h in bodyparts)
-				if(src.left_hand_mob.Add(src, O, src.left_hand))
+				if(src.left_hand_mob.Add(src, O, src.left_hand) && !h.fracture)
 					src << "You acquired [O]!"
 					O.loc = src
 				else
 					src << "You don't have any more room!"
 		if(hand == "right")
 			for(var/obj/bodypart/human/right_arm/h in bodyparts)
-				if(src.right_hand_mob.Add(src, O, src.right_hand))
+				if(src.right_hand_mob.Add(src, O, src.right_hand) && !h.fracture)
 					world << "You acquired [O]!"
 					O.loc = src
 				else

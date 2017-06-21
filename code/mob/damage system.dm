@@ -173,9 +173,28 @@ mob/New()
 	var/obj/organ/lungs/lu = new; organs += lu
 	draw_mob()
 
-mob/verb/superbleed()
-	artery_head = overlay('mob.dmi', "head_s1")
-	artery_right_arm = overlay('mob.dmi', "r_arm_s1")
-	artery_left_arm = overlay('mob.dmi', "l_arm_s1")
-	artery_right_leg = overlay('mob.dmi', "r_leg_s1")
-	artery_left_leg = overlay('mob.dmi', "l_leg_s1")
+mob/var/blood = 500
+mob/var/bleed_size = 0
+
+obj/blood_drip
+	icon = 'test.dmi'
+	icon_state = "blood_drips"
+
+obj/blood_pool
+	icon = 'mob.dmi'
+	icon_state = "pool5"
+	var/pool_size
+
+mob/proc/bleed(var/btype)
+	if(btype == 1)
+		blood -= bleed_size
+		//for(var/obj/blood_drip/b in orange(0))
+		//new/obj/blood_drip(src.loc)
+	if(btype == 2)
+		blood -= 10
+	if(btype == 3)
+		blood -= 30
+		//new/obj/blood_pool(src.loc)
+	hp -= bleed_size
+	if(hp <= 0)
+		die()

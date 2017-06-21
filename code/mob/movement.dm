@@ -44,8 +44,10 @@ mob/proc/calcutale_step()
 	var/step_time
 	var/movement_mod = 4
 	for(var/obj/bodypart/human/right_leg/h in bodyparts)
+		if(h.fracture) break
 		movement_mod /= 2
 	for(var/obj/bodypart/human/left_leg/h in bodyparts)
+		if(h.fracture) break
 		movement_mod /= 2
 	if(run == 0)
 		step_time = delay*time_scale*movement_mod
