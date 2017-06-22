@@ -21,10 +21,11 @@ mob/verb/chage_atributes()
 	ht = inht
 	recalculate(1)
 
-mob/verb/rotate_test()
-	var/icon/i = new(src.icon,src.icon_state)
-	i.Turn(90)
-	src.icon = i
+mob/verb/bandage()
+	for(var/obj/bodypart/human/h in bodyparts)
+		h.artery = 0
+	artery_head = 0; artery_right_arm = 0; artery_left_arm = 0; artery_right_leg = 0; artery_left_leg = 0;
+	draw_mob()
 
 mob/verb/off_ai()
 	for(var/mob/M in world)
@@ -41,21 +42,6 @@ mob/verb/say(message as text)
 		message = copytext(message, 1, index) + "&#255;" + copytext(message, index+1)
 		index = findtext(message, "ÿ")
 	world<< "[name] says, [message]"
-
-mob/verb/spawn_ai_human()
-	var/mob/M = new
-	M.x = 1
-	M.y = 1
-	M.z = 1
-	M.icon_state = "team1"
-
-mob/verb/spawn_ai_human_another_team()
-	var/mob/M = new
-	M.x = 14
-	M.y = 14
-	M.z = 1
-	M.team = "2"
-	M.icon_state = "team2"
 
 mob/var/ai_coolness = "dawn"
 

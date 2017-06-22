@@ -50,7 +50,7 @@ client
 		src.screen += hud_drop
 
 mob/var/display_hud/right_hand/right_hand_mob = new()
-mob/var/display_hud/right_hand/left_hand_mob = new()
+mob/var/display_hud/left_hand/left_hand_mob = new()
 mob/var/display_hud/cloth/clothes_mob = new()
 mob/var/display_hud/armor/armor_mob = new()
 mob/var/display_hud/helmet/helmet_mob = new()

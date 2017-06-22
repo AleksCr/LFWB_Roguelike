@@ -259,7 +259,13 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 
 
 	if(a)
-		if(prob(a.coverage))
+		if(prob(a.coverage))// возможно добавить кинжалу бонус к хитрому удару
+			if(wep && (istype(wep,/obj/item/weapon/sword)))
+				attack_hp_final /= 1.5; //world<< "weapon hits with 0.5 dam!!!!!!"
+			if(wep && (istype(wep,/obj/item/weapon/spear)))
+				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
+			if(wep && (istype(wep,/obj/item/weapon/club) || (istype(wep,/obj/item/weapon/hammer))))
+				attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!"
 			if(a.min_damage >= abs(attack_hp_final))
 				bleed_final = 0
 				attack_stamina_final = 0
@@ -273,6 +279,13 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			play_sound(S)
 		else
 			world<<"[M.name] проводит хитрый удар в разрез брони!"
+			if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
+				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!"
+			if(wep && istype(wep,/obj/item/weapon/spear))
+				attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!!"
+	else
+		if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
+			attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
 
 	/////////////////УРОН В КОНЕЧНОСТЬ
 
@@ -298,7 +311,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		if(!he.fracture && abs(attack_hp_final) >= he.hp)
 			he.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
 			world<<"Черепушка [src.name] ломаетс&#255; со звучным хрустом!";
-		if(!he.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= he.slash_hp)
+		if(!he.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= he.slash_hp)
 			he.artery = 1; var/list/str = list('sounds/throat.ogg','sounds/throat2.ogg','sounds/throat3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
 		if(he.slash_hp <= 0)
 			slash_limb("head")
@@ -323,7 +336,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		if(!attacked_leg.fracture && abs(attack_hp_final) >= attacked_leg.hp)
 			attacked_leg.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
 			world<<"Ножка [src.name] ломаетс&#255; со звучным хрустом!";
-		if(!attacked_leg.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= attacked_leg.slash_hp)
+		if(!attacked_leg.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_leg.slash_hp)
 			attacked_leg.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_leg.slash_hp <= 0)
 			bodyparts -= attacked_leg
@@ -352,7 +365,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
 			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
 			world<<"Ручка [src.name] ломаетс&#255; со звучным хрустом!"; Drop()
-		if(!attacked_hand.artery && wep && wep.damtype == "slash" && abs(attack_hp_final) >= attacked_hand.slash_hp)
+		if(!attacked_hand.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_hand.slash_hp)
 			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_hand.slash_hp <= 0)
 			bodyparts -= attacked_hand
@@ -387,15 +400,15 @@ mob/proc/slash_limb(var/limb as text)
 	usr.play_sound(S)
 	var/obj/choped_limb/cl = new
 	if(limb == "head")
-		cl.name = "head"; cl.icon_state = "head_underlay"
+		head_artery = 1; cl.name = "head"; cl.icon_state = "head_underlay"
 	if(limb == "left arm")
-		cl.name = "left arm"; cl.icon_state = "left_arm_c"
+		left_arm_artery = 1; cl.name = "left arm"; cl.icon_state = "left_arm_c"
 	if(limb == "right arm")
-		cl.name = "right arm"; cl.icon_state = "right_arm_c"
+		right_arm_artery = 1; cl.name = "right arm"; cl.icon_state = "right_arm_c"
 	if(limb == "left leg")
-		cl.name = "left leg"; cl.icon_state = "left_leg_c"
+		left_leg_artery = 1; cl.name = "left leg"; cl.icon_state = "left_leg_c"
 	if(limb == "right leg")
-		cl.name = "right leg"; cl.icon_state = "right_leg_c"
+		right_leg_artery = 1; cl.name = "right leg"; cl.icon_state = "right_leg_c"
 	var/list/near_turfs = list()
 	for(var/turf/t in orange(1))
 		near_turfs += t

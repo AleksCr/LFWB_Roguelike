@@ -13,6 +13,13 @@ obj/bodypart/human/left_arm
 obj/bodypart/human/right_leg
 obj/bodypart/human/left_leg
 
+mob
+	var/head_artery = 0
+	var/right_arm_artery = 0
+	var/left_arm_artery = 0
+	var/right_leg_artery = 0
+	var/left_leg_artery = 0
+
 mob/var/ribs = 0
 
 mob/var/list/organs = list()
@@ -54,27 +61,27 @@ mob/proc/damage_random_organ()
 	var/obj/organ/o = pick(organs)
 	if(o.damaged == 1) return
 	if(istype(o,/obj/organ/heart))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®Â¸ Ã±Ã¥Ã°Ã¤Ã¥Ã·ÃªÃ®!"
+		usr<< "Î-î-î ìî¸ ñåðäå÷êî!"
 	if(istype(o,/obj/organ/lungs))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®Ã¨ Ã«Ã¥Ã£ÃªÃ¨Ã¥!"
+		usr<< "Î-î-î ìîè ëåãêèå!"
 	if(istype(o,/obj/organ/liver))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®&#255; Ã¯Ã¥Ã·Ã¥Ã­Ã®Ã·ÃªÃ !"
+		usr<< "Î-î-î ìî&#255; ïå÷åíî÷êà!"
 		var/obj/vomit/v = new
 		v.loc = src.loc
 		var/sound/S = sound('sounds/vomit.ogg')
 		usr.play_sound(S)
 	if(istype(o,/obj/organ/left_kidney))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®&#255; Ã«Ã¥Ã¢Ã &#255; Ã¯Ã®Ã·Ã¥Ã·ÃªÃ !"
+		usr<< "Î-î-î ìî&#255; ëåâà&#255; ïî÷å÷êà!"
 	if(istype(o,/obj/organ/right_kidney))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®&#255; Ã¯Ã°Ã Ã¢Ã &#255; Ã¯Ã®Ã·Ã¥Ã·ÃªÃ !"
+		usr<< "Î-î-î ìî&#255; ïðàâà&#255; ïî÷å÷êà!"
 	if(istype(o,/obj/organ/guts))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®Ã¨ ÃªÃ¨Ã¸Ã®Ã·ÃªÃ¨!"
+		usr<< "Î-î-î ìîè êèøî÷êè!"
 		var/obj/vomit/v = new
 		v.loc = src.loc
 		var/sound/S = sound('sounds/vomit.ogg')
 		usr.play_sound(S)
 	if(istype(o,/obj/organ/stomath))
-		usr<< "ÃŽ-Ã®-Ã® Ã¬Ã®Ã© Ã¦Ã¨Ã¢Ã®Ã²Ã¨Ãª!"
+		usr<< "Î-î-î ìîé æèâîòèê!"
 		var/obj/vomit/v = new
 		v.loc = src.loc
 		var/sound/S = sound('sounds/vomit.ogg')
@@ -106,7 +113,7 @@ mob/verb/draw_bodyparts()
 		o_right_leg = overlay('mob.dmi', "right_leg")
 	for(var/obj/bodypart/human/left_leg/h in bodyparts)
 		o_left_leg = overlay('mob.dmi', "left_leg")
-	/////////////////Ã²Ã³Ã² Ã¨ Ã¤Ã Ã«Ã¥Ã¥ Ã°Ã¨Ã±Ã®Ã¢Ã Ã²Ã¼ Ã°Ã Ã­Ã»
+	/////////////////òóò è äàëåå ðèñîâàòü ðàíû
 	if(hp< hp_max && hp > 2*hp_max/3)
 		chest_wound  = overlay('mob.dmi', "chest_10")
 	if(hp< hp_max && hp > hp_max/3 && hp < 2*hp_max/3)
@@ -195,6 +202,5 @@ mob/proc/bleed(var/btype)
 	if(btype == 3)
 		blood -= 30
 		//new/obj/blood_pool(src.loc)
-	//hp -= bleed_size Ð³Ð¾Ð²Ð½Ð¸Ð½Ð° Ð¿Ñ€Ð¸ÐºÐ»ÐµÐ¸Ð»Ð°ÑÑŒ...
 	if(hp <= 0)
 		die()

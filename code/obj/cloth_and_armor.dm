@@ -114,6 +114,11 @@ mob/proc/draw_mob()
 		if(h.artery) artery_right_leg = overlay('mob.dmi', "r_leg_s1")
 	for(var/obj/bodypart/human/left_leg/h in bodyparts)
 		if(h.artery) artery_left_leg = overlay('mob.dmi', "l_leg_s1")
+	if(head_artery) artery_head = overlay('mob.dmi', "head_s1")
+	if(right_arm_artery) artery_right_arm = overlay('mob.dmi', "r_arm_s1")
+	if(left_arm_artery) artery_left_arm = overlay('mob.dmi', "l_arm_s1")
+	if(right_leg_artery) artery_right_leg = overlay('mob.dmi', "r_leg_s1")
+	if(left_leg_artery) artery_left_leg = overlay('mob.dmi', "l_leg_s1")
 
 
 
