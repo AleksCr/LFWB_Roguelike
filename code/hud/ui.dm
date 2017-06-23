@@ -449,6 +449,21 @@ client/verb/UNEQUIP(var/obj/O)
 	if(istype(O,/obj/item/holders/belt))
 		src.belt_h.Remove(usr, O, usr.belt)
 
+mob/verb/mob_UNEQUIP(var/obj/O)
+	spawn(5) src.draw_mob()
+	if(istype(O,/obj/item/armor/breastplate))
+		src.armor_mob.Remove(src, O, src.armor)
+	if(istype(O,/obj/item/armor/cloth))
+		src.clothes_mob.Remove(src, O, src.clothes)
+	if(istype(O,/obj/item/armor/boots))
+		src.legs_mob.Remove(src, O, src.legs)
+	if(istype(O,/obj/item/armor/hands))
+		src.hands_mob.Remove(src, O, src.hands)
+	if(istype(O,/obj/item/armor/helmet))
+		src.helmet_mob.Remove(src, O, src.helmet)
+	//if(istype(O,/obj/item/holders/belt))
+		//src.belt_mob.Remove(usr, O, usr.belt)
+
 
 mob
 	verb/Get(obj/O as obj)
@@ -484,7 +499,7 @@ mob
 
 
 
-// Functions for adding and removing objects from any of the
+/*// Functions for adding and removing objects from any of the
 // display HUD lists.
 client/verb/AddItem(listname as text)
 
@@ -518,7 +533,7 @@ client/verb/RemoveItem(listname as text)
 	if(HUD.Remove(src, A, L))
 		world << "Item removed!"
 	else
-		world << "Item was not removed."
+		world << "Item was not removed."*/
 
 
 /************************************************************************

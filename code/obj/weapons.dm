@@ -27,7 +27,7 @@ obj/item/weapon
 	axe
 		dam_modifer = 2.5
 		bleed_def = 1.5
-		cooldown = 3
+		cooldown = 4
 		damtype = "slash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "axe"

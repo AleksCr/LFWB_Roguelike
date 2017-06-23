@@ -5,12 +5,51 @@ mob/verb/respawn()
 	x = 1
 	y = 1
 	z = 1
-	icon_state = "body_m_s"
+	icon_state = "torso"
 	allow_move = 1
 	density = 1
 	alive = 1
 	stamina = stamina_max
 	hp = 35
+	var/obj/bodypart/human/head/resp_head
+	var/obj/bodypart/human/right_arm/resp_right_arm
+	var/obj/bodypart/human/left_arm/resp_left_arm
+	var/obj/bodypart/human/right_leg/resp_right_leg
+	var/obj/bodypart/human/left_leg/resp_left_leg
+	for(var/obj/bodypart/human/head/h in bodyparts)
+		resp_head = h
+	for(var/obj/bodypart/human/right_arm/h in bodyparts)
+		resp_right_arm = h
+	for(var/obj/bodypart/human/left_arm/h in bodyparts)
+		resp_left_arm = h
+	for(var/obj/bodypart/human/right_leg/h in bodyparts)
+		resp_right_leg = h
+	for(var/obj/bodypart/human/left_leg/h in bodyparts)
+		resp_left_leg = h
+	var/obj/bodypart/human/head/h = new; var/obj/bodypart/human/right_arm/ra = new; var/obj/bodypart/human/left_arm/la = new; var/obj/bodypart/human/right_leg/rl = new; var/obj/bodypart/human/left_leg/ll = new;
+	if(!resp_head) bodyparts += h; resp_head = h
+	if(!resp_right_arm) bodyparts += ra; resp_right_arm = ra
+	if(!resp_left_arm)  bodyparts += la; resp_left_arm = la
+	if(!resp_right_leg) bodyparts += rl; resp_right_leg = rl
+	if(!resp_left_leg) bodyparts += ll; resp_left_leg = ll
+	resp_head.hp = resp_head.hp_max; resp_head.slash_hp = resp_head.slash_hp_max; head_artery = 0; resp_head.artery = 0; resp_head.fracture = 0;
+	resp_right_arm.hp = resp_right_arm.hp_max; resp_right_arm.slash_hp = resp_right_arm.slash_hp_max; right_arm_artery = 0; resp_right_arm.artery = 0; resp_right_arm.fracture = 0;
+	resp_left_arm.hp = resp_left_arm.hp_max; resp_left_arm.slash_hp = resp_left_arm.slash_hp_max; left_arm_artery = 0; resp_left_arm.artery = 0; resp_left_arm.fracture = 0;
+	resp_right_leg.hp = resp_right_leg.hp_max; resp_right_leg.slash_hp = resp_right_leg.slash_hp_max; right_leg_artery = 0; resp_right_leg.artery = 0; resp_right_leg.fracture = 0;
+	resp_left_leg.hp = resp_left_leg.hp_max; resp_left_leg.slash_hp = resp_left_leg.slash_hp_max; left_leg_artery = 0; resp_left_leg.artery = 0; resp_left_leg.fracture = 0;
+	var/matrix/M = matrix()
+	M.Turn(0)
+	src.transform = M
+	draw_mob()
+	blood = 500
+
+mob/verb/kill_me()
+	die()
+
+mob/verb/kill_all()
+	for(var/mob/M in world)
+		if(!M.ai) continue
+		M.die()
 
 mob/verb/chage_atributes()
 	var/inst = input("st") as num
@@ -32,7 +71,7 @@ mob/verb/off_ai()
 		M.ai = 0
 
 mob/verb/change_time_scale()
-	//set hidden = 1
+	set hidden = 1
 	var/input = input("1 - normal speed") as num
 	time_scale = input
 
@@ -86,5 +125,5 @@ mob/verb/spawn_special_ai()
 	M.team = "3"
 
 
-mob/verb/puk()
-	bleed()
+//mob/verb/puk()
+//	bleed()

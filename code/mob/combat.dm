@@ -308,6 +308,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 			he = h
 			if(wep && wep.damtype == "slash") he.slash_hp += attack_hp_final
 			else he.hp += attack_hp_final
+		if(!he) return
 		if(!he.fracture && abs(attack_hp_final) >= he.hp)
 			he.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
 			world<<"Черепушка [src.name] ломаетс&#255; со звучным хрустом!";
@@ -418,6 +419,16 @@ mob/proc/slash_limb(var/limb as text)
 mob/proc/explode_limb(var/limb as text)
 	var/sound/S = sound('sounds/chop3.ogg')
 	usr.play_sound(S)
+	if(limb == "head")
+		head_artery = 1
+	if(limb == "left arm")
+		left_arm_artery = 1
+	if(limb == "right arm")
+		right_arm_artery = 1
+	if(limb == "left leg")
+		left_leg_artery = 1
+	if(limb == "right leg")
+		right_leg_artery = 1
 
 //mob/proc/damage_limb(var/obj/bodypart/b, var/)
 
@@ -461,8 +472,12 @@ mob/proc/die()
 	for(var/obj/o as obj in src.active_hand)
 		Drop()
 	for(var/obj/o in src)
+		//Get(o)
+		mob_UNEQUIP(o)
 		Get(o)
 		Drop()
+	for(var/obj/o in src)
+		del o
 	draw_mob()
 	var/matrix/M = matrix()//var/icon/i = new(src.icon,src.icon_state)
 	M.Turn(90)
