@@ -1,3 +1,4 @@
+obj/item/var/mass
 obj/item/weapon
 	//var/damtype
 	var/bleed_def //default size of bleed_size for each hitting
@@ -14,6 +15,7 @@ obj/item/weapon
 		dam_modifer = 1.25
 		bleed_def = 1
 		cooldown = 1
+		mass = 0.5
 		damtype = "stab"
 		icon = 'meele_weapons.dmi'
 		icon_state = "dagger"
@@ -21,6 +23,7 @@ obj/item/weapon
 		dam_modifer = 2
 		bleed_def = 2
 		cooldown = 2
+		mass = 1
 		damtype = "slash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "sword"
@@ -28,6 +31,7 @@ obj/item/weapon
 		dam_modifer = 2.5
 		bleed_def = 1.5
 		cooldown = 4
+		mass = 2
 		damtype = "slash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "axe"
@@ -35,6 +39,7 @@ obj/item/weapon
 		dam_modifer = 2
 		bleed_def = 0.3
 		cooldown = 3
+		mass = 2
 		damtype = "stab"
 		icon = 'meele_weapons.dmi'
 		icon_state = "spear"
@@ -42,13 +47,15 @@ obj/item/weapon
 		dam_modifer = 3
 		bleed_def = 0
 		cooldown = 5
+		mass = 5
 		damtype = "bash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "masonhammer"
 	club
 		dam_modifer = 3
 		bleed_def = 0
-		cooldown = 5
+		cooldown = 10
+		mass = 10
 		damtype = "bash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "sclub"

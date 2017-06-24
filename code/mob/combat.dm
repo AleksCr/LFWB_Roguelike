@@ -146,6 +146,9 @@ mob/proc/dam(var/mob/M)
 	if(M.hand == "left") M.active_hand = M.left_hand
 	else M.active_hand = M.right_hand
 	var/obj/item/weapon/O
+	var/obj/item/weapon/MO
+	for(var/obj/item/weapon/i as obj in active_hand)
+		MO=i
 	for(var/obj/item/weapon/i as obj in M.active_hand)
 		O=i
 	if(defending == 1)
@@ -153,7 +156,28 @@ mob/proc/dam(var/mob/M)
 			world<< "К сожалению, [name] ставит блок не с той стороны!"
 			spawn() get_damage(O,M)
 			return
-		var/r = rand (10, 30)
+		var/xf = 0;
+		var/parry_chance;
+		if(M.attack_style == "normal")
+			xf = ((MO.mass + st) - (O.mass + M.st) + (dx - M.dx))
+			//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
+		if(M.attack_style == "strong")
+			xf = ((MO.mass + st) - (O.mass + (M.st+5)) + (dx - M.dx))
+			//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st+5]) + (dx [dx] - M.dx [M.dx])"
+		parry_chance = 50 + (xf*5)
+		//world<< "parry_chance before fix = [parry_chance]"
+		if(parry_chance > 90)
+			parry_chance = 90
+		if(parry_chance < 10)
+			parry_chance = 10
+		//world<< "parry_chance after fix = [parry_chance]"
+		if(prob(parry_chance))
+			world<< "[name] блокирует атаку!"
+			var/sound/S = sound('sounds/parry.ogg')
+			play_sound(S)
+			return
+		else world<< "Блок не спасает [name]!"
+		/*var/r = rand (10, 30)
 		if(attack_style == "normal")
 			r += 5
 		if(attack_style == "strong")
@@ -171,7 +195,7 @@ mob/proc/dam(var/mob/M)
 			draw_clear()
 			return
 		if(r >= 30)
-			world<< "Блок не спасает [name]!"
+			world<< "Блок не спасает [name]!"*/
 	var/agi_difference = dx - M.dx
 	var/dodge_chance = agi_difference * 5
 	if(dodge_chance > 80) dodge_chance = 80; if(dodge_chance <= 0) dodge_chance = 0
@@ -290,6 +314,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	/////////////////УРОН В КОНЕЧНОСТЬ
 
 	if(attack_zone == "torso")
+		if(!wep)
+			for(var/obj/item/weapon/swep in stucked_weapon)
+				swep.loc = M.loc
+				stucked_weapon -= swep
+				M.Get(swep)
 		if(!ribs && abs(attack_hp_final) >= hp)
 			ribs = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S);
 			world<<"Ребра [src.name] ломаютс&#255; со звучным хрустом!";
@@ -302,6 +331,18 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 		if(abs(attack_hp_final) >= organ_hit_dam)
 			damage_random_organ()
 		hp += attack_hp_final
+		if(abs(attack_hp_final) >= 3 && wep)
+			var/stuck_chance
+			if(M.st < 11) stuck_chance = 20
+			if(M.st > 11 && M.st < 15) stuck_chance = 10
+			if(M.st > 15) stuck_chance = 5
+			if((!istype(wep,/obj/item/weapon/dagger) && !istype(wep,/obj/item/weapon/spear) && !istype(wep,/obj/item/weapon/axe)) || (stucked_weapon.len>0)) stuck_chance = 0
+			if(prob(stuck_chance))
+				damage_random_organ()
+				stucked_weapon += wep
+				M.Drop(wep)
+				wep.loc = src
+				hp -= 5
 	if(attack_zone == "head")
 		var/obj/bodypart/human/head/he
 		for(var/obj/bodypart/human/head/h in bodyparts)
@@ -385,9 +426,9 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 	//stamina += attack_stamina_final
 	//hp += attack_hp_final
 	bleed_size = bleed_final
-	if(stamina <= 0 && recreating == 0 && alive == 1)
-		recreating = 1
-		spawn() recreate()
+	//if(stamina <= 0 && recreating == 0 && alive == 1)
+	//	recreating = 1
+	//	spawn() recreate()
 	usr<< "M.st = [M.st] hp_dam = [hp_dam]; [src] stamina [stamina]"
 	draw_mob()
 	if(hp <= 0)

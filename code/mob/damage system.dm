@@ -50,6 +50,9 @@ mob/var/Overlay/right_arm_wound
 mob/var/Overlay/left_arm_wound
 mob/var/Overlay/right_leg_wound
 mob/var/Overlay/left_leg_wound
+mob/var/Overlay/o_stucked_weapon
+
+mob/var/list/stucked_weapon = list()
 
 obj/vomit
 	icon = 'mob.dmi'

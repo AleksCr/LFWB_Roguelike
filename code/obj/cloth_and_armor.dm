@@ -66,6 +66,7 @@ mob/proc/draw_mob()
 	del artery_left_arm
 	del artery_right_leg
 	del artery_left_leg
+	del o_stucked_weapon
 	draw_bodyparts()
 	for(var/obj/item/armor/i in src.clothes)
 		o_cloth = overlay('clothes.dmi', i.icon_state)
@@ -119,6 +120,10 @@ mob/proc/draw_mob()
 	if(left_arm_artery) artery_left_arm = overlay('mob.dmi', "l_arm_s1")
 	if(right_leg_artery) artery_right_leg = overlay('mob.dmi', "r_leg_s1")
 	if(left_leg_artery) artery_left_leg = overlay('mob.dmi', "l_leg_s1")
+	for(var/obj/item/weapon/wep in stucked_weapon)
+		if(istype(wep,/obj/item/weapon/dagger)) o_stucked_weapon = overlay('mob.dmi', "edged")
+		if(istype(wep,/obj/item/weapon/spear)) o_stucked_weapon = overlay('mob.dmi', "spear")
+		if(istype(wep,/obj/item/weapon/axe)) o_stucked_weapon = overlay('mob.dmi', "axe")
 
 
 
