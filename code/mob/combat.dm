@@ -151,32 +151,67 @@ mob/proc/dam(var/mob/M)
 		MO=i
 	for(var/obj/item/weapon/i as obj in M.active_hand)
 		O=i
-	if(defending == 1)
+	var/hands_num = 0
+	for(var/obj/bodypart/human/right_arm/r in bodyparts) hands_num ++
+	for(var/obj/bodypart/human/left_arm/l in bodyparts) hands_num ++
+	var/bad_block = 0
+	if(defending == 1 && hands_num > 0)
 		if(M.x != x+def_a || M.y != y+def_b)
 			world<< "К сожалению, [name] ставит блок не с той стороны!"
 			spawn() get_damage(O,M)
 			return
 		var/xf = 0;
 		var/parry_chance;
-		if(M.attack_style == "normal")
-			xf = ((MO.mass + st) - (O.mass + M.st) + (dx - M.dx))
-			//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
-		if(M.attack_style == "strong")
-			xf = ((MO.mass + st) - (O.mass + (M.st+5)) + (dx - M.dx))
-			//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st+5]) + (dx [dx] - M.dx [M.dx])"
-		parry_chance = 50 + (xf*5)
-		//world<< "parry_chance before fix = [parry_chance]"
-		if(parry_chance > 90)
-			parry_chance = 90
-		if(parry_chance < 10)
-			parry_chance = 10
-		//world<< "parry_chance after fix = [parry_chance]"
-		if(prob(parry_chance))
-			world<< "[name] блокирует атаку!"
-			var/sound/S = sound('sounds/parry.ogg')
-			play_sound(S)
-			return
-		else world<< "Блок не спасает [name]!"
+		if(MO)
+			if(MO.mass*2 < O.mass)
+				if(prob(20))
+					Drop(MO)
+					del MO
+					var/sound/S = sound('sounds/breaksound.ogg')
+					play_sound(S)
+					return
+			if(M.attack_style == "normal")
+				xf = ((MO.mass + st) - (O.mass + M.st) + (dx - M.dx))
+				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
+			if(M.attack_style == "strong")
+				xf = ((MO.mass + st) - (O.mass + (M.st+5)) + (dx - M.dx))
+				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st+5]) + (dx [dx] - M.dx [M.dx])"
+			parry_chance = 50 + (xf*5)
+			//world<< "parry_chance before fix = [parry_chance]"
+			if(parry_chance > 90)
+				parry_chance = 90
+			if(parry_chance < 10)
+				parry_chance = 10
+			//world<< "parry_chance after fix = [parry_chance]"
+			if(prob(parry_chance))
+				world<< "[name] блокирует атаку!"
+				var/sound/S = sound('sounds/parry.ogg')
+				play_sound(S)
+				return
+			else world<< "Блок не спасает [name]!"
+		else
+			xf = dx - M.dx
+				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
+			parry_chance = 50 + (xf*5)
+			//world<< "parry_chance before fix = [parry_chance]"
+			if(parry_chance > 80) parry_chance = 80
+			if(parry_chance < 5) parry_chance = 5
+			//world<< "parry_chance after fix = [parry_chance]"
+			if(prob(parry_chance))
+				xf = st - M.st
+				if(parry_chance > 80) parry_chance = 80
+				if(parry_chance < 5) parry_chance = 5
+				if(prob(parry_chance))
+					world<< "[name] выхватывает оружие из рук [M.name]!"
+					var/obj/item/weapon/test = M.Drop(MO)
+					Get(test)
+					return
+				world<< "[name] ловким взмахом ладони отклон&#255;ет атаку в сторону!"
+				var/sound/S = sound('sounds/parry.ogg')
+				play_sound(S)
+				return
+			else world<< "Блокировать оружие голыми руками было весьма глупой идеей!"
+			bad_block = 1
 		/*var/r = rand (10, 30)
 		if(attack_style == "normal")
 			r += 5
@@ -206,9 +241,12 @@ mob/proc/dam(var/mob/M)
 			for(var/mob/Others in oview(10))
 				Others<< "[src] удалось уклонитьс&#255; от удара!"
 			return
+	if(bad_block)
+		spawn() get_damage(O,M, "hands")
+		return
 	spawn() get_damage(O,M)//die()
 
-mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
+mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	spawn() draw_damage()
 	var/attack_suc
 	if(M.dx > dx)
@@ -250,7 +288,9 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob)
 
 	////////УЧЕТ ОРУЖИЯ
 
-	var/attack_zone = pick(body_zones)
+	var/attack_zone
+	if(in_zone != null) attack_zone = in_zone
+	else attack_zone = pick(body_zones)
 	world<< "attack zone: [attack_zone]"
 	var/attack_hp_final = 0
 	var/attack_stamina_final = 0

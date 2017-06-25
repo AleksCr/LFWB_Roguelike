@@ -84,6 +84,7 @@ mob/verb/say(message as text)
 
 mob/var/ai_coolness = "dawn"
 
+
 mob/verb/spawn_special_ai()
 	var/obj/item/weapon/w
 	switch(input("Choose a weapon for you opponent") in list("dagger","sword","axe","spear","hammer","club"))
@@ -122,7 +123,10 @@ mob/verb/spawn_special_ai()
 			var/obj/item/armor/breastplate/br = new(src.loc); M.Get(br); M.mob_equip("armor")
 	M.Get(w)
 	M.draw_mob()
-	M.team = "3"
+	switch(input("Choose a team for this guy") in list("1","2","player"))
+		if("1") M.team = "1"
+		if("2") M.team = "2"
+		if("player") M.team = "player"
 
 
 //mob/verb/puk()

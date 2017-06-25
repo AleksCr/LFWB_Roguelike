@@ -496,6 +496,7 @@ mob
 		else
 			src << "You can not drop [O]!"
 		draw_mob()
+		return O
 
 
 
