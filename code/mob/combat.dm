@@ -155,7 +155,7 @@ mob/proc/dam(var/mob/M)
 	for(var/obj/bodypart/human/right_arm/r in bodyparts) hands_num ++
 	for(var/obj/bodypart/human/left_arm/l in bodyparts) hands_num ++
 	var/bad_block = 0
-	if(defending == 1 && hands_num > 0)
+	if(defending == 1)
 		if(M.x != x+def_a || M.y != y+def_b)
 			world<< "  сожалению, [name] ставит блок не с той стороны!"
 			spawn() get_damage(O,M)
@@ -163,6 +163,11 @@ mob/proc/dam(var/mob/M)
 		var/xf = 0;
 		var/parry_chance;
 		if(MO)
+			if(!O)
+				world << "TAAAAAK O NULL"
+				world << "TAAAAAK MO [MO.name]"
+				spawn() M.get_damage(MO,src, "hands")
+				return
 			if(MO.mass*2 < O.mass)
 				if(prob(20))
 					Drop(MO)
@@ -212,25 +217,6 @@ mob/proc/dam(var/mob/M)
 				return
 			else world<< "Ѕлокировать оружие голыми руками было весьма глупой идеей!"
 			bad_block = 1
-		/*var/r = rand (10, 30)
-		if(attack_style == "normal")
-			r += 5
-		if(attack_style == "strong")
-			r += 10
-		if(r <= 24 )
-			world<< "[name] блокирует атаку!"
-			var/sound/S = sound('sounds/parry.ogg')
-			play_sound(S)
-			return
-		if(r >= 25 && r <= 29)
-			world<< "[name] блокирует атаку ценой сбитого блока!"
-			var/sound/S = sound('sounds/parry.ogg')
-			play_sound(S)
-			defending = 0
-			draw_clear()
-			return
-		if(r >= 30)
-			world<< "Ѕлок не спасает [name]!"*/
 	var/agi_difference = dx - M.dx
 	var/dodge_chance = agi_difference * 5
 	if(dodge_chance > 80) dodge_chance = 80; if(dodge_chance <= 0) dodge_chance = 0
@@ -242,6 +228,7 @@ mob/proc/dam(var/mob/M)
 				Others<< "[src] удалось уклонитьс&#255; от удара!"
 			return
 	if(bad_block)
+		if(hands_num == 0) return
 		spawn() get_damage(O,M, "hands")
 		return
 	spawn() get_damage(O,M)//die()

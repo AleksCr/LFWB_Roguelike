@@ -1,6 +1,7 @@
 "a" = (/turf/floor,/area)
 "b" = (/mob{ai = 0},/turf/floor,/area)
 "c" = (/obj/item/weapon/dagger,/turf/floor,/area)
+"d" = (/obj/item/weapon/sword,/turf/floor,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaa
@@ -8,13 +9,13 @@ aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
-aaaaaaaabaaaaa
-aaaaaaaaaaaaaa
-aaaaaaacaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
+aaabaaaaaaaaaa
+acaaaaaaaaaaaa
+adaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 aaaaaaaaaaaaaa
 "}

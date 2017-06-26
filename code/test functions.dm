@@ -87,7 +87,9 @@ mob/var/ai_coolness = "dawn"
 
 mob/verb/spawn_special_ai()
 	var/obj/item/weapon/w
-	switch(input("Choose a weapon for you opponent") in list("dagger","sword","axe","spear","hammer","club"))
+	switch(input("Choose a weapon for you opponent") in list("bare hands","dagger","sword","axe","spear","hammer","club"))
+		if("bare hands")
+			usr<< "Тебе его не жалко?"
 		if("dagger")
 			var/obj/item/weapon/dagger/wo = new
 			w = wo
