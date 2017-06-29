@@ -227,7 +227,7 @@ mob/proc/dam(var/mob/M)
 			for(var/mob/Others in oview(10))
 				Others<< "[src] удалось уклонитьс&#255; от удара!"
 			return
-	if(bad_block)
+	if(bad_block && hands_num >0)
 		if(hands_num == 0) return
 		spawn() get_damage(O,M, "hands")
 		return
@@ -456,6 +456,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	//if(stamina <= 0 && recreating == 0 && alive == 1)
 	//	recreating = 1
 	//	spawn() recreate()
+	if(abs(attack_hp_final) > st * 1.5) spawn() discard(M)
 	usr<< "M.st = [M.st] hp_dam = [hp_dam]; [src] stamina [stamina]"
 	draw_mob()
 	if(hp <= 0)
@@ -498,18 +499,50 @@ mob/proc/explode_limb(var/limb as text)
 	if(limb == "right leg")
 		right_leg_artery = 1
 
-//mob/proc/damage_limb(var/obj/bodypart/b, var/)
-
-mob/proc/armor_calc(var/attack_hp_final, var/attack_stamina_final)
+mob/proc/discard(var/mob/M)
+	world<< "Discard"
+	var/fly_x = 3, fly_y = 3
+	if(get_dir(M,src) == NORTH)
+		fly_x = 0; fly_y = 1*fly_y
+	if(get_dir(M,src) == SOUTH)
+		fly_x = 0; fly_y = -1*fly_y//usr.dodge(0, -1)
+	if(get_dir(M,src) == EAST)
+		fly_x = 1*fly_x; fly_y = 0//usr.dodge(1, 0)
+	if(get_dir(M,src) == WEST)
+		fly_x = -1*fly_x; fly_y = 0//usr.dodge(-1, 0)
+	if(get_dir(M,src) == NORTHWEST)
+		fly_x = -1*fly_x; fly_y = 1*fly_y//usr.dodge(-1, 1)
+	if(get_dir(M,src) == NORTHEAST)
+		fly_x = 1*fly_x; fly_y = 1*fly_y//usr.dodge(1, 1)
+	if(get_dir(M,src) == SOUTHWEST)
+		fly_x = -1*fly_x; fly_y = -1*fly_y//M.dodge(-1, -1)
+	if(get_dir(usr,src) == SOUTHEAST)
+		fly_x = 1*fly_x; fly_y = -1*fly_y//M.dodge(1, -1)
+	var/abs_fly_x = abs(fly_x), abs_fly_y = abs(fly_y)
+	while(abs_fly_x != 0 || abs_fly_y != 0)
+		world<< "test"
+		sleep(2)
+		if(fly_x > 0)
+			src.x += 1
+		else
+			if(fly_x != 0)
+				src.x -= 1
+		if(fly_y > 0)
+			src.y += 1
+		else
+			if(fly_y != 0)
+				src.y -= 1
+		if(abs_fly_x > 0) abs_fly_x--
+		if(abs_fly_y > 0) abs_fly_y--
 
 
 mob/proc/dodge(var/dox, var/doy)
 	if(stamina <= 0) return
 	var/sound/S = sound('sounds/jump_male.ogg')
 	usr.play_sound(S)
-	usr.stamina -= 10
-	usr.x += dox
-	usr.y += doy
+	src.stamina -= 10
+	src.x += dox
+	src.y += doy
 
 
 mob/proc/recreate()
