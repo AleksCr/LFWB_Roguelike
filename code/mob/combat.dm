@@ -480,7 +480,7 @@ mob/proc/slash_limb(var/limb as text)
 	if(limb == "right leg")
 		right_leg_artery = 1; cl.name = "right leg"; cl.icon_state = "right_leg_c"
 	var/list/near_turfs = list()
-	for(var/turf/t in orange(1))
+	for(var/turf/t in range(1,src))
 		near_turfs += t
 	var/turf/end_turf = pick(near_turfs)
 	cl.x = end_turf.x; cl.y = end_turf.y; cl.z = end_turf.z

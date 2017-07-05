@@ -25,5 +25,4 @@ mob
 obj
 	step_size = 32
 
-var/map_x = 14
-var/map_y = 14
+var/mapx = 14; var/mapy = 14

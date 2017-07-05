@@ -198,7 +198,7 @@ obj/blood_pool
 mob/proc/bleed(var/btype)
 	if(btype == 1)
 		blood -= bleed_size
-		//for(var/obj/blood_drip/b in orange(0))
+		//for(var/obj/blood_drip/b in range(0,src))
 		//new/obj/blood_drip(src.loc)
 	if(btype == 2)
 		blood -= 10

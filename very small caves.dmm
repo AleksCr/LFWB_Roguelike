@@ -1,0 +1,28 @@
+"a" = (/obj/floor/cave,/turf,/area)
+"b" = (/obj/floor/cave,/obj/ladder,/turf,/area)
+"c" = (/obj/floor/cave,/obj/item/armor/helmet,/turf,/area)
+"d" = (/obj/floor/cave,/obj/item/armor/hands,/turf,/area)
+"e" = (/obj/floor/cave,/obj/item/armor/cloth,/turf,/area)
+"f" = (/obj/floor/cave,/obj/item/armor/breastplate,/turf,/area)
+"g" = (/obj/floor/cave,/obj/item/armor/boots,/turf,/area)
+"h" = (/obj/floor/cave,/obj/workshop/smelter,/turf,/area)
+"i" = (/obj/floor/cave,/obj/workshop/forge,/turf,/area)
+"j" = (/obj/floor/cave,/obj/item/weapon/sword,/turf,/area)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaabaaaaaaaa
+aaaaaaaaaaaaaaa
+acaaaaaaaaaaaaa
+adefgaaaaaaaaaa
+aaaahaaaaaaaaaa
+aaaaiaaaaaaaaaa
+jaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+"}

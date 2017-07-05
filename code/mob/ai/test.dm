@@ -82,7 +82,11 @@ mob/proc/fight_ai()
 				has_task = 0
 				spawn(ai_reaction_time) found_task()
 				return
-			step_to(src,locate(target.x,target.y,1), 1)
+			if(!step_to(src,locate(target.x,target.y,1), 1) && get_dist(target,src) > 1)
+				run = 0
+				target = null
+				has_task = 0
+				spawn(ai_reaction_time) found_task()
 			if(get_dist(target,src) == 1)
 				if(prob(stamina*100/stamina_max)) attack(get_dir_a(target),get_dir_b(target))
 				else spawn() defend(get_dir_a(target),get_dir_b(target))
@@ -95,10 +99,14 @@ mob/proc/fight_ai()
 mob/proc/ai_imitate_walking()
 	if(prob(10))
 		say("Мне приказали. Я делаю.")
-	var/rand_x = rand(1, 14)
-	var/rand_y = rand(1, 14)
+	var/rand_x = rand(1, mapx)
+	var/rand_y = rand(1, mapy)
+	//var/current_x = x, current_y = y
+	//var/patience = 3
 	while(x != rand_x || y != rand_y)
-		step_to(src,locate(rand_x,rand_y,1), 0)
+		//if(patience<1) return
+		if(!step_to(src,locate(rand_x,rand_y,1), 0)) return
+		else step_to(src,locate(rand_x,rand_y,1), 0)
 		sleep(calcutale_step())
 
 

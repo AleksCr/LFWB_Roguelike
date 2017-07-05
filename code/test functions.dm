@@ -43,6 +43,10 @@ mob/verb/respawn()
 	draw_mob()
 	blood = 500
 
+mob/verb/find_ladder()
+	for(var/obj/ladder/L in world)
+		world<< "[L.x] [L.y] [L.z]"
+
 mob/verb/kill_me()
 	die()
 
@@ -85,11 +89,11 @@ mob/verb/say(message as text)
 mob/var/ai_coolness = "dawn"
 
 
-mob/verb/spawn_special_ai()
-	var/num = input("how many dydes you wish spawn?") as num
-	var/holding_weapon = input("Choose a weapon for you opponent") in list("bare hands","dagger","sword","axe","spear","hammer","club")
-	var/cloth_type = input("Choose a suit for you opponent") in list("nothing","cloth","full armor")
-	var/guy_team = input("Choose a team for this guy") in list("1","2","player")
+proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, var/guy_team)
+	if(!num) num = input("how many dydes you wish spawn?") as num
+	if(!holding_weapon)holding_weapon = input("Choose a weapon for you opponent") in list("bare hands","dagger","sword","axe","spear","hammer","club")
+	if(!cloth_type)cloth_type = input("Choose a suit for you opponent") in list("nothing","cloth","full armor")
+	if(!guy_team)guy_team = input("Choose a team for this guy") in list("1","2","player")
 	for(var/i = 0; i<num; i++)
 		var/obj/item/weapon/w
 		if(holding_weapon == "bare hands")
@@ -113,9 +117,7 @@ mob/verb/spawn_special_ai()
 			var/obj/item/weapon/club/wo = new
 			w = wo
 		var/mob/M = new
-		M.x = 1
-		M.y = 1
-		M.z = 1
+		M.loc = l.loc
 		w.x = M.x; w.y = M.y; w.z = M.z
 		if(cloth_type == "cloth" || cloth_type == "full armor")
 			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
@@ -123,9 +125,9 @@ mob/verb/spawn_special_ai()
 		if(cloth_type == "full armor")
 			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
 			var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.mob_equip("legs")
-			var/obj/item/armor/hands/ha = new(src.loc); M.Get(ha); M.mob_equip("hands")
-			var/obj/item/armor/helmet/he = new(src.loc); M.Get(he); M.mob_equip("helmet")
-			var/obj/item/armor/breastplate/br = new(src.loc); M.Get(br); M.mob_equip("armor")
+			var/obj/item/armor/hands/ha = new(M.loc); M.Get(ha); M.mob_equip("hands")
+			var/obj/item/armor/helmet/he = new(M.loc); M.Get(he); M.mob_equip("helmet")
+			var/obj/item/armor/breastplate/br = new(M.loc); M.Get(br); M.mob_equip("armor")
 		M.Get(w)
 		M.draw_mob()
 		if(guy_team == "1") M.team = "1"
