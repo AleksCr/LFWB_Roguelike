@@ -162,6 +162,8 @@ proc/clear_map()
 	for(var/obj/wall/cave/W in world) del W//Удаляем пещеры и чистим массив состояний клеток, сохранившиеся с прошлой генерации
 	for(var/obj/green/G in world) del G
 	for(var/obj/workshop/W in world) del W
+	for(var/obj/choped_limb/L in world) del L
+	for(var/obj/vomit/W in world) del W
 	for(var/obj/item/i in world)
 		if(!istype(i.loc,/mob))
 			del i
@@ -183,13 +185,3 @@ proc/cave_cell_sim_step()
 		C.cell_is_alive = C.cell_is_alive_processing
 		//if(!C.cell_is_alive) C.icon_state = "background"
 		//if(C.cell_is_alive) C.icon_state = "background2"
-	/*
-	натягиваем гриду процессинга на карту, процессим, записывая изменения
-	тяяяк, как же натянуть массив состояний на клеточки
-	*/
-
-obj/test_ce
-	icon = 'test.dmi'
-	icon_state = "background"
-var/list/test_cell = list()
-var/list/test_cell2 = list()

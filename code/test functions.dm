@@ -1,4 +1,4 @@
-mob/verb/respawn()
+/*mob/verb/respawn()
 	if(alive != 0)
 		usr<< "Сначала нужно умереть"
 		return
@@ -41,7 +41,7 @@ mob/verb/respawn()
 	M.Turn(0)
 	src.transform = M
 	draw_mob()
-	blood = 500
+	blood = 500*/
 
 mob/verb/find_ladder()
 	for(var/obj/ladder/L in world)
@@ -64,10 +64,13 @@ mob/verb/chage_atributes()
 	ht = inht
 	recalculate(1)
 
-mob/verb/bandage()
+mob/verb/heal()
 	for(var/obj/bodypart/human/h in bodyparts)
 		h.artery = 0
-	artery_head = 0; artery_right_arm = 0; artery_left_arm = 0; artery_right_leg = 0; artery_left_leg = 0;
+		h.hp = h.hp_max; h.slash_hp = h.slash_hp_max
+	artery_head = 0; right_arm_artery = 0; left_arm_artery = 0; right_leg_artery = 0; left_leg_artery = 0;
+	blood = 500;
+	hp = hp_max
 	draw_mob()
 
 mob/verb/off_ai()
@@ -87,6 +90,7 @@ mob/verb/say(message as text)
 	world<< "[name] says, [message]"
 
 mob/var/ai_coolness = "dawn"
+
 
 
 proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, var/guy_team)
@@ -119,7 +123,7 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 		var/mob/M = new
 		M.loc = l.loc
 		w.x = M.x; w.y = M.y; w.z = M.z
-		if(cloth_type == "cloth" || cloth_type == "full armor")
+		if(cloth_type == "cloth")
 			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
 			var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.mob_equip("legs")
 		if(cloth_type == "full armor")

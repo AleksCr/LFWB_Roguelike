@@ -54,7 +54,7 @@ mob/proc/found_task()
 	//bloodlust fighting
 	if(ai_coolness == "dawn")
 		if(bloodlust == 1 && has_task == 0 && alive == 1)
-			for(var/mob/M in view(14, src))
+			for(var/mob/M in view(10, src))
 				if(M.team != team && M.alive == 1)
 					if(!targets) targets = new
 					targets += M
@@ -82,7 +82,7 @@ mob/proc/fight_ai()
 				has_task = 0
 				spawn(ai_reaction_time) found_task()
 				return
-			if(!step_to(src,locate(target.x,target.y,1), 1) && get_dist(target,src) > 1)
+			if(!step_to(src,locate(target.x,target.y,1), 1) && get_dist(target,src) > 10)
 				run = 0
 				target = null
 				has_task = 0

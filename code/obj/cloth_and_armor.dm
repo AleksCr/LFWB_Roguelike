@@ -61,12 +61,12 @@ mob/proc/draw_mob()
 	del o_boots
 	del o_hands
 	del o_cloth
-	del artery_head
-	del artery_right_arm
-	del artery_left_arm
-	del artery_right_leg
-	del artery_left_leg
-	del o_stucked_weapon
+	if(artery_head) del artery_head
+	if(artery_right_arm) del artery_right_arm
+	if(artery_left_arm) del artery_left_arm
+	if(artery_right_leg) del artery_right_leg
+	if(artery_left_leg) del artery_left_leg
+	if(o_stucked_weapon) del o_stucked_weapon
 	draw_bodyparts()
 	for(var/obj/item/armor/i in src.clothes)
 		o_cloth = overlay('clothes.dmi', i.icon_state)

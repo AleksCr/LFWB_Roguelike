@@ -520,17 +520,20 @@ mob/proc/discard(var/mob/M)
 		fly_x = 1*fly_x; fly_y = -1*fly_y//M.dodge(1, -1)
 	var/abs_fly_x = abs(fly_x), abs_fly_y = abs(fly_y)
 	while(abs_fly_x != 0 || abs_fly_y != 0)
-		world<< "test"
 		sleep(2)
 		if(fly_x > 0)
+			if(!is_fly_way(src.x + 1, src.y)) return
 			src.x += 1
 		else
 			if(fly_x != 0)
+				if(!is_fly_way(src.x - 1, src.y)) return
 				src.x -= 1
 		if(fly_y > 0)
+			if(!is_fly_way(src.x, src.y + 1)) return
 			src.y += 1
 		else
 			if(fly_y != 0)
+				if(!is_fly_way(src.x, src.y - 1)) return
 				src.y -= 1
 		if(abs_fly_x > 0) abs_fly_x--
 		if(abs_fly_y > 0) abs_fly_y--
@@ -541,8 +544,18 @@ mob/proc/dodge(var/dox, var/doy)
 	var/sound/S = sound('sounds/jump_male.ogg')
 	usr.play_sound(S)
 	src.stamina -= 10
-	src.x += dox
-	src.y += doy
+	var/newx = src.x + dox; var/newy = src.y + doy
+	if(is_fly_way(newx, newy))
+		src.x += dox
+		src.y += doy
+
+mob/proc/is_fly_way(var/newx, var/newy)
+	var/ouch = 0
+	for(var/obj/wall/cave/W in locate(newx,newy,src.z)) ouch = 1
+	for(var/mob/M in locate(newx,newy,src.z)) ouch = 1
+	if(ouch)
+		return 0
+	else return 1
 
 
 mob/proc/recreate()
