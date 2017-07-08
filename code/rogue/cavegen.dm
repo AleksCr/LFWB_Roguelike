@@ -48,7 +48,9 @@ obj/wall/cave
 				if(r==3) new/obj/item/ore/silver(src.loc)
 				if(r==4) new/obj/item/coal(src.loc)
 			else new/obj/item/stone(src.loc)
+			usr.grind_skill("mining")
 			del src
+
 
 obj/cell_automato
 	var/cell_is_alive = 0

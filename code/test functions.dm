@@ -64,10 +64,13 @@ mob/verb/chage_atributes()
 	ht = inht
 	recalculate(1)
 
+mob/verb/noclip()
+	density = 0
+
 mob/verb/heal()
 	for(var/obj/bodypart/human/h in bodyparts)
 		h.artery = 0
-		h.hp = h.hp_max; h.slash_hp = h.slash_hp_max
+		h.hp = h.hp_max; h.slash_hp = h.slash_hp_max; h.fracture = 0
 	artery_head = 0; right_arm_artery = 0; left_arm_artery = 0; right_leg_artery = 0; left_leg_artery = 0;
 	blood = 500;
 	hp = hp_max
@@ -138,6 +141,10 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 		if(guy_team == "2") M.team = "2"
 		if(guy_team == "player") M.team = "player"
 
+proc/d3()
+	var/d = rand(3,18)
+	world<< "dices rolles [d]"
+	return d
 
 //mob/verb/puk()
 //	bleed()
