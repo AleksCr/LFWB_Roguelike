@@ -173,7 +173,7 @@ mob/New()
 	var/obj/bodypart/human/right_leg/rl = new; bodyparts += rl
 	var/obj/bodypart/human/left_leg/ll = new; bodyparts += ll
 	for(var/obj/bodypart/human/b in bodyparts)
-		b.hp = hp_max; b.slash_hp = hp_max/3; b.hp_max = hp_max; b.slash_hp_max = hp_max/3;
+		b.hp = hp_max; b.slash_hp = hp_max; b.hp_max = hp_max; b.slash_hp_max = hp_max;
 	var/obj/organ/heart/he = new; organs += he
 	var/obj/organ/liver/l = new; organs += l
 	var/obj/organ/left_kidney/lk = new; organs += lk

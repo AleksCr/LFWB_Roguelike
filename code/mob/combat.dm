@@ -1,6 +1,6 @@
 mob/var/alive = 1
-mob/var/hp_max = 35
-mob/var/hp = 35
+mob/var/hp_max = 10
+mob/var/hp = 10
 mob/var/recreating = 0
 var/defend_time = 5
 
