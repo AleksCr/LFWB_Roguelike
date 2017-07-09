@@ -151,10 +151,50 @@ mob/proc/dam(var/mob/M)
 		MO=i
 	for(var/obj/item/weapon/i as obj in M.active_hand)
 		O=i
+	var/def_wep_type; if(MO) def_wep_type = MO.ret_type()
+	var/att_wep_type; if(O) att_wep_type = O.ret_type()
 	var/hands_num = 0
 	for(var/obj/bodypart/human/right_arm/r in bodyparts) hands_num ++
 	for(var/obj/bodypart/human/left_arm/l in bodyparts) hands_num ++
 	var/bad_block = 0
+	var/bonus = 0
+	////смотрим бонус от общего мили
+	for(var/datum/skill/melee/m in M.skills)
+		bonus += m.skill_lvl
+	var/diceroll = d3()
+	world<< "dice rolls [diceroll]"
+
+	///////Накидываем бонус от оружия и заодно качаем его навык
+	if(att_wep_type == "sword")
+		for(var/datum/skill/sword/sword in M.skills)
+			bonus += sword.skill_lvl
+			M.grind_skill("sword")
+	if(att_wep_type == "spear")
+		for(var/datum/skill/spear/spear in M.skills)
+			bonus += spear.skill_lvl
+			M.grind_skill("spear")
+	if(att_wep_type == "axe")
+		for(var/datum/skill/axe/axe in M.skills)
+			bonus += axe.skill_lvl
+			M.grind_skill("axe")
+	if(att_wep_type == "dagger")
+		for(var/datum/skill/dagger/dagger in M.skills)
+			bonus += dagger.skill_lvl
+			M.grind_skill("dagger")
+	if(att_wep_type == "club")
+		for(var/datum/skill/club/club in M.skills)
+			bonus += club.skill_lvl
+			M.grind_skill("club")
+	world<< "Бонус к попаданию составил = [bonus]"
+
+		/////Смотрим, попали ли
+	if(diceroll > M.dx + bonus)// || diceroll ==3)
+		if(diceroll == 18)
+			world<< "Критический провал! [M.name] не попал в цель!"; return
+		world<< "[M.name] не попал в цель!"; return
+
+
+	M.grind_skill("melee")
 	if(defending == 1)
 		if(M.x != x+def_a || M.y != y+def_b)
 			world<< "К сожалению, [name] ставит блок не с той стороны!"
@@ -164,8 +204,6 @@ mob/proc/dam(var/mob/M)
 		var/parry_chance;
 		if(MO)
 			if(!O)
-				world << "TAAAAAK O NULL"
-				world << "TAAAAAK MO [MO.name]"
 				spawn() M.get_damage(MO,src, "hands")
 				return
 			if(MO.mass*2 < O.mass)
@@ -175,20 +213,34 @@ mob/proc/dam(var/mob/M)
 					var/sound/S = sound('sounds/breaksound.ogg')
 					play_sound(S)
 					return
-			if(M.attack_style == "normal")
-				xf = ((MO.mass + st) - (O.mass + M.st) + (dx - M.dx))
-				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
-			if(M.attack_style == "strong")
-				xf = ((MO.mass + st) - (O.mass + (M.st+5)) + (dx - M.dx))
-				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st+5]) + (dx [dx] - M.dx [M.dx])"
-			parry_chance = 50 + (xf*5)
-			//world<< "parry_chance before fix = [parry_chance]"
-			if(parry_chance > 90)
-				parry_chance = 90
-			if(parry_chance < 10)
-				parry_chance = 10
-			//world<< "parry_chance after fix = [parry_chance]"
-			if(prob(parry_chance))
+			/////Повторяем говнокод для защищающегося
+			grind_skill("melee")
+			var/parry = 0
+			if(def_wep_type == "sword")
+				for(var/datum/skill/sword/sword in skills)
+					parry += sword.skill_lvl
+					grind_skill("sword")
+			if(def_wep_type == "spear")
+				for(var/datum/skill/spear/spear in skills)
+					parry += spear.skill_lvl
+					grind_skill("spear")
+			if(def_wep_type == "axe")
+				for(var/datum/skill/axe/axe in skills)
+					parry += axe.skill_lvl
+					grind_skill("axe")
+			if(def_wep_type == "dagger")
+				for(var/datum/skill/dagger/dagger in skills)
+					parry += dagger.skill_lvl
+					grind_skill("dagger")
+			if(def_wep_type == "club")
+				for(var/datum/skill/club/club in skills)
+					parry += club.skill_lvl
+					grind_skill("club")
+			diceroll = d3()
+			for(var/datum/skill/melee/melee in skills)
+				parry += melee.skill_lvl
+			world<< "Block dice rolls [diceroll]; melee+weapon_skill([parry]) + 3 = [parry+3]"
+			if(parry/2 + 3 >= diceroll && diceroll != 18)
 				world<< "[name] блокирует атаку!"
 				var/sound/S = sound('sounds/parry.ogg')
 				play_sound(S)
@@ -217,16 +269,18 @@ mob/proc/dam(var/mob/M)
 				return
 			else world<< "Блокировать оружие голыми руками было весьма глупой идеей!"
 			bad_block = 1
-	var/agi_difference = dx - M.dx
-	var/dodge_chance = agi_difference * 5
-	if(dodge_chance > 80) dodge_chance = 80; if(dodge_chance <= 0) dodge_chance = 0
+	//var/agi_difference = dx - M.dx
+	//var/dodge_chance = agi_difference * 5
+	//if(dodge_chance > 80) dodge_chance = 80; if(dodge_chance <= 0) dodge_chance = 0
 	//world<< "agi diff = [agi_difference] dodge ch = [dodge_chance]"
-	if(prob(dodge_chance))
-		if(stamina >= 30)
-			M<<"[src] удалось уклонитьс&#255; от удара!"
-			for(var/mob/Others in oview(10))
-				Others<< "[src] удалось уклонитьс&#255; от удара!"
-			return
+	//if(prob(dodge_chance))
+	diceroll = d3()
+	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)/2]"
+	if((base_speed+3)/2 >= diceroll && diceroll != 18 && alive)
+		M<<"[src] удалось уклонитьс&#255; от удара!"
+		for(var/mob/Others in oview(10))
+			Others<< "[src] удалось уклонитьс&#255; от удара!"
+		return
 	if(bad_block && hands_num >0)
 		if(hands_num == 0) return
 		spawn() get_damage(O,M, "hands")

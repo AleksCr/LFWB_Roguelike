@@ -11,6 +11,15 @@ obj/item/weapon
 	Click(var/mob/M)
 		usr.Get(src)
 		spawn(5) usr.draw_mob()
+	proc/ret_type()
+		var/txt
+		if(istype(src,/obj/item/weapon/dagger)) txt = "dagger"
+		if(istype(src,/obj/item/weapon/sword)) txt = "sword"
+		if(istype(src,/obj/item/weapon/axe)) txt = "axe"
+		if(istype(src,/obj/item/weapon/spear)) txt = "spear"
+		if(istype(src,/obj/item/weapon/hammer)) txt = "club"
+		if(istype(src,/obj/item/weapon/club)) txt = "club"
+		return txt
 	dagger
 		dam_modifer = 1.25
 		bleed_def = 1

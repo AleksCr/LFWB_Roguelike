@@ -143,7 +143,6 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 
 proc/d3()
 	var/d = rand(3,18)
-	world<< "dices rolles [d]"
 	return d
 
 //mob/verb/puk()
