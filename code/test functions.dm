@@ -81,7 +81,7 @@ mob/verb/off_ai()
 		M.ai = 0
 
 mob/verb/change_time_scale()
-	set hidden = 1
+	//set hidden = 1
 	var/input = input("1 - normal speed") as num
 	time_scale = input
 

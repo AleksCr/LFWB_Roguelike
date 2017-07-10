@@ -17,6 +17,11 @@ mob/verb/choose_combat_style()
 		if("Strong and technical strikes")
 			attack_style = "strong"
 
+mob/verb/superherostyle()
+	//set hidden = 1
+	attack_style = "superhero"
+	delay = base_speed
+
 mob/proc/calculate_strike_time()
 	var/time
 	if(attack_style == "fast")
@@ -25,6 +30,8 @@ mob/proc/calculate_strike_time()
 		time = 6
 	if(attack_style == "strong")
 		time = 6
+	if(attack_style == "superhero")
+		time = 1
 	return time
 
 mob/var/attack_num = 1
@@ -289,16 +296,17 @@ mob/proc/dam(var/mob/M)
 
 mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	spawn() draw_damage()
-	var/attack_suc
-	if(M.dx > dx)
+	//var/attack_suc
+	/*if(M.dx > dx)
 		attack_suc = rand((M.dx - dx/2),5)
 		if(attack_suc < 1)
 			attack_suc = 1
 		if(attack_suc > 4)
 			attack_suc = 4
 	else attack_suc = rand(1,5)
-	attack_suc = attack_suc/10
-	var/hp_dam = attack_suc*M.st
+	attack_suc = attack_suc/10*/
+	var/hp_dam
+	hp_dam = calculate_base_damage()
 
 
 	///////////ВЫБОР АТАКУЕМОЙ ЗОНЫ
@@ -338,8 +346,8 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	var/bleed_final = 0
 	if(wep != null)
 		bleed_final = wep.bleed_def
-		attack_hp_final -= hp_dam * wep.dam_modifer
-		attack_stamina_final -= hp_dam*rand(3,10) * wep.stamina_dam_modifer
+		attack_hp_final -= hp_dam + wep.dam_modifer
+		attack_stamina_final -= hp_dam*rand(3,10) + wep.stamina_dam_modifer
 		var/sound/S = sound('sounds/sword_hit1.ogg')
 		play_sound(S)
 	else
@@ -348,7 +356,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		var/sound/S = sound('sounds/punch4.ogg')
 		play_sound(S)
 	if(M.attack_style == "strong")
-		attack_hp_final *= 1.5
+		attack_hp_final += 2
 	var/obj/item/armor/a
 	if(attack_zone == "torso")
 		for(var/obj/item/armor/i in src.armor) a = i
@@ -366,7 +374,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	if(a)
 		if(prob(a.coverage))// возможно добавить кинжалу бонус к хитрому удару
 			if(wep && (istype(wep,/obj/item/weapon/sword)))
-				attack_hp_final /= 1.5; //world<< "weapon hits with 0.5 dam!!!!!!"
+				attack_hp_final *= 0.5; //world<< "weapon hits with 0.5 dam!!!!!!"
 			if(wep && (istype(wep,/obj/item/weapon/spear)))
 				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
 			if(wep && (istype(wep,/obj/item/weapon/club) || (istype(wep,/obj/item/weapon/hammer))))
@@ -511,7 +519,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	//	recreating = 1
 	//	spawn() recreate()
 	if(abs(attack_hp_final) > st * 1.5) spawn() discard(M)
-	usr<< "M.st = [M.st] hp_dam = [hp_dam]; [src] stamina [stamina]"
+	usr<< "M.st = [M.st] hp_dam = [attack_hp_final]; [src] stamina [stamina]"
 	draw_mob()
 	if(hp <= 0)
 		die()
