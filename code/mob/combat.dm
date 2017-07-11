@@ -296,17 +296,11 @@ mob/proc/dam(var/mob/M)
 
 mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	spawn() draw_damage()
-	//var/attack_suc
-	/*if(M.dx > dx)
-		attack_suc = rand((M.dx - dx/2),5)
-		if(attack_suc < 1)
-			attack_suc = 1
-		if(attack_suc > 4)
-			attack_suc = 4
-	else attack_suc = rand(1,5)
-	attack_suc = attack_suc/10*/
 	var/hp_dam
-	hp_dam = calculate_base_damage()
+	if(wep && (istype(wep,/obj/item/weapon/sword)) && (istype(wep,/obj/item/weapon/axe)) && (istype(wep,/obj/item/weapon/club)) && (istype(wep,/obj/item/weapon/hammer)))
+		hp_dam = calculate_base_damage(1)
+	else
+		hp_dam = calculate_base_damage(0)
 
 
 	///////////ВЫБОР АТАКУЕМОЙ ЗОНЫ
@@ -372,13 +366,13 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 
 
 	if(a)
-		if(prob(a.coverage))// возможно добавить кинжалу бонус к хитрому удару
+		if(wep && istype(wep,/obj/item/weapon/dagger))// кинжалу бонус к хитрому удару
+			a.coverage -= 20
+		if(prob(a.coverage))
 			if(wep && (istype(wep,/obj/item/weapon/sword)))
-				attack_hp_final *= 0.5; //world<< "weapon hits with 0.5 dam!!!!!!"
-			if(wep && (istype(wep,/obj/item/weapon/spear)))
-				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
-			if(wep && (istype(wep,/obj/item/weapon/club) || (istype(wep,/obj/item/weapon/hammer))))
-				attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!"
+				attack_hp_final *= 0.5;
+			if(wep && istype(wep,/obj/item/weapon/dagger))
+				attack_hp_final *= 0.5;
 			if(a.min_damage >= abs(attack_hp_final))
 				bleed_final = 0
 				attack_stamina_final = 0
@@ -396,9 +390,15 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!"
 			if(wep && istype(wep,/obj/item/weapon/spear))
 				attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!!"
+			if(wep && istype(wep,/obj/item/weapon/dagger))
+				attack_hp_final *= 0.5;
 	else
 		if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
 			attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
+		if(wep && istype(wep,/obj/item/weapon/spear))
+			attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!!"
+		if(wep && istype(wep,/obj/item/weapon/dagger))
+			attack_hp_final *= 0.5;
 
 	/////////////////УРОН В КОНЕЧНОСТЬ
 

@@ -8,6 +8,7 @@ obj/item/weapon
 	var/overpic_r
 	var/cooldown = 0
 	var/damtype //slash, stab, bash
+	var/material
 	Click(var/mob/M)
 		usr.Get(src)
 		spawn(5) usr.draw_mob()
@@ -21,39 +22,63 @@ obj/item/weapon
 		if(istype(src,/obj/item/weapon/club)) txt = "club"
 		return txt
 	dagger
-		dam_modifer = 1.25
+		dam_modifer = -1
 		bleed_def = 1
 		cooldown = 1
 		mass = 0.5
 		damtype = "stab"
 		icon = 'meele_weapons.dmi'
 		icon_state = "dagger"
+		New()
+			..()
+			if(!material) material = pick("iron","silver")
 	sword
-		dam_modifer = 2
+		dam_modifer = 1
 		bleed_def = 2
 		cooldown = 2
 		mass = 1
 		damtype = "slash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "sword"
+		New()
+			..()
+			if(!material) material = pick("copper","iron","steel")
+			if(material == "copper")
+				icon_state = "coppersword"; dam_modifer -= 1
+			if(material == "iron")
+				icon_state = "sword"
+			if(material == "steel")
+				icon_state = "broadsword"; dam_modifer += 1
 	axe
-		dam_modifer = 2.5
+		dam_modifer = 2
 		bleed_def = 1.5
 		cooldown = 4
 		mass = 2
 		damtype = "slash"
 		icon = 'meele_weapons.dmi'
 		icon_state = "axe"
+		New()
+			..()
+			if(!material) material = pick("copper","iron","steel")
+			if(material == "copper")
+				icon_state = "axe2"; dam_modifer-=1
+			if(material == "iron")
+				icon_state = "axe"
+			if(material == "steel")
+				icon_state = "combataxe"; dam_modifer+=1
 	spear
-		dam_modifer = 2
+		dam_modifer = 1
 		bleed_def = 0.3
 		cooldown = 3
 		mass = 2
 		damtype = "stab"
 		icon = 'meele_weapons.dmi'
 		icon_state = "spear"
+		New()
+			..()
+			if(!material) material = "steel"
 	hammer
-		dam_modifer = 3
+		dam_modifer = 1
 		bleed_def = 0
 		cooldown = 5
 		mass = 5
@@ -61,7 +86,7 @@ obj/item/weapon
 		icon = 'meele_weapons.dmi'
 		icon_state = "masonhammer"
 	club
-		dam_modifer = 3
+		dam_modifer = 1
 		bleed_def = 0
 		cooldown = 10
 		mass = 10

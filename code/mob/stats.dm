@@ -9,9 +9,9 @@ mob
 
 mob/var/stamina_regen = 3
 
-mob/verb/calculate_base_damage()//var/swing as num)
+mob/proc/calculate_base_damage(var/swing)
 	var/dam
-	if(1)//swing)
+	if(swing)
 		switch(st)
 			if(1)	dam = roll(1,6)-5
 			if(2)	dam = roll(1,6)-5
@@ -53,7 +53,8 @@ mob/verb/calculate_base_damage()//var/swing as num)
 			if(38)	dam = roll(6,6)+2
 			if(39)	dam = roll(7,6)-1
 			if(40)	dam = roll(7,6)-1
-		if(st>40) 	dam = roll(7,6)-1
+		if(st>40)
+			dam = roll(7,6)-1
 	else
 		switch(st)
 			if(1)	dam = roll(1,6)-6
@@ -97,7 +98,8 @@ mob/verb/calculate_base_damage()//var/swing as num)
 			if(39)	dam = roll(4,6)+1
 			if(40)	dam = roll(4,6)+1
 		if(st>40)	dam = roll(4,6)+1
-		dam = 0
+			//dam = 0
+	world<< "clear uron = [dam]"
 	if(dam<0) dam = 0
 	world<< "uron = [dam]"
 	return dam
