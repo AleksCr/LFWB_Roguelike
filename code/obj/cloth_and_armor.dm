@@ -15,18 +15,18 @@ obj/item/armor/cloth
 	layer = MOB_LAYER
 obj/item/armor/boots
 	icon_state = "ironboots"
-	min_damage = 2
-	coverage = 90
+	min_damage = 7
+	coverage = 100//90
 	overpic = "o_legs"
 obj/item/armor/hands
 	icon_state = "iron"
-	min_damage = 2
+	min_damage = 7
 	coverage = 100
 	overpic = "o_hands"
 obj/item/armor/helmet
 	icon_state = "castellan"
-	min_damage = 2
-	coverage = 70
+	min_damage = 7
+	coverage = 100//70
 obj/item/holders
 	Click()
 		..()
@@ -38,8 +38,8 @@ obj/item/holders/belt
 	icon_state = "belt"
 obj/item/armor/breastplate
 	icon = 'clothes.dmi'
-	min_damage = 3
-	coverage = 70
+	min_damage = 7
+	coverage = 100//70
 	icon_state = "armor"
 	layer = MOB_LAYER + 1
 

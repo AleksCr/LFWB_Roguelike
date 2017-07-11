@@ -297,10 +297,10 @@ mob/proc/dam(var/mob/M)
 mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	spawn() draw_damage()
 	var/hp_dam
-	if(wep && (istype(wep,/obj/item/weapon/sword)) && (istype(wep,/obj/item/weapon/axe)) && (istype(wep,/obj/item/weapon/club)) && (istype(wep,/obj/item/weapon/hammer)))
-		hp_dam = calculate_base_damage(1)
+	if(wep && ( (istype(wep,/obj/item/weapon/sword)) || (istype(wep,/obj/item/weapon/axe)) || (istype(wep,/obj/item/weapon/club)) || (istype(wep,/obj/item/weapon/hammer)) ) )
+		hp_dam = calculate_base_damage(1); world<< "amplitude strike"
 	else
-		hp_dam = calculate_base_damage(0)
+		hp_dam = calculate_base_damage(0); world<< "direct strike"
 
 
 	///////////ÂÛÁÎÐ ÀÒÀÊÓÅÌÎÉ ÇÎÍÛ
@@ -396,7 +396,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
 			attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
 		if(wep && istype(wep,/obj/item/weapon/spear))
-			attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!!"
+			attack_hp_final *= 1.5; //world<< "weapon hits with 2 dam!!!!!!!"
 		if(wep && istype(wep,/obj/item/weapon/dagger))
 			attack_hp_final *= 0.5;
 

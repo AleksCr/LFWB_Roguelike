@@ -67,7 +67,7 @@ obj/item/weapon
 			if(material == "steel")
 				icon_state = "combataxe"; dam_modifer+=1
 	spear
-		dam_modifer = 1
+		dam_modifer = 2
 		bleed_def = 0.3
 		cooldown = 3
 		mass = 2
@@ -78,7 +78,7 @@ obj/item/weapon
 			..()
 			if(!material) material = "steel"
 	hammer
-		dam_modifer = 1
+		dam_modifer = 4
 		bleed_def = 0
 		cooldown = 5
 		mass = 5
@@ -86,7 +86,7 @@ obj/item/weapon
 		icon = 'meele_weapons.dmi'
 		icon_state = "masonhammer"
 	club
-		dam_modifer = 1
+		dam_modifer = 3
 		bleed_def = 0
 		cooldown = 10
 		mass = 10
