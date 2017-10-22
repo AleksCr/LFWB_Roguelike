@@ -98,7 +98,7 @@ obj/ladder/proc/gen_caves()
 	var/inter_point_x = x; var/inter_point_y = y;
 	x = rand(3,mapx); y = rand(4,mapy)
 	clear_map()
-	for(var/obj/floor/f in world)
+	for(var/obj/floor/cave/f in world)
 		var/obj/cell_automato/C = new(f.loc)
 		if(prob(inital_chance))
 			C.cell_is_alive = 1
@@ -121,7 +121,7 @@ obj/ladder/proc/gen_caves()
 	for(var/obj/cell_automato/C in world) del C
 
 	//–исуем пещерную растительность
-	for(var/obj/floor/f in world)
+	for(var/obj/floor/cave/f in world)
 		var/obj/wall/cave/WW = null
 		for(var/obj/wall/cave/W in range(0,f))
 			WW = W
@@ -144,6 +144,7 @@ obj/ladder/proc/gen_caves()
 
 	//ѕеремещаем игроков
 	var/ingen = 0
+	var/obj/exit/e = new; e.x = inter_point_x; e.y = inter_point_y; e.z = 1
 	for(var/mob/M in world)
 		if(!M.ai && M.alive)
 			M.x = inter_point_x; M.y = inter_point_y
@@ -158,15 +159,19 @@ obj/ladder/proc/gen_caves()
 	for(var/i =0;i<1;i++)
 		var/obj/spawn_point/SP = new (locate(rand(1,mapx),rand(1,mapy),1))
 		for(var/obj/wall/cave/C in range (1,SP)) del C
-		spawn() spawn_special_ai(SP,1, pick("bare hands","dagger","sword","axe","spear","hammer","club"), pick("nothing","cloth","full armor"), 1)
+		spawn() spawn_special_ai(SP,1, pick("bare hands","dagger","sword","axe","spear","hammer","club"), pick("nothing","cloth","full armor"), 1) //pick("nothing","cloth","full_armor"), 1)
 
 proc/clear_map()
+	for(var/obj/exit/E in world)
+		if(E.z != 1) continue
+		del E
 	for(var/obj/wall/cave/W in world) del W//”дал€ем пещеры и чистим массив состо€ний клеток, сохранившиес€ с прошлой генерации
 	for(var/obj/green/G in world) del G
 	for(var/obj/workshop/W in world) del W
 	for(var/obj/choped_limb/L in world) del L
 	for(var/obj/vomit/W in world) del W
 	for(var/obj/item/i in world)
+		if(i.z != 1) continue
 		if(!istype(i.loc,/mob))
 			del i
 

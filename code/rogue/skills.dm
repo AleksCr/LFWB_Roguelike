@@ -30,6 +30,7 @@ datum/skill
 					txtret = "Мастер"
 				if(10)
 					txtret = "Легендарный"
+			if(skill_lvl>10) txtret = "Легендарный"
 			return txtret
 
 		grinding()

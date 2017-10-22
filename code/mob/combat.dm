@@ -18,7 +18,7 @@ mob/verb/choose_combat_style()
 			attack_style = "strong"
 
 mob/verb/superherostyle()
-	//set hidden = 1
+	set hidden = 1
 	attack_style = "superhero"
 	delay = base_speed
 
@@ -205,7 +205,7 @@ mob/proc/dam(var/mob/M)
 	if(defending == 1)
 		if(M.x != x+def_a || M.y != y+def_b)
 			world<< "Ê ñîæàëåíèþ, [name] ñòàâèò áëîê íå ñ òîé ñòîðîíû!"
-			spawn() get_damage(O,M)
+			spawn() get_damage(O,M); hitby = M
 			return
 		var/xf = 0;
 		var/parry_chance;
@@ -282,25 +282,25 @@ mob/proc/dam(var/mob/M)
 	//world<< "agi diff = [agi_difference] dodge ch = [dodge_chance]"
 	//if(prob(dodge_chance))
 	diceroll = d3()
-	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)/2]"
-	if((base_speed+3)/2 >= diceroll && diceroll != 18 && alive)
+	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)]"
+	if((base_speed+3) >= diceroll && diceroll != 18 && alive)
 		M<<"[src] óäàëîñü óêëîíèòüñ&#255; îò óäàðà!"
 		for(var/mob/Others in oview(10))
 			Others<< "[src] óäàëîñü óêëîíèòüñ&#255; îò óäàðà!"
 		return
 	if(bad_block && hands_num >0)
 		if(hands_num == 0) return
-		spawn() get_damage(O,M, "hands")
+		spawn() get_damage(O,M, "hands"); hitby = M
 		return
-	spawn() get_damage(O,M)//die()
+	spawn() get_damage(O,M); hitby = M//die()
 
 mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 	spawn() draw_damage()
 	var/hp_dam
 	if(wep && ( (istype(wep,/obj/item/weapon/sword)) || (istype(wep,/obj/item/weapon/axe)) || (istype(wep,/obj/item/weapon/club)) || (istype(wep,/obj/item/weapon/hammer)) ) )
-		hp_dam = calculate_base_damage(1); world<< "amplitude strike"
+		hp_dam = M.calculate_base_damage(1); world<< "amplitude strike"
 	else
-		hp_dam = calculate_base_damage(0); world<< "direct strike"
+		hp_dam = M.calculate_base_damage(0); world<< "direct strike"
 
 
 	///////////ÂÛÁÎÐ ÀÒÀÊÓÅÌÎÉ ÇÎÍÛ
@@ -372,7 +372,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 			if(wep && (istype(wep,/obj/item/weapon/sword)))
 				attack_hp_final *= 0.5;
 			if(wep && istype(wep,/obj/item/weapon/dagger))
-				attack_hp_final *= 0.5;
+				attack_hp_final *= 0.7;
 			if(a.min_damage >= abs(attack_hp_final))
 				bleed_final = 0
 				attack_stamina_final = 0
@@ -390,16 +390,15 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!"
 			if(wep && istype(wep,/obj/item/weapon/spear))
 				attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!!"
-			if(wep && istype(wep,/obj/item/weapon/dagger))
-				attack_hp_final *= 0.5;
+			//if(wep && istype(wep,/obj/item/weapon/dagger))
+			//	attack_hp_final *= 0.5;
 	else
 		if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
 			attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
 		if(wep && istype(wep,/obj/item/weapon/spear))
 			attack_hp_final *= 1.5; //world<< "weapon hits with 2 dam!!!!!!!"
-		if(wep && istype(wep,/obj/item/weapon/dagger))
-			attack_hp_final *= 0.5;
 
+	if(abs(attack_hp_final) < 1) attack_hp_final = 1
 	/////////////////ÓÐÎÍ Â ÊÎÍÅ×ÍÎÑÒÜ
 
 	if(attack_zone == "torso")
@@ -635,7 +634,13 @@ mob/proc/recreate()
 	if(hp <= 0)
 		die()
 
+mob/var/mob/hitby
+mob/var/kill_count = 0
+
 mob/proc/die()
+	if(hitby)
+		hitby.kill_count++
+		hitby = null
 	if(ai == 1)
 		say("Êõààà")
 	ai = 0

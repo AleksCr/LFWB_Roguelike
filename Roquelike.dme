@@ -17,7 +17,7 @@
 
 // BEGIN_INCLUDE
 #include "Roquelike.dm"
-#include "very small caves.dmm"
+#include "very_small_caves.dmm"
 #include "code\test functions.dm"
 #include "code\controllers\master controller.dm"
 #include "code\hud\hud.dm"
@@ -35,6 +35,8 @@
 #include "code\rogue\cavegen.dm"
 #include "code\rogue\craft.dm"
 #include "code\rogue\skills.dm"
+#include "code\rogue\interfaces\character.dm"
+#include "code\rogue\interfaces\town.dm"
 #include "code\turf\base turfs.dm"
 #include "sounds\sound.dm"
 // END_INCLUDE

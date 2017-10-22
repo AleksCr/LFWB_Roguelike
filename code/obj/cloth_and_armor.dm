@@ -1,3 +1,4 @@
+obj/item/var/value = 20
 obj/item/armor
 	var
 		coverage = 0
@@ -11,22 +12,97 @@ obj/item/armor
 		usr.Get(src)
 
 obj/item/armor/cloth
-	icon_state = "meister_s"
+	icon_state = "cloth1"
 	layer = MOB_LAYER
+	New()
+		..()
+		icon_state = pick("cloth1","cloth2")
+
+
 obj/item/armor/boots
-	icon_state = "ironboots"
-	min_damage = 7
-	coverage = 100//90
+	icon_state = "iron_boots"
+	min_damage = 3
+	coverage = 90
 	overpic = "o_legs"
+
+	copper
+		name = "copper boots"
+		icon_state = "copper_boots"
+		min_damage = 2
+
+	iron
+		name = "iron boots"
+		icon_state = "iron_boots"
+		min_damage = 3
+
+	steel
+		name = "steel boots"
+		icon_state = "steel_boots"
+		min_damage = 4
+
+
+
 obj/item/armor/hands
 	icon_state = "iron"
-	min_damage = 7
+	min_damage = 4
 	coverage = 100
 	overpic = "o_hands"
+
+	copper
+		name = "copper gloves"
+		icon_state = "copper_gloves"
+		min_damage = 2
+		overpic = "copper_hands"
+
+	iron
+		name = "iron gloves"
+		icon_state = "iron_gloves"
+		min_damage = 3
+		overpic = "iron_hands"
+
+	steel
+		name = "steel gloves"
+		icon_state = "steel_gloves"
+		min_damage = 4
+		overpic = "steel_hands"
+
 obj/item/armor/helmet
 	icon_state = "castellan"
-	min_damage = 7
-	coverage = 100//70
+	min_damage = 3
+	coverage = 90
+
+	open_copper
+		name = "copper open helm"
+		icon_state = "copper_open_helm"
+		min_damage = 2
+		coverage = 60
+	open_iron
+		name = "iron open helm"
+		icon_state = "iron_open_helm"
+		min_damage = 3
+		coverage = 60
+	open_steel
+		name = "steel open helm"
+		icon_state = "steel_open_helm"
+		min_damage = 4
+		coverage = 60
+
+	closed_copper
+		name = "copper close helmet"
+		icon_state = "copper_close_helmet"
+		min_damage = 2
+		coverage = 90
+	closed_iron
+		name = "iron close helmet"
+		icon_state = "iron_close_helmet"
+		min_damage = 3
+		coverage = 90
+	closed_steel
+		name = "steel close helmet"
+		icon_state = "steel_close_helmet"
+		min_damage = 4
+		coverage = 90
+
 obj/item/holders
 	Click()
 		..()
@@ -38,10 +114,41 @@ obj/item/holders/belt
 	icon_state = "belt"
 obj/item/armor/breastplate
 	icon = 'clothes.dmi'
-	min_damage = 7
-	coverage = 100//70
+	min_damage = 2
+	coverage = 70
 	icon_state = "armor"
 	layer = MOB_LAYER + 1
+
+	fur_vest
+		name = "fur vest"
+		min_damage = 2
+		coverage = 60
+		icon_state = "fur_vest"
+	scale_vest
+		name = "scale vest"
+		min_damage = 4
+		coverage = 90
+		icon_state = "scale_vest"
+	chain_vest
+		name = "chain vest"
+		min_damage = 4
+		coverage = 90
+		icon_state = "chain_vest"
+	copper_cuirass
+		name = "copper cuirass"
+		min_damage = 4
+		coverage = 80
+		icon_state = "copper_cuirass"
+	iron_cuirass
+		name = "iron cuirass"
+		min_damage = 5
+		coverage = 80
+		icon_state = "iron_cuirass"
+	steel_cuirass
+		name = "steel cuirass"
+		min_damage = 6
+		coverage = 80
+		icon_state = "steel_cuirass"
 
 var/const
 	ARMOR_LAYER = FLOAT_LAYER-1

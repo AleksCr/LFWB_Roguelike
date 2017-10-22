@@ -22,7 +22,7 @@ obj/item/weapon
 		if(istype(src,/obj/item/weapon/club)) txt = "club"
 		return txt
 	dagger
-		dam_modifer = -1
+		dam_modifer = -2
 		bleed_def = 1
 		cooldown = 1
 		mass = 0.5
@@ -44,11 +44,11 @@ obj/item/weapon
 			..()
 			if(!material) material = pick("copper","iron","steel")
 			if(material == "copper")
-				icon_state = "coppersword"; dam_modifer -= 1
+				icon_state = "coppersword"; dam_modifer -= 2
 			if(material == "iron")
-				icon_state = "sword"
+				icon_state = "sword"; dam_modifer -= 1
 			if(material == "steel")
-				icon_state = "broadsword"; dam_modifer += 1
+				icon_state = "broadsword"; dam_modifer += 0
 	axe
 		dam_modifer = 2
 		bleed_def = 1.5
@@ -61,11 +61,11 @@ obj/item/weapon
 			..()
 			if(!material) material = pick("copper","iron","steel")
 			if(material == "copper")
-				icon_state = "axe2"; dam_modifer-=1
+				icon_state = "axe2"; dam_modifer -= 2
 			if(material == "iron")
-				icon_state = "axe"
+				icon_state = "axe"; dam_modifer -= 1
 			if(material == "steel")
-				icon_state = "combataxe"; dam_modifer+=1
+				icon_state = "combataxe"; dam_modifer+=0
 	spear
 		dam_modifer = 2
 		bleed_def = 0.3
@@ -78,7 +78,7 @@ obj/item/weapon
 			..()
 			if(!material) material = "steel"
 	hammer
-		dam_modifer = 4
+		dam_modifer = 3
 		bleed_def = 0
 		cooldown = 5
 		mass = 5
@@ -86,7 +86,7 @@ obj/item/weapon
 		icon = 'meele_weapons.dmi'
 		icon_state = "masonhammer"
 	club
-		dam_modifer = 3
+		dam_modifer = 2
 		bleed_def = 0
 		cooldown = 10
 		mass = 10

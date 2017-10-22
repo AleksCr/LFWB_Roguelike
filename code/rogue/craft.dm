@@ -7,10 +7,5 @@ obj/workshop/forge
 obj/workshop/smelter
 	icon_state = "smelter"
 
-mob/verb/craft()
 
 obj/workshop/proc/craft()
-	if(istype(src,/obj/workshop/smelter))
-		world<< "Smelting"
-	if(istype(src,/obj/workshop/forge))
-		world<< "Forging"

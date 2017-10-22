@@ -9,7 +9,7 @@ mob
 
 mob/var/stamina_regen = 3
 
-mob/proc/calculate_base_damage(var/swing)
+mob/verb/calculate_base_damage(var/swing as num)
 	var/dam
 	if(swing)
 		switch(st)

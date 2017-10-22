@@ -1,0 +1,60 @@
+"a" = (/obj/floor/cave,/turf,/area)
+"b" = (/obj/floor/cave,/obj/item/weapon/sword,/turf,/area)
+"c" = (/obj/floor/cave,/obj/ladder,/turf,/area)
+"d" = (/obj/floor,/turf,/area)
+"e" = (/obj/floor,/obj/exit,/turf,/area)
+"f" = (/turf,/area)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaabaacaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+"}
+
+(1,1,2) = {"
+dddddddeddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+ddddddddddddddd
+"}
+
+(1,1,3) = {"
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+fffffffffffffff
+"}
