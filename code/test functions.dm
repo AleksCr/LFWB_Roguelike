@@ -89,7 +89,7 @@ mob/verb/change_time_scale()
 mob/verb/say(message as text)
 	var/index = findtext(message, "�")
 	while(index)
-		message = copytext(message, 1, index) + "&#255;" + copytext(message, index+1)
+		message = copytext(message, 1, index) + "я" + copytext(message, index+1)
 		index = findtext(message, "�")
 	world<< "[name] says, [message]"
 

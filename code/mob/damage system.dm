@@ -68,15 +68,15 @@ mob/proc/damage_random_organ()
 	if(istype(o,/obj/organ/lungs))
 		usr<< "О-о-о мои легкие!"
 	if(istype(o,/obj/organ/liver))
-		usr<< "О-о-о мо&#255; печеночка!"
+		usr<< "О-о-о моя печеночка!"
 		var/obj/vomit/v = new
 		v.loc = src.loc
 		var/sound/S = sound('sounds/vomit.ogg')
 		usr.play_sound(S)
 	if(istype(o,/obj/organ/left_kidney))
-		usr<< "О-о-о мо&#255; лева&#255; почечка!"
+		usr<< "О-о-о моя левая почечка!"
 	if(istype(o,/obj/organ/right_kidney))
-		usr<< "О-о-о мо&#255; права&#255; почечка!"
+		usr<< "О-о-о моя правая почечка!"
 	if(istype(o,/obj/organ/guts))
 		usr<< "О-о-о мои кишочки!"
 		var/obj/vomit/v = new

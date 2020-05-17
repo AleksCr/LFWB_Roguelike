@@ -20,10 +20,10 @@ var/bloodlust = 0
 mob/verb/RAAGEEE()
 	if(bloodlust == 1)
 		bloodlust = 0
-		world<< "Вскоре враги успоко&#255;тс&#255;"
+		world<< "Вскоре враги успокоятся"
 	else
 		bloodlust = 1
-		world<< "Теперь они зл&#255;тс&#255;"
+		world<< "Теперь они злятся"
 
 mob/var/mob/target
 //mob/var/turf/move_target

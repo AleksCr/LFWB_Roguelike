@@ -270,7 +270,7 @@ mob/proc/dam(var/mob/M)
 					var/obj/item/weapon/test = M.Drop(MO)
 					Get(test)
 					return
-				world<< "[name] ловким взмахом ладони отклон&#255;ет атаку в сторону!"
+				world<< "[name] ловким взмахом ладони отклоняет атаку в сторону!"
 				var/sound/S = sound('sounds/parry.ogg')
 				play_sound(S)
 				return
@@ -284,9 +284,9 @@ mob/proc/dam(var/mob/M)
 	diceroll = d3()
 	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)]"
 	if((base_speed+3) >= diceroll && diceroll != 18 && alive)
-		M<<"[src] удалось уклонитьс&#255; от удара!"
+		M<<"[src] удалось уклониться от удара!"
 		for(var/mob/Others in oview(10))
-			Others<< "[src] удалось уклонитьс&#255; от удара!"
+			Others<< "[src] удалось уклониться от удара!"
 		return
 	if(bad_block && hands_num >0)
 		if(hands_num == 0) return
@@ -377,11 +377,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 				bleed_final = 0
 				attack_stamina_final = 0
 				attack_hp_final = 0
-				world<<"[a.name] [src.name] полностью блокирует удар!"; M<<"Брон&#255; [src.name] полностью блокирует удар!"
+				world<<"[a.name] [src.name] полностью блокирует удар!"; M<<"Броня [src.name] полностью блокирует удар!"
 			else
 				attack_hp_final += a.min_damage
 				attack_stamina_final /= 2
-				world<<"[a.name] [src.name] частично блокирует удар!"; M<<"Брон&#255; [src.name] частично блокирует удар!"
+				world<<"[a.name] [src.name] частично блокирует удар!"; M<<"Броня [src.name] частично блокирует удар!"
 			var/sound/S = sound('sounds/parry.ogg')
 			play_sound(S)
 		else
@@ -409,7 +409,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 				M.Get(swep)
 		if(!ribs && abs(attack_hp_final) >= hp)
 			ribs = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S);
-			world<<"Ребра [src.name] ломаютс&#255; со звучным хрустом!";
+			world<<"Ребра [src.name] ломаются со звучным хрустом!";
 		var/organ_hit_dam = hp_max / 5
 		world<< "organ_hit_dam [organ_hit_dam]"
 		if(wep && wep.damtype == "stab")
@@ -440,7 +440,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		if(!he) return
 		if(!he.fracture && abs(attack_hp_final) >= he.hp)
 			he.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
-			world<<"Черепушка [src.name] ломаетс&#255; со звучным хрустом!";
+			world<<"Черепушка [src.name] ломается со звучным хрустом!";
 		if(!he.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= he.slash_hp)
 			he.artery = 1; var/list/str = list('sounds/throat.ogg','sounds/throat2.ogg','sounds/throat3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
 		if(he.slash_hp <= 0)
@@ -465,7 +465,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		else attacked_leg.hp += attack_hp_final
 		if(!attacked_leg.fracture && abs(attack_hp_final) >= attacked_leg.hp)
 			attacked_leg.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Ножка [src.name] ломаетс&#255; со звучным хрустом!";
+			world<<"Ножка [src.name] ломается со звучным хрустом!";
 		if(!attacked_leg.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_leg.slash_hp)
 			attacked_leg.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_leg.slash_hp <= 0)
@@ -494,7 +494,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		else attacked_hand.hp += attack_hp_final
 		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
 			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Ручка [src.name] ломаетс&#255; со звучным хрустом!"; Drop()
+			world<<"Ручка [src.name] ломается со звучным хрустом!"; Drop()
 		if(!attacked_hand.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_hand.slash_hp)
 			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_hand.slash_hp <= 0)

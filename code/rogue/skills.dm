@@ -48,7 +48,7 @@ datum/skill
 						points--
 			usr<< progress_text
 			if(progress >= 100)
-				usr<< "Мой навык заметно улучшилс&#255;!"
+				usr<< "Мой навык заметно улучшился!"
 				progress = 0
 				skill_lvl++
 
@@ -59,7 +59,7 @@ datum/skill/melee
 datum/skill/sword
 	skill_name = "Мечи"
 datum/skill/spear
-	skill_name = "Копь&#255;"
+	skill_name = "Копья"
 datum/skill/axe
 	skill_name = "Топоры"
 datum/skill/dagger
