@@ -104,19 +104,19 @@ mob/Topic(href, list/href_list)
 		ht++; recalculate(1); level_up()
 	if(action == "teach_melee")
 		for(var/datum/skill/melee/melee in skills)
-			melee.skill_lvl++; usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"; melee.progress = 0
+			melee.skill_lvl++; usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"; melee.progress = 0
 	if(action == "teach_sword")
 		for(var/datum/skill/sword/sword in skills)
-			sword.skill_lvl++; usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"; sword.progress = 0
+			sword.skill_lvl++; usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"; sword.progress = 0
 	if(action == "teach_spear")
 		for(var/datum/skill/spear/spear in skills)
-			spear.skill_lvl++; usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"; spear.progress = 0
+			spear.skill_lvl++; usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"; spear.progress = 0
 	if(action == "teach_axe")
 		for(var/datum/skill/axe/axe in skills)
-			axe.skill_lvl++; usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"; axe.progress = 0
+			axe.skill_lvl++; usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"; axe.progress = 0
 	if(action == "teach_dagger")
 		for(var/datum/skill/dagger/dagger in skills)
-			dagger.skill_lvl++; usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"; dagger.progress = 0
+			dagger.skill_lvl++; usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"; dagger.progress = 0
 	if(action == "teach_club")
 		for(var/datum/skill/club/club in skills)
-			club.skill_lvl++; usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"; club.progress = 0
+			club.skill_lvl++; usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"; club.progress = 0

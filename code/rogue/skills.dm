@@ -9,32 +9,32 @@ datum/skill
 			var/txtret
 			switch(skill_lvl)
 				if(0)
-					txtret = "Æàëêèé"
+					txtret = "Ð¶Ð°Ð»ÐºÐ¸Ð¹"
 				if(1)
-					txtret = "Íîâè÷îê"
+					txtret = "Ð½Ð¾Ð²Ð¸Ñ‡Ð¾Ðº"
 				if(2)
-					txtret = "Íåîïûòíûé"
+					txtret = "ÐÐµÐ¾Ð¿Ñ‹Ñ‚Ð½Ñ‹Ð¹"
 				if(3)
-					txtret = "Îïûòíûé"
+					txtret = "ÐžÐ¿Ñ‹Ñ‚Ð½Ñ‹Ð¹"
 				if(4)
-					txtret = "Îïûòíûé"
+					txtret = "ÐžÐ¿Ñ‹Ñ‚Ð½Ñ‹Ð¹"
 				if(5)
-					txtret = "Àäåïò"
+					txtret = "ÐÐ´ÐµÐ¿Ñ‚"
 				if(6)
-					txtret = "Àäåïò"
+					txtret = "ÐÐ´ÐµÐ¿Ñ‚"
 				if(7)
-					txtret = "Ýêñïåðò"
+					txtret = "Ð­ÐºÑÐ¿ÐµÑ€Ñ‚"
 				if(8)
-					txtret = "Ìàñòåð"
+					txtret = "ÐœÐ°ÑÑ‚ÐµÑ€"
 				if(9)
-					txtret = "Ìàñòåð"
+					txtret = "ÐœÐ°ÑÑ‚ÐµÑ€"
 				if(10)
-					txtret = "Ëåãåíäàðíûé"
-			if(skill_lvl>10) txtret = "Ëåãåíäàðíûé"
+					txtret = "Ð›ÐµÐ³ÐµÐ½Ð´Ð°Ñ€Ð½Ñ‹Ð¹"
+			if(skill_lvl>10) txtret = "Ð›ÐµÐ³ÐµÐ½Ð´Ð°Ñ€Ð½Ñ‹Ð¹"
 			return txtret
 
 		grinding()
-			var/progress_text = "ß ó÷óñü: "
+			var/progress_text = "Ð¯ ÑƒÑ‡ÑƒÑÑŒ: "
 			progress += 5
 			if(progress > 0 && progress < 100)
 				var/stars = progress/10
@@ -48,24 +48,24 @@ datum/skill
 						points--
 			usr<< progress_text
 			if(progress >= 100)
-				usr<< "Ìîé íàâûê çàìåòíî óëó÷øèëñ&#255;!"
+				usr<< "ÐœÐ¾Ð¹ Ð½Ð°Ð²Ñ‹Ðº Ð·Ð°Ð¼ÐµÑ‚Ð½Ð¾ ÑƒÐ»ÑƒÑ‡ÑˆÐ¸Ð»Ñ&#255;!"
 				progress = 0
 				skill_lvl++
 
 datum/skill/mining
-	skill_name = "Øàõòåðñòâî"
+	skill_name = "Ð¨Ð°Ñ…Ñ‚ÐµÑ€ÑÑ‚Ð²Ð¾"
 datum/skill/melee
-	skill_name = "Áëèæíèé áîé"
+	skill_name = "Ð‘Ð»Ð¸Ð¶Ð½Ð¸Ð¹ Ð±Ð¾Ð¹"
 datum/skill/sword
-	skill_name = "Ìå÷è"
+	skill_name = "ÐœÐµÑ‡Ð¸"
 datum/skill/spear
-	skill_name = "Êîïü&#255;"
+	skill_name = "ÐšÐ¾Ð¿ÑŒ&#255;"
 datum/skill/axe
-	skill_name = "Òîïîðû"
+	skill_name = "Ð¢Ð¾Ð¿Ð¾Ñ€Ñ‹"
 datum/skill/dagger
-	skill_name = "Íîæè"
+	skill_name = "ÐÐ¾Ð¶Ð¸"
 datum/skill/club
-	skill_name = "Äóáèíêè"
+	skill_name = "Ð”ÑƒÐ±Ð¸Ð½ÐºÐ¸"
 
 mob/proc/grind_skill(var/skill)
 	switch(skill)

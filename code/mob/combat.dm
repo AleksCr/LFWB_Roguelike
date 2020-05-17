@@ -9,7 +9,7 @@ mob/New()
 	..()
 	attack_style = pick("fast","normal","strong")
 mob/verb/choose_combat_style()
-	switch(alert("Choose combat style:","Óäàð÷èêè","Fast strikes","Normal","Strong and technical strikes"))
+	switch(alert("Choose combat style:","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½","Fast strikes","Normal","Strong and technical strikes"))
 		if("Fast strikes")
 			attack_style = "fast"
 		if("Normal")
@@ -44,21 +44,21 @@ mob/proc/attack(a, b)
 	current_attacks++
 	if(attack_style == "fast")
 		if(stamina <=10)
-			usr<< "Òû íå íàõîäèøü â ñåáå ñèë íà ýòó àòàêó"
+			usr<< "Ð¢Ñ‹ Ð½Ðµ Ð½Ð°Ñ…Ð¾Ð´Ð¸ÑˆÑŒ Ð² ÑÐµÐ±Ðµ ÑÐ¸Ð» Ð½Ð° ÑÑ‚Ñƒ Ð°Ñ‚Ð°ÐºÑƒ"
 			draw_clear()
 			current_attacks=0
 			return
 		stamina -= 10
 	if(attack_style == "normal")
 		if(stamina <=5)
-			usr<< "Òû íå íàõîäèøü â ñåáå ñèë íà ýòó àòàêó"
+			usr<< "Ð¢Ñ‹ Ð½Ðµ Ð½Ð°Ñ…Ð¾Ð´Ð¸ÑˆÑŒ Ð² ÑÐµÐ±Ðµ ÑÐ¸Ð» Ð½Ð° ÑÑ‚Ñƒ Ð°Ñ‚Ð°ÐºÑƒ"
 			draw_clear()
 			current_attacks=0
 			return
 		stamina -= 5
 	if(attack_style == "strong")
 		if(stamina <=15)
-			usr<< "Òû íå íàõîäèøü â ñåáå ñèë íà ýòó àòàêó"
+			usr<< "Ð¢Ñ‹ Ð½Ðµ Ð½Ð°Ñ…Ð¾Ð´Ð¸ÑˆÑŒ Ð² ÑÐµÐ±Ðµ ÑÐ¸Ð» Ð½Ð° ÑÑ‚Ñƒ Ð°Ñ‚Ð°ÐºÑƒ"
 			draw_clear()
 			current_attacks=0
 			return
@@ -165,13 +165,13 @@ mob/proc/dam(var/mob/M)
 	for(var/obj/bodypart/human/left_arm/l in bodyparts) hands_num ++
 	var/bad_block = 0
 	var/bonus = 0
-	////ñìîòðèì áîíóñ îò îáùåãî ìèëè
+	////ÑÐ¼Ð¾Ñ‚Ñ€Ð¸Ð¼ Ð±Ð¾Ð½ÑƒÑ Ð¾Ñ‚ Ð¾Ð±Ñ‰ÐµÐ³Ð¾ Ð¼Ð¸Ð»Ð¸
 	for(var/datum/skill/melee/m in M.skills)
 		bonus += m.skill_lvl
 	var/diceroll = d3()
 	world<< "dice rolls [diceroll]"
 
-	///////Íàêèäûâàåì áîíóñ îò îðóæèÿ è çàîäíî êà÷àåì åãî íàâûê
+	///////ÐÐ°ÐºÐ¸Ð´Ñ‹Ð²Ð°ÐµÐ¼ Ð±Ð¾Ð½ÑƒÑ Ð¾Ñ‚ Ð¾Ñ€ÑƒÐ¶Ð¸Ñ Ð¸ Ð·Ð°Ð¾Ð´Ð½Ð¾ ÐºÐ°Ñ‡Ð°ÐµÐ¼ ÐµÐ³Ð¾ Ð½Ð°Ð²Ñ‹Ðº
 	if(att_wep_type == "sword")
 		for(var/datum/skill/sword/sword in M.skills)
 			bonus += sword.skill_lvl
@@ -192,19 +192,19 @@ mob/proc/dam(var/mob/M)
 		for(var/datum/skill/club/club in M.skills)
 			bonus += club.skill_lvl
 			M.grind_skill("club")
-	world<< "Áîíóñ ê ïîïàäàíèþ ñîñòàâèë = [bonus]"
+	world<< "Ð‘Ð¾Ð½ÑƒÑ Ðº Ð¿Ð¾Ð¿Ð°Ð´Ð°Ð½Ð¸ÑŽ ÑÐ¾ÑÑ‚Ð°Ð²Ð¸Ð» = [bonus]"
 
-		/////Ñìîòðèì, ïîïàëè ëè
+		/////ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 	if(diceroll > M.dx + bonus)// || diceroll ==3)
 		if(diceroll == 18)
-			world<< "Êðèòè÷åñêèé ïðîâàë! [M.name] íå ïîïàë â öåëü!"; return
-		world<< "[M.name] íå ïîïàë â öåëü!"; return
+			world<< "ÐšÑ€Ð¸Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ð¹ Ð¿Ñ€Ð¾Ð²Ð°Ð»! [M.name] Ð½Ðµ Ð¿Ð¾Ð¿Ð°Ð» Ð² Ñ†ÐµÐ»ÑŒ!"; return
+		world<< "[M.name] Ð½Ðµ Ð¿Ð¾Ð¿Ð°Ð» Ð² Ñ†ÐµÐ»ÑŒ!"; return
 
 
 	M.grind_skill("melee")
 	if(defending == 1)
 		if(M.x != x+def_a || M.y != y+def_b)
-			world<< "Ê ñîæàëåíèþ, [name] ñòàâèò áëîê íå ñ òîé ñòîðîíû!"
+			world<< "Ðš ÑÐ¾Ð¶Ð°Ð»ÐµÐ½Ð¸ÑŽ, [name] ÑÑ‚Ð°Ð²Ð¸Ñ‚ Ð±Ð»Ð¾Ðº Ð½Ðµ Ñ Ñ‚Ð¾Ð¹ ÑÑ‚Ð¾Ñ€Ð¾Ð½Ñ‹!"
 			spawn() get_damage(O,M); hitby = M
 			return
 		var/xf = 0;
@@ -220,7 +220,7 @@ mob/proc/dam(var/mob/M)
 					var/sound/S = sound('sounds/breaksound.ogg')
 					play_sound(S)
 					return
-			/////Ïîâòîðÿåì ãîâíîêîä äëÿ çàùèùàþùåãîñÿ
+			/////ÐŸÐ¾Ð²Ñ‚Ð¾Ñ€ÑÐµÐ¼ Ð³Ð¾Ð²Ð½Ð¾ÐºÐ¾Ð´ Ð´Ð»Ñ Ð·Ð°Ñ‰Ð¸Ñ‰Ð°ÑŽÑ‰ÐµÐ³Ð¾ÑÑ
 			grind_skill("melee")
 			var/parry = 0
 			if(def_wep_type == "sword")
@@ -248,11 +248,11 @@ mob/proc/dam(var/mob/M)
 				parry += melee.skill_lvl
 			world<< "Block dice rolls [diceroll]; melee+weapon_skill([parry]) + 3 = [parry+3]"
 			if(parry/2 + 3 >= diceroll && diceroll != 18)
-				world<< "[name] áëîêèðóåò àòàêó!"
+				world<< "[name] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½!"
 				var/sound/S = sound('sounds/parry.ogg')
 				play_sound(S)
 				return
-			else world<< "Áëîê íå ñïàñàåò [name]!"
+			else world<< "Ð‘Ð»Ð¾Ðº Ð½Ðµ ÑÐ¿Ð°ÑÐ°ÐµÑ‚ [name]!"
 		else
 			xf = dx - M.dx
 				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
@@ -266,15 +266,15 @@ mob/proc/dam(var/mob/M)
 				if(parry_chance > 80) parry_chance = 80
 				if(parry_chance < 5) parry_chance = 5
 				if(prob(parry_chance))
-					world<< "[name] âûõâàòûâàåò îðóæèå èç ðóê [M.name]!"
+					world<< "[name] Ð²Ñ‹Ñ…Ð²Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¾Ñ€ÑƒÐ¶Ð¸Ðµ Ð¸Ð· Ñ€ÑƒÐº [M.name]!"
 					var/obj/item/weapon/test = M.Drop(MO)
 					Get(test)
 					return
-				world<< "[name] ëîâêèì âçìàõîì ëàäîíè îòêëîí&#255;åò àòàêó â ñòîðîíó!"
+				world<< "[name] Ð»Ð¾Ð²ÐºÐ¸Ð¼ Ð²Ð·Ð¼Ð°Ñ…Ð¾Ð¼ Ð»Ð°Ð´Ð¾Ð½Ð¸ Ð¾Ñ‚ÐºÐ»Ð¾Ð½&#255;ÐµÑ‚ Ð°Ñ‚Ð°ÐºÑƒ Ð² ÑÑ‚Ð¾Ñ€Ð¾Ð½Ñƒ!"
 				var/sound/S = sound('sounds/parry.ogg')
 				play_sound(S)
 				return
-			else world<< "Áëîêèðîâàòü îðóæèå ãîëûìè ðóêàìè áûëî âåñüìà ãëóïîé èäååé!"
+			else world<< "Ð‘Ð»Ð¾ÐºÐ¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¾Ñ€ÑƒÐ¶Ð¸Ðµ Ð³Ð¾Ð»Ñ‹Ð¼Ð¸ Ñ€ÑƒÐºÐ°Ð¼Ð¸ Ð±Ñ‹Ð»Ð¾ Ð²ÐµÑÑŒÐ¼Ð° Ð³Ð»ÑƒÐ¿Ð¾Ð¹ Ð¸Ð´ÐµÐµÐ¹!"
 			bad_block = 1
 	//var/agi_difference = dx - M.dx
 	//var/dodge_chance = agi_difference * 5
@@ -284,9 +284,9 @@ mob/proc/dam(var/mob/M)
 	diceroll = d3()
 	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)]"
 	if((base_speed+3) >= diceroll && diceroll != 18 && alive)
-		M<<"[src] óäàëîñü óêëîíèòüñ&#255; îò óäàðà!"
+		M<<"[src] ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ ÑƒÐºÐ»Ð¾Ð½Ð¸Ñ‚ÑŒÑ&#255; Ð¾Ñ‚ ÑƒÐ´Ð°Ñ€Ð°!"
 		for(var/mob/Others in oview(10))
-			Others<< "[src] óäàëîñü óêëîíèòüñ&#255; îò óäàðà!"
+			Others<< "[src] ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ ÑƒÐºÐ»Ð¾Ð½Ð¸Ñ‚ÑŒÑ&#255; Ð¾Ñ‚ ÑƒÐ´Ð°Ñ€Ð°!"
 		return
 	if(bad_block && hands_num >0)
 		if(hands_num == 0) return
@@ -303,7 +303,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		hp_dam = M.calculate_base_damage(0); world<< "direct strike"
 
 
-	///////////ÂÛÁÎÐ ÀÒÀÊÓÅÌÎÉ ÇÎÍÛ
+	///////////Ð’Ð«Ð‘ÐžÐ  ÐÐ¢ÐÐšÐ£Ð•ÐœÐžÐ™ Ð—ÐžÐÐ«
 
 
 	var/list/body_zones = list("head","torso")
@@ -329,7 +329,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 			body_zones += "hands"
 
 
-	////////Ó×ÅÒ ÎÐÓÆÈß
+	////////Ð£Ð§Ð•Ð¢ ÐžÐ Ð£Ð–Ð˜Ð¯
 
 	var/attack_zone
 	if(in_zone != null) attack_zone = in_zone
@@ -362,11 +362,11 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		for(var/obj/item/armor/i in src.hands) a = i//; Drop()
 
 
-	///////////////////////////ÏÐÎÁÈÒÈÅ ÁÐÎÍÈ
+	///////////////////////////ÐŸÐ ÐžÐ‘Ð˜Ð¢Ð˜Ð• Ð‘Ð ÐžÐÐ˜
 
 
 	if(a)
-		if(wep && istype(wep,/obj/item/weapon/dagger))// êèíæàëó áîíóñ ê õèòðîìó óäàðó
+		if(wep && istype(wep,/obj/item/weapon/dagger))// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 			a.coverage -= 20
 		if(prob(a.coverage))
 			if(wep && (istype(wep,/obj/item/weapon/sword)))
@@ -377,15 +377,15 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 				bleed_final = 0
 				attack_stamina_final = 0
 				attack_hp_final = 0
-				world<<"[a.name] [src.name] ïîëíîñòüþ áëîêèðóåò óäàð!"; M<<"Áðîí&#255; [src.name] ïîëíîñòüþ áëîêèðóåò óäàð!"
+				world<<"[a.name] [src.name] Ð¿Ð¾Ð»Ð½Ð¾ÑÑ‚ÑŒÑŽ Ð±Ð»Ð¾ÐºÐ¸Ñ€ÑƒÐµÑ‚ ÑƒÐ´Ð°Ñ€!"; M<<"Ð‘Ñ€Ð¾Ð½&#255; [src.name] Ð¿Ð¾Ð»Ð½Ð¾ÑÑ‚ÑŒÑŽ Ð±Ð»Ð¾ÐºÐ¸Ñ€ÑƒÐµÑ‚ ÑƒÐ´Ð°Ñ€!"
 			else
 				attack_hp_final += a.min_damage
 				attack_stamina_final /= 2
-				world<<"[a.name] [src.name] ÷àñòè÷íî áëîêèðóåò óäàð!"; M<<"Áðîí&#255; [src.name] ÷àñòè÷íî áëîêèðóåò óäàð!"
+				world<<"[a.name] [src.name] Ñ‡Ð°ÑÑ‚Ð¸Ñ‡Ð½Ð¾ Ð±Ð»Ð¾ÐºÐ¸Ñ€ÑƒÐµÑ‚ ÑƒÐ´Ð°Ñ€!"; M<<"Ð‘Ñ€Ð¾Ð½&#255; [src.name] Ñ‡Ð°ÑÑ‚Ð¸Ñ‡Ð½Ð¾ Ð±Ð»Ð¾ÐºÐ¸Ñ€ÑƒÐµÑ‚ ÑƒÐ´Ð°Ñ€!"
 			var/sound/S = sound('sounds/parry.ogg')
 			play_sound(S)
 		else
-			world<<"[M.name] ïðîâîäèò õèòðûé óäàð â ðàçðåç áðîíè!"
+			world<<"[M.name] Ð¿Ñ€Ð¾Ð²Ð¾Ð´Ð¸Ñ‚ Ñ…Ð¸Ñ‚Ñ€Ñ‹Ð¹ ÑƒÐ´Ð°Ñ€ Ð² Ñ€Ð°Ð·Ñ€ÐµÐ· Ð±Ñ€Ð¾Ð½Ð¸!"
 			if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
 				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!"
 			if(wep && istype(wep,/obj/item/weapon/spear))
@@ -399,7 +399,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 			attack_hp_final *= 1.5; //world<< "weapon hits with 2 dam!!!!!!!"
 
 	if(abs(attack_hp_final) < 1) attack_hp_final = 1
-	/////////////////ÓÐÎÍ Â ÊÎÍÅ×ÍÎÑÒÜ
+	/////////////////ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	if(attack_zone == "torso")
 		if(!wep)
@@ -409,7 +409,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 				M.Get(swep)
 		if(!ribs && abs(attack_hp_final) >= hp)
 			ribs = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S);
-			world<<"Ðåáðà [src.name] ëîìàþòñ&#255; ñî çâó÷íûì õðóñòîì!";
+			world<<"Ð ÐµÐ±Ñ€Ð° [src.name] Ð»Ð¾Ð¼Ð°ÑŽÑ‚Ñ&#255; ÑÐ¾ Ð·Ð²ÑƒÑ‡Ð½Ñ‹Ð¼ Ñ…Ñ€ÑƒÑÑ‚Ð¾Ð¼!";
 		var/organ_hit_dam = hp_max / 5
 		world<< "organ_hit_dam [organ_hit_dam]"
 		if(wep && wep.damtype == "stab")
@@ -440,7 +440,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		if(!he) return
 		if(!he.fracture && abs(attack_hp_final) >= he.hp)
 			he.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
-			world<<"×åðåïóøêà [src.name] ëîìàåòñ&#255; ñî çâó÷íûì õðóñòîì!";
+			world<<"Ð§ÐµÑ€ÐµÐ¿ÑƒÑˆÐºÐ° [src.name] Ð»Ð¾Ð¼Ð°ÐµÑ‚Ñ&#255; ÑÐ¾ Ð·Ð²ÑƒÑ‡Ð½Ñ‹Ð¼ Ñ…Ñ€ÑƒÑÑ‚Ð¾Ð¼!";
 		if(!he.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= he.slash_hp)
 			he.artery = 1; var/list/str = list('sounds/throat.ogg','sounds/throat2.ogg','sounds/throat3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
 		if(he.slash_hp <= 0)
@@ -465,7 +465,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		else attacked_leg.hp += attack_hp_final
 		if(!attacked_leg.fracture && abs(attack_hp_final) >= attacked_leg.hp)
 			attacked_leg.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Íîæêà [src.name] ëîìàåòñ&#255; ñî çâó÷íûì õðóñòîì!";
+			world<<"ÐÐ¾Ð¶ÐºÐ° [src.name] Ð»Ð¾Ð¼Ð°ÐµÑ‚Ñ&#255; ÑÐ¾ Ð·Ð²ÑƒÑ‡Ð½Ñ‹Ð¼ Ñ…Ñ€ÑƒÑÑ‚Ð¾Ð¼!";
 		if(!attacked_leg.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_leg.slash_hp)
 			attacked_leg.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_leg.slash_hp <= 0)
@@ -494,7 +494,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		else attacked_hand.hp += attack_hp_final
 		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
 			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Ðó÷êà [src.name] ëîìàåòñ&#255; ñî çâó÷íûì õðóñòîì!"; Drop()
+			world<<"Ð ÑƒÑ‡ÐºÐ° [src.name] Ð»Ð¾Ð¼Ð°ÐµÑ‚Ñ&#255; ÑÐ¾ Ð·Ð²ÑƒÑ‡Ð½Ñ‹Ð¼ Ñ…Ñ€ÑƒÑÑ‚Ð¾Ð¼!"; Drop()
 		if(!attacked_hand.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_hand.slash_hp)
 			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
 		if(attacked_hand.slash_hp <= 0)
@@ -524,7 +524,7 @@ mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
 		die()
 
 obj/choped_limb
-	icon = 'mob.dmi'
+	icon = 'img/mob.dmi'
 
 mob/proc/slash_limb(var/limb as text)
 	var/sound/S = sound('sounds/chop.ogg')
@@ -642,13 +642,13 @@ mob/proc/die()
 		hitby.kill_count++
 		hitby = null
 	if(ai == 1)
-		say("Êõààà")
+		say("ÐšÑ…Ð°Ð°Ð°")
 	ai = 0
 	draw_clear()
 	alive = 0
 	allow_move = 0
 	density = 0
-	//icon = 'mob.dmi'
+	//icon = 'img/mob.dmi'
 	//icon_state = "corpse"
 	for(var/obj/o as obj in src.active_hand)
 		Drop()

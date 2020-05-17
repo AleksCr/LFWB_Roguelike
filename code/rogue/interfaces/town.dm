@@ -11,16 +11,16 @@ mob/verb/town()
       </head>
       <body>
 
-	<a href=byond://?src=\ref[src]&action=town_interface&value=Search>Обшарить/Шарить</a><br>
-	Жить<br>
-	Кутить<br>
-	Творить<br>
-	Служить<br>
-	<a href=byond://?src=\ref[src]&action=town_interface&value=Home>Домой сходить</a><br>
-	<a href=byond://?src=\ref[src]&action=town_interface&value=Teach>Учить</a><br>
-	<a href=byond://?src=\ref[src]&action=town_interface&value=SellShop>Платить</a><br>
-	Шалить<br>
-	Валить<br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=Search>РћР±С€Р°СЂРёС‚СЊ/РЁР°СЂРёС‚СЊ</a><br>
+	Р–РёС‚СЊ<br>
+	РљСѓС‚РёС‚СЊ<br>
+	РўРІРѕСЂРёС‚СЊ<br>
+	РЎР»СѓР¶РёС‚СЊ<br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=Home>Р”РѕРјРѕР№ СЃС…РѕРґРёС‚СЊ</a><br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=Teach>РЈС‡РёС‚СЊ</a><br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=SellShop>РџР»Р°С‚РёС‚СЊ</a><br>
+	РЁР°Р»РёС‚СЊ<br>
+	Р’Р°Р»РёС‚СЊ<br>
 
       </body>
       </html>
@@ -70,9 +70,9 @@ mob/proc/shop()
 	for(var/obj/item/i in src.backpack)
 		src << browse_rsc(icon(i.icon, i.icon_state), "[i.name]item.png")
 		text += "<tr><th>"
-		text += {"<img src="[i.name]item.png" width="32px" height="32px" /> [i.name]<br> <a href=byond://?src=\ref[i]&value=Sell>Продать</a><br>"}
+		text += {"<img src="[i.name]item.png" width="32px" height="32px" /> [i.name]<br> <a href=byond://?src=\ref[i]&value=Sell>РџСЂРѕРґР°С‚СЊ</a><br>"}
 		text += "[i.desc]<br>"
-		text += "Цена: [i.value]"
+		text += "Р¦РµРЅР°: [i.value]"
 		text += "</th></tr>"
 	text+= {"
  </table>
@@ -91,8 +91,8 @@ mob/proc/shop()
 
 
 /*mob/verb/say(message as text)
-	var/index = findtext(message, "я")
+	var/index = findtext(message, "пїЅ")
 	while(index)
 		message = copytext(message, 1, index) + "&#255;" + copytext(message, index+1)
-		index = findtext(message, "я")
+		index = findtext(message, "пїЅ")
 	world<< "[name] says, [message]"*/

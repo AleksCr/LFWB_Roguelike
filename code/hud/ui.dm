@@ -3,7 +3,7 @@
 
 
 client
-	view = "4x8"
+	view = "13x13"
 
 	var
 		// Create new instances of backgrounds and display HUDs
@@ -78,22 +78,19 @@ mob/verb/hand_check()
 		usr<< "weapon in hand: fists"
 
 
-mob
-
-	var
-
+mob/var/list
 		// Lists for housing clothes and keys HUD lists.
-		list/clothes = list()
-		list/armor = list()
-		list/helmet = list()
-		list/legs = list()
-		list/hands = list()
-		list/pocket = list()
-		list/another_pocket = list()
-		list/belt = list()
-		list/active_hand() = list()
-		list/left_hand() = list()
-		list/right_hand() = list()
+	clothes = list()
+	armor = list()
+	helmet = list()
+	legs = list()
+	hands = list()
+	pocket = list()
+	another_pocket = list()
+	belt = list()
+	active_hand = list()
+	left_hand = list()
+	right_hand = list()
 
 obj/hud
 	Click()

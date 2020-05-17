@@ -1,6 +1,6 @@
 /*mob/verb/respawn()
 	if(alive != 0)
-		usr<< "Сначала нужно умереть"
+		usr<< "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 		return
 	x = 1
 	y = 1
@@ -87,10 +87,10 @@ mob/verb/change_time_scale()
 	time_scale = input
 
 mob/verb/say(message as text)
-	var/index = findtext(message, "я")
+	var/index = findtext(message, "пїЅ")
 	while(index)
 		message = copytext(message, 1, index) + "&#255;" + copytext(message, index+1)
-		index = findtext(message, "я")
+		index = findtext(message, "пїЅ")
 	world<< "[name] says, [message]"
 
 mob/var/ai_coolness = "dawn"
@@ -105,7 +105,7 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 	for(var/i = 0; i<num; i++)
 		var/obj/item/weapon/w
 		if(holding_weapon == "bare hands")
-			usr<< "Тебе его не жалко?"
+			usr<< "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ?"
 		if(holding_weapon == "dagger")
 			var/obj/item/weapon/dagger/wo = new
 			w = wo
@@ -191,7 +191,7 @@ mob/verb/puk()
 
 mob/var/list/Overlay/wound = list()
 obj/wound
-	icon = 'mob.dmi'
+	icon = 'img/mob.dmi'
 	icon_state = "wound"
 	layer = MOB_LAYER+1
 
@@ -199,7 +199,7 @@ mob/verb/new_wounds()
 	var/choose
 	choose = input("Test") in list("make wound","del all wounds")
 	if(choose == "make wound")
-		var/icon/mask = new('mob.dmi',"torso_mask")
+		var/icon/mask = new('img/mob.dmi',"torso_mask")
 		var/mask_x = list()
 		var/mask_y = list()
 		var/megamask[32][32]
@@ -212,7 +212,7 @@ mob/verb/new_wounds()
 					mask_x += i
 					mask_y += j
 		world<< counter
-		var/icon/w = new('mob.dmi',"wound")
+		var/icon/w = new('img/mob.dmi',"wound")
 		var/wound_x = pick(mask_x); var/wound_y = pick(mask_y)
 		w.Shift(NORTH,wound_y)
 		w.Shift(EAST,wound_x)
@@ -226,7 +226,7 @@ mob/verb/new_wounds()
 				sides = rand(sides-1,sides+1)
 				before_turn = rand(2,4)
 			sleep(1)
-			wound = overlay(w)//wound = overlay(w.icon, w.icon_state)//wound = overlay('mob.dmi',"wound")
+			wound = overlay(w)//wound = overlay(w.icon, w.icon_state)//wound = overlay('img/mob.dmi',"wound")
 			*/
 
 mob/proc/techka(var/down, var/sides, var/before_turn = rand(2,4), var/list/megamask, var/icon/w)
@@ -243,4 +243,4 @@ mob/proc/techka(var/down, var/sides, var/before_turn = rand(2,4), var/list/megam
 				sides = rand(sides-1,sides+1)
 				before_turn = rand(2,4)
 		sleep(2)
-		wound = overlay(w)//wound = overlay(w.icon, w.icon_state)//wound = overlay('mob.dmi',"wound")
+		wound = overlay(w)//wound = overlay(w.icon, w.icon_state)//wound = overlay('img/mob.dmi',"wound")

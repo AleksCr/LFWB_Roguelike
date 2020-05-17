@@ -4,14 +4,14 @@ var/num_of_steps = 2
 var/inital_chance = 40
 
 obj/ladder
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "ladder"
 	Click()
 		..()
 		gen_caves()
 
 obj/item/ore
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	Click(var/mob/M)
 		usr.Get(src)
 obj/item/ore/copper
@@ -21,19 +21,19 @@ obj/item/ore/iron
 obj/item/ore/silver
 	icon_state = "silver_ore"
 obj/item/coal
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "coal"
 	Click(var/mob/M)
 		usr.Get(src)
 obj/item/stone
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "stone"
 	Click(var/mob/M)
 		usr.Get(src)
 
 
 obj/wall/cave
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "wall"
 	density = 1
 	opacity = 0
@@ -59,34 +59,31 @@ obj/cell_automato
 	alpha=100
 	proc/count_cells()
 		var/i = 0
-		//world<< "ß ïî êîîðäèíàòàì [x] [y]"
 		for(var/obj/cell_automato/C in range(1,src))
 			if(C.cell_is_alive)
 				i++
-			//	world<< "ñîñåä ïî êîîðäèíàòàì [C.x] [C.y]"
-		//world<< "ñîñåäè = [i]"
 		return i
 obj/floor/cave
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "floor"
 
 obj/green/bush
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "bush"
 	Click()
 		del src
 
 obj/item/log
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "log"
 obj/green/bigshroom
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "bigshroom"
 	Click()
 		new/obj/item/log(src.loc)
 		del src
 obj/green/smallshroom
-	icon = 'caves.dmi'
+	icon = 'img/caves.dmi'
 	icon_state = "smallshroom"
 	New()
 		..()
@@ -108,19 +105,20 @@ obj/ladder/proc/gen_caves()
 	for(var/i = 0; i<num_of_steps; i++)
 		cave_cell_sim_step()
 	////SIMULATION STEP
-	//ïîñëåäîâàòåëüíî äëÿ êàæäîãî îáúåêòà êëåòîê ïðîâåðÿåì ïî àëãîðèòìó ñîñòîÿíèå è óáèâàåì/îæèâëÿåì/íå òðîãàåì ýòîò îáúåêò
-	//ïðàâèëà ïðîâåðêè:
-	//1 - Åñëè ó !æèâîé! êëåòêè ìåíüøå 2 ñîñåäåé, îíà óìèðàåò
-	//2 - Åñëè ó !æèâîé! êëåòêè 2 èëè 3 ñîñåäà, îíà îñòàåòñÿ æèâîé
-	//3 - Åñëè ó !æèâîé! êëåòêè áîëüøå 3 ñîñåäåé, îíà óìèðàåò
-	//4 - Åñëè ó !ìåðòâîé! êëåòêè ðîâíî 3 ñîñåäà, îíà îæèâàåò
+	//Ð¿Ð¾ÑÐ»ÐµÐ´Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð´Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° ÐºÐ»ÐµÑ‚Ð¾Ðº Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð¿Ð¾ Ð°Ð»Ð³Ð¾Ñ€Ð¸Ñ‚Ð¼Ñƒ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ðµ Ð¸ ÑƒÐ±Ð¸Ð²Ð°ÐµÐ¼/Ð¾Ð¶Ð¸Ð²Ð»ÑÐµÐ¼/Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°ÐµÐ¼ ÑÑ‚Ð¾Ñ‚ Ð¾Ð±ÑŠÐµÐºÑ‚
+	//Ð¿Ñ€Ð°Ð²Ð¸Ð»Ð° Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸:
+	//1 - Ð•ÑÐ»Ð¸ Ñƒ !Ð¶Ð¸Ð²Ð¾Ð¹! ÐºÐ»ÐµÑ‚ÐºÐ¸ Ð¼ÐµÐ½ÑŒÑˆÐµ 2 ÑÐ¾ÑÐµÐ´ÐµÐ¹, Ð¾Ð½Ð° ÑƒÐ¼Ð¸Ñ€Ð°ÐµÑ‚
+	//2 - Ð•ÑÐ»Ð¸ Ñƒ !Ð¶Ð¸Ð²Ð¾Ð¹! ÐºÐ»ÐµÑ‚ÐºÐ¸ 2 Ð¸Ð»Ð¸ 3 ÑÐ¾ÑÐµÐ´Ð°, Ð¾Ð½Ð° Ð¾ÑÑ‚Ð°ÐµÑ‚ÑÑ Ð¶Ð¸Ð²Ð¾Ð¹
+	//3 - Ð•ÑÐ»Ð¸ Ñƒ !Ð¶Ð¸Ð²Ð¾Ð¹! ÐºÐ»ÐµÑ‚ÐºÐ¸ Ð±Ð¾Ð»ÑŒÑˆÐµ 3 ÑÐ¾ÑÐµÐ´ÐµÐ¹, Ð¾Ð½Ð° ÑƒÐ¼Ð¸Ñ€Ð°ÐµÑ‚
+	//4 - Ð•ÑÐ»Ð¸ Ñƒ !Ð¼ÐµÑ€Ñ‚Ð²Ð¾Ð¹! ÐºÐ»ÐµÑ‚ÐºÐ¸ Ñ€Ð¾Ð²Ð½Ð¾ 3 ÑÐ¾ÑÐµÐ´Ð°, Ð¾Ð½Ð° Ð¾Ð¶Ð¸Ð²Ð°ÐµÑ‚
 
-	//Ðèñóåì ïåùåðû, óäàëÿåì àâòîìàòû
+
+	//Ð Ð¸ÑÑƒÐµÐ¼ Ð¿ÐµÑ‰ÐµÑ€Ñ‹, ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ñ‹
 	for(var/obj/cell_automato/C in world)
 		if(C.cell_is_alive) new/obj/wall/cave(C.loc)
 	for(var/obj/cell_automato/C in world) del C
 
-	//Ðèñóåì ïåùåðíóþ ðàñòèòåëüíîñòü
+	//Ð Ð¸ÑÑƒÐµÐ¼ Ð¿ÐµÑ‰ÐµÑ€Ð½ÑƒÑŽ Ñ€Ð°ÑÑ‚Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚ÑŒ
 	for(var/obj/floor/cave/f in world)
 		var/obj/wall/cave/WW = null
 		for(var/obj/wall/cave/W in range(0,f))
@@ -142,7 +140,7 @@ obj/ladder/proc/gen_caves()
 	for(var/obj/wall/cave/C in range (0,src))
 		del C
 
-	//Ïåðåìåùàåì èãðîêîâ
+	//ÐŸÐµÑ€ÐµÐ¼ÐµÑ‰Ð°ÐµÐ¼ Ð¸Ð³Ñ€Ð¾ÐºÐ¾Ð²
 	var/ingen = 0
 	var/obj/exit/e = new; e.x = inter_point_x; e.y = inter_point_y; e.z = 1
 	for(var/mob/M in world)
@@ -155,7 +153,7 @@ obj/ladder/proc/gen_caves()
 				del C
 
 
-	//äåëàåì äûðêè-ñïàâí-òî÷êè ñ ìîáàìè
+	//Ð´ÐµÐ»Ð°ÐµÐ¼ Ð´Ñ‹Ñ€ÐºÐ¸-ÑÐ¿Ð°Ð²Ð½-Ñ‚Ð¾Ñ‡ÐºÐ¸ Ñ Ð¼Ð¾Ð±Ð°Ð¼Ð¸
 	for(var/i =0;i<1;i++)
 		var/obj/spawn_point/SP = new (locate(rand(1,mapx),rand(1,mapy),1))
 		for(var/obj/wall/cave/C in range (1,SP)) del C
@@ -165,7 +163,7 @@ proc/clear_map()
 	for(var/obj/exit/E in world)
 		if(E.z != 1) continue
 		del E
-	for(var/obj/wall/cave/W in world) del W//Óäàëÿåì ïåùåðû è ÷èñòèì ìàññèâ ñîñòîÿíèé êëåòîê, ñîõðàíèâøèåñÿ ñ ïðîøëîé ãåíåðàöèè
+	for(var/obj/wall/cave/W in world) del W//Ð£Ð´Ð°Ð»ÑÐµÐ¼ Ð¿ÐµÑ‰ÐµÑ€Ñ‹ Ð¸ Ñ‡Ð¸ÑÑ‚Ð¸Ð¼ Ð¼Ð°ÑÑÐ¸Ð² ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ð¹ ÐºÐ»ÐµÑ‚Ð¾Ðº, ÑÐ¾Ñ…Ñ€Ð°Ð½Ð¸Ð²ÑˆÐ¸ÐµÑÑ Ñ Ð¿Ñ€Ð¾ÑˆÐ»Ð¾Ð¹ Ð³ÐµÐ½ÐµÑ€Ð°Ñ†Ð¸Ð¸
 	for(var/obj/green/G in world) del G
 	for(var/obj/workshop/W in world) del W
 	for(var/obj/choped_limb/L in world) del L

@@ -1,5 +1,5 @@
 obj/workshop
-	icon = 'craft.dmi'
+	icon = 'img/craft.dmi'
 	Click()
 		craft()
 obj/workshop/forge

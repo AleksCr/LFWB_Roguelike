@@ -27,7 +27,7 @@ obj/item/weapon
 		cooldown = 1
 		mass = 0.5
 		damtype = "stab"
-		icon = 'meele_weapons.dmi'
+		icon = 'img/meele_weapons.dmi'
 		icon_state = "dagger"
 		New()
 			..()
@@ -38,7 +38,7 @@ obj/item/weapon
 		cooldown = 2
 		mass = 1
 		damtype = "slash"
-		icon = 'meele_weapons.dmi'
+		icon = 'img/meele_weapons.dmi'
 		icon_state = "sword"
 		New()
 			..()
@@ -55,7 +55,7 @@ obj/item/weapon
 		cooldown = 4
 		mass = 2
 		damtype = "slash"
-		icon = 'meele_weapons.dmi'
+		icon = 'img/meele_weapons.dmi'
 		icon_state = "axe"
 		New()
 			..()
@@ -72,7 +72,7 @@ obj/item/weapon
 		cooldown = 3
 		mass = 2
 		damtype = "stab"
-		icon = 'meele_weapons.dmi'
+		icon = 'img/meele_weapons.dmi'
 		icon_state = "spear"
 		New()
 			..()
@@ -83,7 +83,7 @@ obj/item/weapon
 		cooldown = 5
 		mass = 5
 		damtype = "bash"
-		icon = 'meele_weapons.dmi'
+		icon = 'img/meele_weapons.dmi'
 		icon_state = "masonhammer"
 	club
 		dam_modifer = 2
@@ -91,7 +91,7 @@ obj/item/weapon
 		cooldown = 10
 		mass = 10
 		damtype = "bash"
-		icon = 'meele_weapons.dmi'
+		icon = 'img/meele_weapons.dmi'
 		icon_state = "sclub"
 
 mob/var/Overlay/o_left

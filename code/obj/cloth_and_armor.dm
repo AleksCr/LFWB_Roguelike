@@ -5,7 +5,7 @@ obj/item/armor
 		min_damage = 0
 		stand_state
 		overpic
-	icon = 'clothes.dmi'
+	icon = 'img/clothes.dmi'
 	Click()
 		..()
 		if(src.loc == usr) usr.client.UNEQUIP(src)
@@ -110,10 +110,10 @@ obj/item/holders
 		usr.Get(src)
 
 obj/item/holders/belt
-	icon = 'clothes.dmi'
+	icon = 'img/clothes.dmi'
 	icon_state = "belt"
 obj/item/armor/breastplate
-	icon = 'clothes.dmi'
+	icon = 'img/clothes.dmi'
 	min_damage = 2
 	coverage = 70
 	icon_state = "armor"
@@ -176,61 +176,61 @@ mob/proc/draw_mob()
 	if(o_stucked_weapon) del o_stucked_weapon
 	draw_bodyparts()
 	for(var/obj/item/armor/i in src.clothes)
-		o_cloth = overlay('clothes.dmi', i.icon_state)
+		o_cloth = overlay('img/clothes.dmi', i.icon_state)
 	for(var/obj/item/armor/i in src.armor)
-		o_armor = overlay('clothes.dmi', i.icon_state)
+		o_armor = overlay('img/clothes.dmi', i.icon_state)
 	for(var/obj/item/armor/i in src.helmet)
-		o_helmet = overlay('clothes.dmi', i.icon_state)
+		o_helmet = overlay('img/clothes.dmi', i.icon_state)
 	for(var/obj/item/armor/i in src.legs)
-		o_boots = overlay('clothes.dmi', i.overpic)
+		o_boots = overlay('img/clothes.dmi', i.overpic)
 	for(var/obj/item/armor/i in src.hands)
-		o_hands = overlay('clothes.dmi', i.overpic)
+		o_hands = overlay('img/clothes.dmi', i.overpic)
 	for(var/obj/item/i in src.right_hand)
 		if(istype(i,/obj/item/weapon/dagger))
-			o_right = overlay('meele_weapons.dmi', "knife_r")
+			o_right = overlay('img/meele_weapons.dmi', "knife_r")
 		if(istype(i,/obj/item/weapon/sword))
-			o_right = overlay('meele_weapons.dmi', "claymore_r")
+			o_right = overlay('img/meele_weapons.dmi', "claymore_r")
 		if(istype(i,/obj/item/weapon/axe))
-			o_right = overlay('meele_weapons.dmi', "axe_r")
+			o_right = overlay('img/meele_weapons.dmi', "axe_r")
 		if(istype(i,/obj/item/weapon/spear))
-			o_right = overlay('meele_weapons.dmi', "spear_r")
+			o_right = overlay('img/meele_weapons.dmi', "spear_r")
 		if(istype(i,/obj/item/weapon/hammer))
-			o_right = overlay('meele_weapons.dmi', "hammer_r")
+			o_right = overlay('img/meele_weapons.dmi', "hammer_r")
 		if(istype(i,/obj/item/weapon/club))
-			o_right = overlay('meele_weapons.dmi', "club_r")
+			o_right = overlay('img/meele_weapons.dmi', "club_r")
 	for(var/obj/item/i in src.left_hand)
 		if(istype(i,/obj/item/weapon/dagger))
-			o_left = overlay('meele_weapons.dmi', "knife_l")
+			o_left = overlay('img/meele_weapons.dmi', "knife_l")
 		if(istype(i,/obj/item/weapon/sword))
-			o_left = overlay('meele_weapons.dmi', "claymore_l")
+			o_left = overlay('img/meele_weapons.dmi', "claymore_l")
 		if(istype(i,/obj/item/weapon/axe))
-			o_left = overlay('meele_weapons.dmi', "axe_l")
+			o_left = overlay('img/meele_weapons.dmi', "axe_l")
 		if(istype(i,/obj/item/weapon/spear))
-			o_left = overlay('meele_weapons.dmi', "spear_l")
+			o_left = overlay('img/meele_weapons.dmi', "spear_l")
 		if(istype(i,/obj/item/weapon/hammer))
-			o_left = overlay('meele_weapons.dmi', "hammer_l")
+			o_left = overlay('img/meele_weapons.dmi', "hammer_l")
 		if(istype(i,/obj/item/weapon/club))
-			o_left = overlay('meele_weapons.dmi', "club_l")
-	/////////////////ÒÓÒ ÐÈÑÎÂÀÒÜ ÀÐÒÅÐÈÈ
+			o_left = overlay('img/meele_weapons.dmi', "club_l")
+	/////////////////ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for(var/obj/bodypart/human/head/h in bodyparts)
-		if(h.artery) artery_head = overlay('mob.dmi', "head_s1")
+		if(h.artery) artery_head = overlay('img/mob.dmi', "head_s1")
 	for(var/obj/bodypart/human/right_arm/h in bodyparts)
-		if(h.artery) artery_right_arm = overlay('mob.dmi', "r_arm_s1")
+		if(h.artery) artery_right_arm = overlay('img/mob.dmi', "r_arm_s1")
 	for(var/obj/bodypart/human/left_arm/h in bodyparts)
-		if(h.artery) artery_left_arm = overlay('mob.dmi', "l_arm_s1")
+		if(h.artery) artery_left_arm = overlay('img/mob.dmi', "l_arm_s1")
 	for(var/obj/bodypart/human/right_leg/h in bodyparts)
-		if(h.artery) artery_right_leg = overlay('mob.dmi', "r_leg_s1")
+		if(h.artery) artery_right_leg = overlay('img/mob.dmi', "r_leg_s1")
 	for(var/obj/bodypart/human/left_leg/h in bodyparts)
-		if(h.artery) artery_left_leg = overlay('mob.dmi', "l_leg_s1")
-	if(head_artery) artery_head = overlay('mob.dmi', "head_s1")
-	if(right_arm_artery) artery_right_arm = overlay('mob.dmi', "r_arm_s1")
-	if(left_arm_artery) artery_left_arm = overlay('mob.dmi', "l_arm_s1")
-	if(right_leg_artery) artery_right_leg = overlay('mob.dmi', "r_leg_s1")
-	if(left_leg_artery) artery_left_leg = overlay('mob.dmi', "l_leg_s1")
+		if(h.artery) artery_left_leg = overlay('img/mob.dmi', "l_leg_s1")
+	if(head_artery) artery_head = overlay('img/mob.dmi', "head_s1")
+	if(right_arm_artery) artery_right_arm = overlay('img/mob.dmi', "r_arm_s1")
+	if(left_arm_artery) artery_left_arm = overlay('img/mob.dmi', "l_arm_s1")
+	if(right_leg_artery) artery_right_leg = overlay('img/mob.dmi', "r_leg_s1")
+	if(left_leg_artery) artery_left_leg = overlay('img/mob.dmi', "l_leg_s1")
 	for(var/obj/item/weapon/wep in stucked_weapon)
-		if(istype(wep,/obj/item/weapon/dagger)) o_stucked_weapon = overlay('mob.dmi', "edged")
-		if(istype(wep,/obj/item/weapon/spear)) o_stucked_weapon = overlay('mob.dmi', "spear")
-		if(istype(wep,/obj/item/weapon/axe)) o_stucked_weapon = overlay('mob.dmi', "axe")
+		if(istype(wep,/obj/item/weapon/dagger)) o_stucked_weapon = overlay('img/mob.dmi', "edged")
+		if(istype(wep,/obj/item/weapon/spear)) o_stucked_weapon = overlay('img/mob.dmi', "spear")
+		if(istype(wep,/obj/item/weapon/axe)) o_stucked_weapon = overlay('img/mob.dmi', "axe")
 
 
 
