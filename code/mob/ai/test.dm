@@ -10,7 +10,7 @@ mob/Login()
 	x = 255
 	y = 255
 	z = 255
-	name = input("Напиши тут свой никнейм на латинице") as text
+	name = input("РќР°РїРёС€Рё С‚СѓС‚ СЃРІРѕР№ РЅРёРєРЅРµР№Рј РЅР° Р»Р°С‚РёРЅРёС†Рµ") as text
 	x = 1
 	y = 1
 	z = 1
@@ -20,10 +20,10 @@ var/bloodlust = 0
 mob/verb/RAAGEEE()
 	if(bloodlust == 1)
 		bloodlust = 0
-		world<< "Вскоре враги успоко&#255;тс&#255;"
+		world<< "Р’СЃРєРѕСЂРµ РІСЂР°РіРё СѓСЃРїРѕРєРѕ&#255;С‚СЃ&#255;"
 	else
 		bloodlust = 1
-		world<< "Теперь они зл&#255;тс&#255;"
+		world<< "РўРµРїРµСЂСЊ РѕРЅРё Р·Р»&#255;С‚СЃ&#255;"
 
 mob/var/mob/target
 //mob/var/turf/move_target
@@ -60,8 +60,8 @@ mob/proc/found_task()
 					targets += M
 			if(targets != null && target == null)
 				target = pick(targets)
-				world<< "[name] смотрит на [target.name]"
-				say("Иди сюда - убивать тебя буду!")
+				world<< "[name] СЃРјРѕС‚СЂРёС‚ РЅР° [target.name]"
+				say("РРґРё СЃСЋРґР° - СѓР±РёРІР°С‚СЊ С‚РµР±СЏ Р±СѓРґСѓ!")
 				has_task = 1
 				spawn() fight_ai()
 	if(has_task == 0 && alive == 1) //imitate walking
@@ -98,7 +98,7 @@ mob/proc/fight_ai()
 
 mob/proc/ai_imitate_walking()
 	if(prob(10))
-		say("Мне приказали. Я делаю.")
+		say("РњРЅРµ РїСЂРёРєР°Р·Р°Р»Рё. РЇ РґРµР»Р°СЋ.")
 	var/rand_x = rand(1, mapx)
 	var/rand_y = rand(1, mapy)
 	//var/current_x = x, current_y = y
