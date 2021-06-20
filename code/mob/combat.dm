@@ -9,7 +9,7 @@ mob/New()
 	..()
 	attack_style = pick("fast","normal","strong")
 mob/verb/choose_combat_style()
-	switch(alert("Choose combat style:","��������","Fast strikes","Normal","Strong and technical strikes"))
+	switch(alert("Choose combat style:","Combat style","Fast strikes","Normal","Strong and technical strikes"))
 		if("Fast strikes")
 			attack_style = "fast"
 		if("Normal")
