@@ -205,5 +205,3 @@ mob/proc/bleed(var/btype)
 	if(btype == 3)
 		blood -= 30
 		//new/obj/blood_pool(src.loc)
-	if(hp <= 0)
-		die()

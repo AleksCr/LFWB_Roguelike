@@ -11,16 +11,10 @@ mob/verb/town()
       </head>
       <body>
 
-	<a href=byond://?src=\ref[src]&action=town_interface&value=Search>Обшарить/Шарить</a><br>
-	Жить<br>
-	Кутить<br>
-	Творить<br>
-	Служить<br>
-	<a href=byond://?src=\ref[src]&action=town_interface&value=Home>Домой сходить</a><br>
-	<a href=byond://?src=\ref[src]&action=town_interface&value=Teach>Учить</a><br>
-	<a href=byond://?src=\ref[src]&action=town_interface&value=SellShop>Платить</a><br>
-	Шалить<br>
-	Валить<br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=Search>Go to dungeon</a><br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=Home>Go to home</a><br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=Teach>Teach</a><br>
+	<a href=byond://?src=\ref[src]&action=town_interface&value=SellShop>Sell things</a><br>
 
       </body>
       </html>
