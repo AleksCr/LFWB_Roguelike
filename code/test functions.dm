@@ -182,12 +182,15 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 		if(guy_team == "2") M.team = "2"
 		if(guy_team == "player") M.team = "player"
 
-proc/d3()
-	var/d = rand(3,18)
-	return d
+mob/verb/dice()
+	usr<< roll_dice(3, 6)
 
-mob/verb/puk()
-	alpha =100
+proc/roll_dice(var/num_rolls, var/num_faces)
+	//3d6 = roll_dice(3, 6)
+	var/result = 0
+	for(var/i = 0, i < num_rolls, i++)
+		result += rand(1, num_faces)
+	return result
 
 mob/var/list/Overlay/wound = list()
 obj/wound

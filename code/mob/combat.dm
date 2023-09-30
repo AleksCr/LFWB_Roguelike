@@ -23,37 +23,25 @@ mob/verb/superherostyle()
 	delay = base_speed
 
 mob/proc/calculate_strike_time()
-	var/time
-	if(attack_style == "fast")
-		time = 3
-	if(attack_style == "normal")
-		time = 6
-	if(attack_style == "strong")
-		time = 6
-	if(attack_style == "superhero")
-		time = 1
-	return time
+	var/strike_time = list("fast" = 3, "normal" = 6, "strong" = 6, "superhero" = 1)
+	return strike_time[attack_style]
 
 mob/var/const/str_cant_attack = "You are too tired to attack"
 mob/var/attack_num = 1
-mob/var/current_attacks = 0
+mob/var/is_attacking = 0
 mob/proc/attack(a, b)
-	if(alive != 1 || current_attacks >= attack_num)
+	if(alive != 1 || is_attacking)
 		return
 	//for(var/mob/M in view(3,src)
 		//ai_defend_attack()
 	var/attack_stamina_cost = list("fast" = 10, "normal" = 5, "strong" = 15)
-	current_attacks++
+	is_attacking = 1
 	if(stamina <= attack_stamina_cost[attack_style])
-	    usr<< str_cant_attack
+		usr<< str_cant_attack
 		draw_clear()
-		current_attacks=0
+		is_attacking = 0
 		return
 	stamina -= attack_stamina_cost[attack_style]
-	if(alive != 1)
-		return
-	if(current_attacks == 2)
-		return
 	if(a == 0 && b == 1)
 		draw_attack("n", (calculate_strike_time()*time_scale))
 	if(a == 0 && b == -1)
@@ -72,7 +60,7 @@ mob/proc/attack(a, b)
 		draw_attack("se", (calculate_strike_time()*time_scale))
 	for(var/mob/m in view(1,src))
 		if(m.x == x+a && m.y == y+b)
-			spawn() m.dam(src)
+			spawn() m.make_damage(src)
 		else
 			var/sound/S = sound('sounds/punchmiss.ogg')
 			play_sound(S)
@@ -83,7 +71,7 @@ mob/proc/attack(a, b)
 		O=i
 	if(O != null)
 		sleep(O.cooldown)
-	current_attacks=0
+	is_attacking=0
 
 
 mob/var/def_num = 1
@@ -136,7 +124,7 @@ mob/proc/defend(a, b)
 		draw_defend("se", defend_time*time_scale)
 		defending = 0
 
-mob/proc/dam(var/mob/M)
+mob/proc/make_damage(var/mob/M)
 	if(M.hand == "left") M.active_hand = M.left_hand
 	else M.active_hand = M.right_hand
 	var/obj/item/weapon/O
@@ -155,7 +143,7 @@ mob/proc/dam(var/mob/M)
 	////смотрим бонус от общего мили
 	for(var/datum/skill/melee/m in M.skills)
 		bonus += m.skill_lvl
-	var/diceroll = d3()
+	var/diceroll = roll_dice(3, 6)
 	world<< "dice rolls [diceroll]"
 
 	///////Накидываем бонус от оружия и заодно качаем его навык
@@ -181,11 +169,10 @@ mob/proc/dam(var/mob/M)
 			M.grind_skill("club")
 	world<< "Бонус к попаданию составил = [bonus]"
 
-		/////�������, ������ ��
-	if(diceroll > M.dx + bonus)// || diceroll ==3)
+	if(diceroll > M.dx + bonus)
 		if(diceroll == 18)
-			world<< "Критический провал! [M.name] не попал в цель!"; return
-		world<< "[M.name] не попал в цель!"; return
+			world<< "Critical failure! [M.name] miss the target!"; return
+		world<< "[M.name] miss the target!"; return
 
 
 	M.grind_skill("melee")
@@ -230,12 +217,12 @@ mob/proc/dam(var/mob/M)
 				for(var/datum/skill/club/club in skills)
 					parry += club.skill_lvl
 					grind_skill("club")
-			diceroll = d3()
+			diceroll = roll_dice(3, 6)
 			for(var/datum/skill/melee/melee in skills)
 				parry += melee.skill_lvl
 			world<< "Block dice rolls [diceroll]; melee+weapon_skill([parry]) + 3 = [parry+3]"
 			if(parry/2 + 3 >= diceroll && diceroll != 18)
-				world<< "[name] ��������� �����!"
+				world<< "[name] parried strike!"
 				var/sound/S = sound('sounds/parry.ogg')
 				play_sound(S)
 				return
@@ -268,7 +255,7 @@ mob/proc/dam(var/mob/M)
 	//if(dodge_chance > 80) dodge_chance = 80; if(dodge_chance <= 0) dodge_chance = 0
 	//world<< "agi diff = [agi_difference] dodge ch = [dodge_chance]"
 	//if(prob(dodge_chance))
-	diceroll = d3()
+	diceroll = roll_dice(3, 6)
 	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)]"
 	if((base_speed+3) >= diceroll && diceroll != 18 && alive)
 		M<<"[src] удалось уклониться от удара!"

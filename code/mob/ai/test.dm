@@ -11,6 +11,8 @@ mob/Login()
 	y = 255
 	z = 255
 	name = input("Напиши тут свой никнейм на латинице") as text
+	if(name == "")
+		name = "player"
 	x = 1
 	y = 1
 	z = 1
