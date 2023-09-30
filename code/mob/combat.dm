@@ -34,6 +34,7 @@ mob/proc/calculate_strike_time()
 		time = 1
 	return time
 
+mob/var/const/str_cant_attack = "You are too tired to attack"
 mob/var/attack_num = 1
 mob/var/current_attacks = 0
 mob/proc/attack(a, b)
@@ -41,28 +42,14 @@ mob/proc/attack(a, b)
 		return
 	//for(var/mob/M in view(3,src)
 		//ai_defend_attack()
+	var/attack_stamina_cost = list("fast" = 10, "normal" = 5, "strong" = 15)
 	current_attacks++
-	if(attack_style == "fast")
-		if(stamina <=10)
-			usr<< "Ты не находишь в себе сил на эту атаку"
-			draw_clear()
-			current_attacks=0
-			return
-		stamina -= 10
-	if(attack_style == "normal")
-		if(stamina <=5)
-			usr<< "Ты не находишь в себе сил на эту атаку"
-			draw_clear()
-			current_attacks=0
-			return
-		stamina -= 5
-	if(attack_style == "strong")
-		if(stamina <=15)
-			usr<< "Ты не находишь в себе сил на эту атаку"
-			draw_clear()
-			current_attacks=0
-			return
-		stamina -= 15
+	if(stamina <= attack_stamina_cost[attack_style])
+	    usr<< str_cant_attack
+		draw_clear()
+		current_attacks=0
+		return
+	stamina -= attack_stamina_cost[attack_style]
 	if(alive != 1)
 		return
 	if(current_attacks == 2)
