@@ -155,9 +155,9 @@ obj/ladder/proc/gen_caves()
 
 	//делаем дырки-спавн-точки с мобами
 	for(var/i =0;i<1;i++)
-		var/obj/spawn_point/SP = new (locate(rand(1,mapx),rand(1,mapy),1))
-		for(var/obj/wall/cave/C in range (1,SP)) del C
-		spawn() spawn_special_ai(SP,1, pick("bare hands","dagger","sword","axe","spear","hammer","club"), pick("nothing","cloth","full armor"), 1) //pick("nothing","cloth","full_armor"), 1)
+		var/obj/spawn_point/spawn_point = new (locate(rand(1,mapx),rand(1,mapy),1))
+		for(var/obj/wall/cave/cave_tile in range (1, spawn_point)) del cave_tile // не даем мобу появиться внутри стены
+		spawn() spawn_npc(spawn_point, 1, pick("bare hands","dagger","sword","axe","spear","hammer","club"), pick("nothing","cloth","full armor"), 1) //pick("nothing","cloth","full_armor"), 1)
 
 proc/clear_map()
 	for(var/obj/exit/E in world)

@@ -96,8 +96,10 @@ mob/verb/say(message as text)
 mob/var/ai_coolness = "dawn"
 
 
+mob/verb/spawn_special_ai()
+	spawn() spawn_npc(usr.loc)
 
-proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, var/guy_team)
+proc/spawn_npc(var/obj/l, var/num, var/holding_weapon, var/cloth_type, var/guy_team)
 	if(!num) num = input("how many dydes you wish spawn?") as num
 	if(!holding_weapon)holding_weapon = input("Choose a weapon for you opponent") in list("bare hands","dagger","sword","axe","spear","hammer","club")
 	if(!cloth_type)cloth_type = input("Choose a suit for you opponent") in list("nothing","cloth","full armor")
@@ -128,32 +130,32 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 		M.loc = l.loc
 		w.x = M.x; w.y = M.y; w.z = M.z
 		if(cloth_type == "cloth")
-			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
+			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.equip("cloth")
 			var/obj/bo
-			var/new_boots = pick("copper","iron","steel")//var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.mob_equip("legs")
+			var/new_boots = pick("copper","iron","steel")//var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.equip("legs")
 			switch(new_boots)
 				if("copper") bo = new/obj/item/armor/boots/copper(M.loc)// = new(M.loc)
 				if("iron") bo = new/obj/item/armor/boots/iron(M.loc)
 				if("steel") bo = new/obj/item/armor/boots/steel(M.loc)
-			M.Get(bo); M.mob_equip("legs")
+			M.Get(bo); M.equip("legs")
 
 		if(cloth_type == "full armor")
-			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.mob_equip("cloth")
+			var/obj/item/armor/cloth/c = new(M.loc); M.Get(c); M.equip("cloth")
 			var/obj/bo
-			var/new_boots = pick("copper","iron","steel")//var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.mob_equip("legs")
+			var/new_boots = pick("copper","iron","steel")//var/obj/item/armor/boots/bo = new(M.loc); M.Get(bo); M.equip("legs")
 			switch(new_boots)
 				if("copper") bo = new/obj/item/armor/boots/copper(M.loc)// = new(M.loc)
 				if("iron") bo = new/obj/item/armor/boots/iron(M.loc)
 				if("steel") bo = new/obj/item/armor/boots/steel(M.loc)
-			M.Get(bo); M.mob_equip("legs")
+			M.Get(bo); M.equip("legs")
 
 			var/obj/ha
 			var/new_hand = pick("copper","iron","steel")
-			switch(new_hand)//var/obj/item/armor/hands/ha = new(M.loc); M.Get(ha); M.mob_equip("hands")
+			switch(new_hand)//var/obj/item/armor/hands/ha = new(M.loc); M.Get(ha); M.equip("hands")
 				if("copper") ha = new/obj/item/armor/hands/copper(M.loc)
 				if("iron") ha = new/obj/item/armor/hands/iron(M.loc)
 				if("steel") ha = new/obj/item/armor/hands/steel(M.loc)
-			M.Get(ha); M.mob_equip("hands")
+			M.Get(ha); M.equip("hands")
 
 			var/obj/he
 			var/new_helm = pick("open_copper","open_iron","open_steel","closed_copper","closed_iron","closed_steel")
@@ -163,19 +165,19 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 				if("open_steel") he = new/obj/item/armor/helmet/open_steel(M.loc)
 				if("closed_copper") he = new/obj/item/armor/helmet/closed_copper(M.loc)
 				if("closed_iron") he = new/obj/item/armor/helmet/closed_iron(M.loc)
-				if("closed_steel") he = new/obj/item/armor/helmet/closed_steel(M.loc)//var/obj/item/armor/helmet/he = new(M.loc); M.Get(he); M.mob_equip("helmet")
-			M.Get(he); M.mob_equip("helmet")
+				if("closed_steel") he = new/obj/item/armor/helmet/closed_steel(M.loc)//var/obj/item/armor/helmet/he = new(M.loc); M.Get(he); M.equip("helmet")
+			M.Get(he); M.equip("helmet")
 
 			var/obj/br
 			var/new_breast = pick("fur_vest","scale_vest","chain_vest","copper_cuirass","iron_cuirass","steel_cuirass")
-			switch(new_breast)//var/obj/item/armor/breastplate/br = new(M.loc); M.Get(br); M.mob_equip("armor")
+			switch(new_breast)//var/obj/item/armor/breastplate/br = new(M.loc); M.Get(br); M.equip("armor")
 				if("fur_vest") br = new/obj/item/armor/breastplate/fur_vest(M.loc)
 				if("scale_vest")br = new/obj/item/armor/breastplate/scale_vest(M.loc)
 				if("chain_vest")br = new/obj/item/armor/breastplate/chain_vest(M.loc)
 				if("copper_cuirass")br = new/obj/item/armor/breastplate/copper_cuirass(M.loc)
 				if("iron_cuirass")br = new/obj/item/armor/breastplate/iron_cuirass(M.loc)
 				if("steel_cuirass")br = new/obj/item/armor/breastplate/steel_cuirass(M.loc)
-			M.Get(br); M.mob_equip("armor")
+			M.Get(br); M.equip("armor")
 		M.Get(w)
 		M.draw_mob()
 		if(guy_team == "1") M.team = "1"
@@ -183,13 +185,18 @@ proc/spawn_special_ai(var/obj/l, var/num, var/holding_weapon, var/cloth_type, va
 		if(guy_team == "player") M.team = "player"
 
 mob/verb/dice()
-	usr<< roll_dice(3, 6)
+	usr<< roll_dice(3, 6, -1)
 
-proc/roll_dice(var/num_rolls, var/num_faces)
+proc/roll_dice(var/num_rolls, var/num_faces, var/advantage)
 	//3d6 = roll_dice(3, 6)
 	var/result = 0
 	for(var/i = 0, i < num_rolls, i++)
-		result += rand(1, num_faces)
+		var/roll = rand(1, num_faces)
+		if(advantage == 1)
+			roll = max(rand(1, num_faces), roll)
+		if(advantage == -1)
+			roll = min(rand(1, num_faces), roll)
+		result += roll
 	return result
 
 mob/var/list/Overlay/wound = list()
