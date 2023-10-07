@@ -3,6 +3,7 @@ obj/item/weapon
 	//var/damtype
 	var/bleed_def //default size of bleed_size for each hitting
 	var/dam_modifer = 1
+	var/damage = 6
 	var/stamina_dam_modifer = 1
 	var/overpic_l
 	var/overpic_r

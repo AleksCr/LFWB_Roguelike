@@ -3,10 +3,9 @@ obj/bodypart
 	icon = 'img/mob.dmi'
 	var/hp = 10
 	var/hp_max = 10
-	var/slash_hp_max = 10
-	var/slash_hp = 10
 	var/artery = 0
 	var/fracture = 0
+obj/bodypart/human/torso
 obj/bodypart/human/head
 obj/bodypart/human/right_arm
 obj/bodypart/human/left_arm
@@ -19,6 +18,8 @@ mob
 	var/left_arm_artery = 0
 	var/right_leg_artery = 0
 	var/left_leg_artery = 0
+	var/AC = 10
+	var/default_AC = 10
 
 mob/var/ribs = 0
 
@@ -106,6 +107,7 @@ mob/verb/draw_bodyparts()
 	del left_arm_wound
 	del right_leg_wound
 	del left_leg_wound
+	world<< "test bodyparts: [bodyparts]"
 	for(var/obj/bodypart/human/head/h in bodyparts)
 		o_head = overlay('img/mob.dmi', "head")
 	for(var/obj/bodypart/human/right_arm/h in bodyparts)
@@ -117,47 +119,48 @@ mob/verb/draw_bodyparts()
 	for(var/obj/bodypart/human/left_leg/h in bodyparts)
 		o_left_leg = overlay('img/mob.dmi', "left_leg")
 	/////////////////тут и далее рисовать раны
-	if(hp< hp_max && hp > 2*hp_max/3)
-		chest_wound  = overlay('img/mob.dmi', "chest_10")
-	if(hp< hp_max && hp > hp_max/3 && hp < 2*hp_max/3)
-		chest_wound  = overlay('img/mob.dmi', "chest_20")
-	if(hp< hp_max && hp < hp_max/3)
-		chest_wound  = overlay('img/mob.dmi', "chest_30")
+	for(var/obj/bodypart/human/torso/h in bodyparts)
+		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > 2*h.hp_max/3))
+			head_wound = overlay('img/mob.dmi', "chest_10")
+		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3))
+			head_wound = overlay('img/mob.dmi', "chest_20")
+		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.hp< h.hp_max && h.hp < h.hp_max/3))
+			head_wound = overlay('img/mob.dmi', "chest_30")
 	for(var/obj/bodypart/human/head/h in bodyparts)
-		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > 2*h.slash_hp_max/3))
-			head_wound  = overlay('img/mob.dmi', "head_10")
-		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > h.slash_hp_max/3 && h.slash_hp < 2*h.slash_hp_max/3))
-			head_wound  = overlay('img/mob.dmi', "head_20")
-		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp < h.slash_hp_max/3))
-			head_wound  = overlay('img/mob.dmi', "head_30")
+		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > 2*h.hp_max/3))
+			head_wound = overlay('img/mob.dmi', "head_10")
+		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3))
+			head_wound = overlay('img/mob.dmi', "head_20")
+		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.hp< h.hp_max && h.hp < h.hp_max/3))
+			head_wound = overlay('img/mob.dmi', "head_30")
 	for(var/obj/bodypart/human/right_arm/h in bodyparts)
-		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > 2*h.slash_hp_max/3))
-			right_arm_wound  = overlay('img/mob.dmi', "r_arm_10")
-		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > h.slash_hp_max/3 && h.slash_hp < 2*h.slash_hp_max/3))
-			right_arm_wound  = overlay('img/mob.dmi', "r_arm_20")
-		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp < h.slash_hp_max/3))
-			right_arm_wound  = overlay('img/mob.dmi', "r_arm_30")
+		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > 2*h.hp_max/3))
+			right_arm_wound = overlay('img/mob.dmi', "r_arm_10")
+		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3))
+			right_arm_wound = overlay('img/mob.dmi', "r_arm_20")
+		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.hp< h.hp_max && h.hp < h.hp_max/3))
+			right_arm_wound = overlay('img/mob.dmi', "r_arm_30")
 	for(var/obj/bodypart/human/left_arm/h in bodyparts)
-		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > 2*h.slash_hp_max/3))
-			left_arm_wound  = overlay('img/mob.dmi', "l_arm_10")
-		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > h.slash_hp_max/3 && h.slash_hp < 2*h.slash_hp_max/3))
-			left_arm_wound  = overlay('img/mob.dmi', "l_arm_20")
-		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp < h.slash_hp_max/3))
-			left_arm_wound  = overlay('img/mob.dmi', "l_arm_30")
+		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > 2*h.hp_max/3))
+			left_arm_wound = overlay('img/mob.dmi', "l_arm_10")
+		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3))
+			left_arm_wound = overlay('img/mob.dmi', "l_arm_20")
+		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.hp< h.hp_max && h.hp < h.hp_max/3))
+			left_arm_wound = overlay('img/mob.dmi', "l_arm_30")
 	for(var/obj/bodypart/human/right_leg/h in bodyparts)
-		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > 2*h.slash_hp_max/3))
-			right_leg_wound  = overlay('img/mob.dmi', "r_leg_10")
-		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > h.slash_hp_max/3 && h.slash_hp < 2*h.slash_hp_max/3))
-			right_leg_wound  = overlay('img/mob.dmi', "r_leg_20")
-		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp < h.slash_hp_max/3))
-			right_leg_wound  = overlay('img/mob.dmi', "r_leg_30")
+		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > 2*h.hp_max/3))
+			right_leg_wound = overlay('img/mob.dmi', "r_leg_10")
+		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3))
+			right_leg_wound = overlay('img/mob.dmi', "r_leg_20")
+		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.hp< h.hp_max && h.hp < h.hp_max/3))
+			right_leg_wound = overlay('img/mob.dmi', "r_leg_30")
 	for(var/obj/bodypart/human/left_leg/h in bodyparts)
-		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > 2*h.slash_hp_max/3))
-			left_leg_wound  = overlay('img/mob.dmi', "l_leg_10")
-		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp > h.slash_hp_max/3 && h.slash_hp < 2*h.slash_hp_max/3))
-			left_leg_wound  = overlay('img/mob.dmi', "l_leg_20")
-		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.slash_hp< h.slash_hp_max && h.slash_hp < h.slash_hp_max/3))
-			left_leg_wound  = overlay('img/mob.dmi', "l_leg_30")
+		if((h.hp< h.hp_max && h.hp > 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > 2*h.hp_max/3))
+			left_leg_wound = overlay('img/mob.dmi', "l_leg_10")
+		if((h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3) || (h.hp< h.hp_max && h.hp > h.hp_max/3 && h.hp < 2*h.hp_max/3))
+			left_leg_wound = overlay('img/mob.dmi', "l_leg_20")
+		if((h.hp< h.hp_max && h.hp < h.hp_max/3) || (h.hp< h.hp_max && h.hp < h.hp_max/3))
+			left_leg_wound = overlay('img/mob.dmi', "l_leg_30")
 
 mob/verb/loose_random_bodypart()
 	var/obj/o = pick(bodyparts)
@@ -167,13 +170,14 @@ mob/verb/loose_random_bodypart()
 
 mob/New()
 	..()
-	var/obj/bodypart/human/head/h = new; bodyparts += h
-	var/obj/bodypart/human/right_arm/ra = new; bodyparts += ra
-	var/obj/bodypart/human/left_arm/la = new; bodyparts += la
-	var/obj/bodypart/human/right_leg/rl = new; bodyparts += rl
-	var/obj/bodypart/human/left_leg/ll = new; bodyparts += ll
+	var/obj/bodypart/human/head/head = new; bodyparts += head
+	var/obj/bodypart/human/torso/torso = new; bodyparts += torso
+	var/obj/bodypart/human/right_arm/right_arm = new; bodyparts += right_arm
+	var/obj/bodypart/human/left_arm/left_arm = new; bodyparts += left_arm
+	var/obj/bodypart/human/right_leg/right_leg = new; bodyparts += right_leg
+	var/obj/bodypart/human/left_leg/left_leg = new; bodyparts += left_leg
 	for(var/obj/bodypart/human/b in bodyparts)
-		b.hp = hp_max; b.slash_hp = hp_max; b.hp_max = hp_max; b.slash_hp_max = hp_max;
+		b.hp = hp_max; b.hp_max = hp_max;
 	var/obj/organ/heart/he = new; organs += he
 	var/obj/organ/liver/l = new; organs += l
 	var/obj/organ/left_kidney/lk = new; organs += lk

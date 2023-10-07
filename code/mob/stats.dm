@@ -114,6 +114,6 @@ mob/proc/recalculate(var/update as num)
 	stamina_regen = ht/4
 	if(update)
 		for(var/obj/bodypart/human/b in bodyparts)
-			b.hp_max = st; b.slash_hp_max = st; b.hp = hp_max; b.slash_hp = b.slash_hp_max
+			b.hp_max = st; b.hp = hp_max;
 	base_speed = (ht+dx)/4
 

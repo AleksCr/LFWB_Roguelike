@@ -58,13 +58,13 @@ mob/proc/attack(a, b)
 		draw_attack("sw", (calculate_strike_time()*time_scale))
 	if(a == 1 && b == -1)
 		draw_attack("se", (calculate_strike_time()*time_scale))
-	for(var/mob/m in view(1,src))
-		if(m.x == x+a && m.y == y+b)
-			spawn() m.make_damage(src)
+	for(var/mob/mob in view(1,src))
+		if(mob.x == x+a && mob.y == y+b)
+			spawn() mob.process_attack(src)
 		else
 			var/sound/S = sound('sounds/punchmiss.ogg')
 			play_sound(S)
-	if(hand == "left") active_hand = left_hand
+	if(hand == LEFT_HAND) active_hand = left_hand
 	else active_hand = right_hand
 	var/obj/item/weapon/O
 	for(var/obj/item/weapon/i in active_hand)
@@ -124,378 +124,231 @@ mob/proc/defend(a, b)
 		draw_defend("se", defend_time*time_scale)
 		defending = 0
 
-mob/proc/make_damage(var/mob/M)
-	if(M.hand == "left") M.active_hand = M.left_hand
-	else M.active_hand = M.right_hand
-	var/obj/item/weapon/O
-	var/obj/item/weapon/MO
-	for(var/obj/item/weapon/i as obj in active_hand)
-		MO=i
-	for(var/obj/item/weapon/i as obj in M.active_hand)
-		O=i
-	var/def_wep_type; if(MO) def_wep_type = MO.ret_type()
-	var/att_wep_type; if(O) att_wep_type = O.ret_type()
+
+var/bodyparts_mapping = list(
+		"TORSO" = /obj/bodypart/human/torso,
+		"HEAD" = /obj/bodypart/human/head,
+		"RIGHT_ARM" = /obj/bodypart/human/right_arm,
+		"LEFT_ARM" = /obj/bodypart/human/left_arm,
+		"RIGHT_LEG" = /obj/bodypart/human/right_leg,
+		"LEFT_LEG" = /obj/bodypart/human/left_leg,
+	)
+
+
+mob/proc/get_armor_from_body_zone(var/body_zone) // -> list
+	var/armor
+	if(body_zone == "head")
+		for(var/obj/item/armor/i in src.helmet) armor = i
+	if(body_zone == "torso")
+		for(var/obj/item/armor/i in src.armor) armor = i
+	if(body_zone in list("left_leg","right_leg"))
+		for(var/obj/item/armor/i in src.legs) armor = i
+	if(body_zone in list("left_arm","right_arm"))
+		for(var/obj/item/armor/i in src.hands) armor = i
+	world<< "[armor]"
+	return armor
+
+mob/proc/get_body_obj_from_body_zone(var/body_zone) // -> list
+	var/body_obj
+	if(body_zone == "head")
+		for(var/obj/bodypart/human/head/obj in bodyparts) body_obj = obj
+	if(body_zone == "torso")
+		for(var/obj/bodypart/human/torso/obj in bodyparts) body_obj = obj
+	if(body_zone == "left_leg")
+		for(var/obj/bodypart/human/left_leg/obj in bodyparts) body_obj = obj
+	if(body_zone == "right_leg")
+		for(var/obj/bodypart/human/right_leg/obj in bodyparts) body_obj = obj
+	if(body_zone == "left_arm")
+		for(var/obj/bodypart/human/left_arm/obj in bodyparts) body_obj = obj
+	if(body_zone == "right_arm")
+		for(var/obj/bodypart/human/right_arm/obj in bodyparts) body_obj = obj
+	return body_obj
+
+mob/proc/get_available_body_zones() // -> list
+	var/list/body_zones = list()
+	for(var/obj/bodypart/human/torso/torso in bodyparts)
+		body_zones.Add("torso")
+	for(var/obj/bodypart/human/head/head in bodyparts)
+		body_zones.Add("head")
+	for(var/obj/bodypart/human/right_leg/right_leg in bodyparts)
+		body_zones.Add("right_leg")
+	for(var/obj/bodypart/human/left_leg/left_leg in bodyparts)
+		body_zones.Add("left_leg")
+	for(var/obj/bodypart/human/right_arm/right_arm in bodyparts)
+		body_zones.Add("right_arm")
+	for(var/obj/bodypart/human/left_arm/left_arm in bodyparts)
+		body_zones.Add("left_arm")
+	return body_zones
+//	world<<"test: [pick(body_zones)]"
+
+
+mob/proc/process_attack(var/mob/attacker as mob)
+	if(attacker.hand == LEFT_HAND) attacker.active_hand = attacker.left_hand
+	else attacker.active_hand = attacker.right_hand
+	var/obj/item/weapon/attacker_weapon
+	for(var/obj/item/weapon/i as obj in attacker.active_hand)
+		attacker_weapon=i
+
+//	var/att_wep_type; if(attacker_weapon) att_wep_type = attacker_weapon.ret_type()
 	var/hands_num = 0
 	for(var/obj/bodypart/human/right_arm/r in bodyparts) hands_num ++
 	for(var/obj/bodypart/human/left_arm/l in bodyparts) hands_num ++
-	var/bad_block = 0
-	var/bonus = 0
 	////смотрим бонус от общего мили
-	for(var/datum/skill/melee/m in M.skills)
-		bonus += m.skill_lvl
-	var/diceroll = roll_dice(3, 6)
-	world<< "dice rolls [diceroll]"
-
-	///////Накидываем бонус от оружия и заодно качаем его навык
-	if(att_wep_type == "sword")
-		for(var/datum/skill/sword/sword in M.skills)
-			bonus += sword.skill_lvl
-			M.grind_skill("sword")
-	if(att_wep_type == "spear")
-		for(var/datum/skill/spear/spear in M.skills)
-			bonus += spear.skill_lvl
-			M.grind_skill("spear")
-	if(att_wep_type == "axe")
-		for(var/datum/skill/axe/axe in M.skills)
-			bonus += axe.skill_lvl
-			M.grind_skill("axe")
-	if(att_wep_type == "dagger")
-		for(var/datum/skill/dagger/dagger in M.skills)
-			bonus += dagger.skill_lvl
-			M.grind_skill("dagger")
-	if(att_wep_type == "club")
-		for(var/datum/skill/club/club in M.skills)
-			bonus += club.skill_lvl
-			M.grind_skill("club")
-	world<< "Бонус к попаданию составил = [bonus]"
-
-	if(diceroll > M.dx + bonus)
-		if(diceroll == 18)
-			world<< "Critical failure! [M.name] miss the target!"; return
-		world<< "[M.name] miss the target!"; return
-
-
-	M.grind_skill("melee")
-	if(defending == 1)
-		if(M.x != x+def_a || M.y != y+def_b)
-			world<< "К сожалению, [name] ставит блок не с той стороны!"
-			spawn() get_damage(O,M); hitby = M
-			return
-		var/xf = 0;
-		var/parry_chance;
-		if(MO)
-			if(!O)
-				spawn() M.get_damage(MO,src, "hands")
-				return
-			if(MO.mass*2 < O.mass)
-				if(prob(20))
-					Drop(MO)
-					del MO
-					var/sound/S = sound('sounds/breaksound.ogg')
-					play_sound(S)
-					return
-			/////Повторяем говнокод для защищающегося
-			grind_skill("melee")
-			var/parry = 0
-			if(def_wep_type == "sword")
-				for(var/datum/skill/sword/sword in skills)
-					parry += sword.skill_lvl
-					grind_skill("sword")
-			if(def_wep_type == "spear")
-				for(var/datum/skill/spear/spear in skills)
-					parry += spear.skill_lvl
-					grind_skill("spear")
-			if(def_wep_type == "axe")
-				for(var/datum/skill/axe/axe in skills)
-					parry += axe.skill_lvl
-					grind_skill("axe")
-			if(def_wep_type == "dagger")
-				for(var/datum/skill/dagger/dagger in skills)
-					parry += dagger.skill_lvl
-					grind_skill("dagger")
-			if(def_wep_type == "club")
-				for(var/datum/skill/club/club in skills)
-					parry += club.skill_lvl
-					grind_skill("club")
-			diceroll = roll_dice(3, 6)
-			for(var/datum/skill/melee/melee in skills)
-				parry += melee.skill_lvl
-			world<< "Block dice rolls [diceroll]; melee+weapon_skill([parry]) + 3 = [parry+3]"
-			if(parry/2 + 3 >= diceroll && diceroll != 18)
-				world<< "[name] parried strike!"
-				var/sound/S = sound('sounds/parry.ogg')
-				play_sound(S)
-				return
-			else world<< "Блок не спасает [name]!"
-		else
-			xf = dx - M.dx
-				//world<< "xf [xf] = (MO.mass [MO.mass] + st [st]) - (O.mass [O.mass] + M.st [M.st]) + (dx [dx] - M.dx [M.dx])"
-			parry_chance = 50 + (xf*5)
-			//world<< "parry_chance before fix = [parry_chance]"
-			if(parry_chance > 80) parry_chance = 80
-			if(parry_chance < 5) parry_chance = 5
-			//world<< "parry_chance after fix = [parry_chance]"
-			if(prob(parry_chance))
-				xf = st - M.st
-				if(parry_chance > 80) parry_chance = 80
-				if(parry_chance < 5) parry_chance = 5
-				if(prob(parry_chance))
-					world<< "[name] выхватывает оружие из рук [M.name]!"
-					var/obj/item/weapon/test = M.Drop(MO)
-					Get(test)
-					return
-				world<< "[name] ловким взмахом ладони отклоняет атаку в сторону!"
-				var/sound/S = sound('sounds/parry.ogg')
-				play_sound(S)
-				return
-			else world<< "Блокировать оружие голыми руками было весьма глупой идеей!"
-			bad_block = 1
-	//var/agi_difference = dx - M.dx
-	//var/dodge_chance = agi_difference * 5
-	//if(dodge_chance > 80) dodge_chance = 80; if(dodge_chance <= 0) dodge_chance = 0
-	//world<< "agi diff = [agi_difference] dodge ch = [dodge_chance]"
-	//if(prob(dodge_chance))
-	diceroll = roll_dice(3, 6)
-	world<< "Defence dice rolls [diceroll]; base speed of defenser = [(base_speed+3)]"
-	if((base_speed+3) >= diceroll && diceroll != 18 && alive)
-		M<<"[src] удалось уклониться от удара!"
-		for(var/mob/Others in oview(10))
-			Others<< "[src] удалось уклониться от удара!"
+	var/body_zones = get_available_body_zones()
+	var/attack_zone = pick(body_zones)
+	world<< "attack_zone: [attack_zone]"
+	var/base_attack_roll = roll_dice(1, 20)
+	world<< "base_attack_roll: [base_attack_roll]"
+	if(base_attack_roll == 20)
+		spawn() process_damage(attacker_weapon, attacker, TRUE, attack_zone)
 		return
-	if(bad_block && hands_num >0)
-		if(hands_num == 0) return
-		spawn() get_damage(O,M, "hands"); hitby = M
+	var/attack_roll = base_attack_roll
+	world<< "attack_roll: [attack_roll]"
+	var/obj/item/armor/attack_zone_armor = get_armor_from_body_zone(attack_zone)
+	var/attack_zone_AC = default_AC + (attack_zone_armor != null ? attack_zone_armor.AC_bonus : 0)
+	if(attack_roll >= attack_zone_AC)
+		spawn() process_damage(attacker_weapon, attacker, attack_zone=attack_zone); hitby = attacker//die()
 		return
-	spawn() get_damage(O,M); hitby = M//die()
+	world<< "Miss. attack_roll: [attack_roll]. AC: [attack_zone_AC]"
 
-mob/proc/get_damage(obj/item/weapon/wep as obj, mob/M as mob, var/in_zone)
+
+mob/proc/process_damage(obj/item/weapon/wep as obj, mob/attacker as mob, var/is_critical_strike = FALSE, var/attack_zone)
 	spawn() draw_damage()
-	var/hp_dam
-	if(wep && ( (istype(wep,/obj/item/weapon/sword)) || (istype(wep,/obj/item/weapon/axe)) || (istype(wep,/obj/item/weapon/club)) || (istype(wep,/obj/item/weapon/hammer)) ) )
-		hp_dam = M.calculate_base_damage(1); world<< "amplitude strike"
-	else
-		hp_dam = M.calculate_base_damage(0); world<< "direct strike"
+	var/damage_count = rand(1, wep.damage)
+	if(is_critical_strike)
+		damage_count *= 2
 
-
-	///////////ВЫБОР АТАКУЕМОЙ ЗОНЫ
-
-
-	var/list/body_zones = list("head","torso")
-	for(var/obj/bodypart/human/right_leg/h in bodyparts)
-		if("legs" in body_zones)
-			break
-		else
-			body_zones += "legs"
-	for(var/obj/bodypart/human/left_leg/h in bodyparts)
-		if("legs" in body_zones)
-			break
-		else
-			body_zones += "legs"
-	for(var/obj/bodypart/human/right_arm/h in bodyparts)
-		if("hands" in body_zones)
-			break
-		else
-			body_zones += "hands"
-	for(var/obj/bodypart/human/left_arm/h in bodyparts)
-		if("hands" in body_zones)
-			break
-		else
-			body_zones += "hands"
-
-
-	////////УЧЕТ ОРУЖИЯ
-
-	var/attack_zone
-	if(in_zone != null) attack_zone = in_zone
-	else attack_zone = pick(body_zones)
+	world<<"damage: [damage_count]"
 	world<< "attack zone: [attack_zone]"
-	var/attack_hp_final = 0
-	var/attack_stamina_final = 0
-	var/bleed_final = 0
+	var/obj/bodypart/attack_zone_obj = get_body_obj_from_body_zone(attack_zone)
+	attack_zone_obj.hp -= damage_count
+	world<< "attack zone obj: [attack_zone_obj] body zone hp: [attack_zone_obj.hp]"
+
+	if(attack_zone_obj.hp <= 0)
+		slash_limb(attack_zone)
+		bodyparts -= attack_zone_obj
+
 	if(wep != null)
-		bleed_final = wep.bleed_def
-		attack_hp_final -= hp_dam + wep.dam_modifer
-		attack_stamina_final -= hp_dam*rand(3,10) + wep.stamina_dam_modifer
-		var/sound/S = sound('sounds/sword_hit1.ogg')
-		play_sound(S)
+		play_sound(sound('sounds/sword_hit1.ogg'))
 	else
-		attack_hp_final -= hp_dam
-		attack_stamina_final -= hp_dam*rand(3,10)
-		var/sound/S = sound('sounds/punch4.ogg')
-		play_sound(S)
-	if(M.attack_style == "strong")
-		attack_hp_final += 2
-	var/obj/item/armor/a
-	if(attack_zone == "torso")
-		for(var/obj/item/armor/i in src.armor) a = i
-	if(attack_zone == "head")
-		for(var/obj/item/armor/i in src.helmet) a = i
-	if(attack_zone == "legs")
-		for(var/obj/item/armor/i in src.legs) a = i
-	if(attack_zone == "hands")
-		for(var/obj/item/armor/i in src.hands) a = i//; Drop()
+		play_sound(sound('sounds/punch4.ogg'))
 
-
-	///////////////////////////ПРОБИТИЕ БРОНИ
-
-
-	if(a)
-		if(wep && istype(wep,/obj/item/weapon/dagger))// ������� ����� � ������� �����
-			a.coverage -= 20
-		if(prob(a.coverage))
-			if(wep && (istype(wep,/obj/item/weapon/sword)))
-				attack_hp_final *= 0.5;
-			if(wep && istype(wep,/obj/item/weapon/dagger))
-				attack_hp_final *= 0.7;
-			if(a.min_damage >= abs(attack_hp_final))
-				bleed_final = 0
-				attack_stamina_final = 0
-				attack_hp_final = 0
-				world<<"[a.name] [src.name] полностью блокирует удар!"; M<<"Броня [src.name] полностью блокирует удар!"
-			else
-				attack_hp_final += a.min_damage
-				attack_stamina_final /= 2
-				world<<"[a.name] [src.name] частично блокирует удар!"; M<<"Броня [src.name] частично блокирует удар!"
-			var/sound/S = sound('sounds/parry.ogg')
-			play_sound(S)
-		else
-			world<<"[M.name] проводит хитрый удар в разрез брони!"
-			if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
-				attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!"
-			if(wep && istype(wep,/obj/item/weapon/spear))
-				attack_hp_final *= 2; //world<< "weapon hits with 2 dam!!!!!!!"
-			//if(wep && istype(wep,/obj/item/weapon/dagger))
-			//	attack_hp_final *= 0.5;
-	else
-		if(wep && (istype(wep,/obj/item/weapon/axe) || (istype(wep,/obj/item/weapon/sword))))
-			attack_hp_final *= 1.5; //world<< "weapon hits with 1.5 dam!!!!!!"
-		if(wep && istype(wep,/obj/item/weapon/spear))
-			attack_hp_final *= 1.5; //world<< "weapon hits with 2 dam!!!!!!!"
-
-	if(abs(attack_hp_final) < 1) attack_hp_final = 1
-	/////////////////���� � ����������
-
-	if(attack_zone == "torso")
-		if(!wep)
-			for(var/obj/item/weapon/swep in stucked_weapon)
-				swep.loc = M.loc
-				stucked_weapon -= swep
-				M.Get(swep)
-		if(!ribs && abs(attack_hp_final) >= hp)
-			ribs = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S);
-			world<<"Ребра [src.name] ломаются со звучным хрустом!";
-		var/organ_hit_dam = hp_max / 5
-		world<< "organ_hit_dam [organ_hit_dam]"
-		if(wep && wep.damtype == "stab")
-			organ_hit_dam /= 2
-		if(ribs)
-			organ_hit_dam /= 2
-		if(abs(attack_hp_final) >= organ_hit_dam)
-			damage_random_organ()
-		hp += attack_hp_final
-		if(abs(attack_hp_final) >= 3 && wep)
-			var/stuck_chance
-			if(M.st < 11) stuck_chance = 20
-			if(M.st > 11 && M.st < 15) stuck_chance = 10
-			if(M.st > 15) stuck_chance = 5
-			if((!istype(wep,/obj/item/weapon/dagger) && !istype(wep,/obj/item/weapon/spear) && !istype(wep,/obj/item/weapon/axe)) || (stucked_weapon.len>0)) stuck_chance = 0
-			if(prob(stuck_chance))
-				damage_random_organ()
-				stucked_weapon += wep
-				M.Drop(wep)
-				wep.loc = src
-				hp -= 5
-	if(attack_zone == "head")
-		var/obj/bodypart/human/head/he
-		for(var/obj/bodypart/human/head/h in bodyparts)
-			he = h
-			if(wep && wep.damtype == "slash") he.slash_hp += attack_hp_final
-			else he.hp += attack_hp_final
-		if(!he) return
-		if(!he.fracture && abs(attack_hp_final) >= he.hp)
-			he.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
-			world<<"Черепушка [src.name] ломается со звучным хрустом!";
-		if(!he.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= he.slash_hp)
-			he.artery = 1; var/list/str = list('sounds/throat.ogg','sounds/throat2.ogg','sounds/throat3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-		if(he.slash_hp <= 0)
-			slash_limb("head")
-			bodyparts -= he
+	var/attack_zone2 = bodyparts_mapping[attack_zone]
+	if(attack_zone in list("torso", "head"))
+		if(attack_zone_obj.hp <= 0)
 			die()
-		if(he.hp <= 0)
-			explode_limb("head")
-			bodyparts -= he
-			die()
-	if(attack_zone == "legs")
-		var/list/leg_limbs = list()
-		var/obj/bodypart/human/attacked_leg
-		for(var/obj/bodypart/human/right_leg/h in bodyparts)
-			leg_limbs += h
-		for(var/obj/bodypart/human/left_leg/h in bodyparts)
-			leg_limbs += h
-		if(!leg_limbs.len)
-			return
-		attacked_leg = pick(leg_limbs)
-		if(wep && wep.damtype == "slash") attacked_leg.slash_hp += attack_hp_final
-		else attacked_leg.hp += attack_hp_final
-		if(!attacked_leg.fracture && abs(attack_hp_final) >= attacked_leg.hp)
-			attacked_leg.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Ножка [src.name] ломается со звучным хрустом!";
-		if(!attacked_leg.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_leg.slash_hp)
-			attacked_leg.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
-		if(attacked_leg.slash_hp <= 0)
-			bodyparts -= attacked_leg
-			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
-				slash_limb("right leg")
-			else
-				slash_limb("left leg")
-		if(attacked_leg.hp <= 0)
-			bodyparts -= attacked_leg
-			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
-				explode_limb("right leg")
-			else
-				explode_limb("left leg")
-	if(attack_zone == "hands")
-		var/list/hand_limbs = list()
-		var/obj/bodypart/human/attacked_hand
-		for(var/obj/bodypart/human/right_arm/h in bodyparts)
-			hand_limbs += h
-		for(var/obj/bodypart/human/left_arm/h in bodyparts)
-			hand_limbs += h
-		if(!hand_limbs.len)
-			return
-		attacked_hand = pick(hand_limbs)
-		if(wep && wep.damtype == "slash") attacked_hand.slash_hp += attack_hp_final
-		else attacked_hand.hp += attack_hp_final
-		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
-			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
-			world<<"Ручка [src.name] ломается со звучным хрустом!"; Drop()
-		if(!attacked_hand.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_hand.slash_hp)
-			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
-		if(attacked_hand.slash_hp <= 0)
-			bodyparts -= attacked_hand
-			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
-				slash_limb("right arm")
-			else
-				slash_limb("left arm")
-			hand = "left"; Drop(); hand = "right"; Drop()
-		if(attacked_hand.hp <= 0)
-			bodyparts -= attacked_hand
-			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
-				explode_limb("right arm")
-			else
-				explode_limb("left arm")
-			hand = "left"; Drop(); hand = "right"; Drop()
-	//stamina += attack_stamina_final
-	//hp += attack_hp_final
-	bleed_size = bleed_final
-	//if(stamina <= 0 && recreating == 0 && alive == 1)
-	//	recreating = 1
-	//	spawn() recreate()
-	if(abs(attack_hp_final) > st * 1.5) spawn() discard(M)
-	usr<< "M.st = [M.st] hp_dam = [attack_hp_final]; [src] stamina [stamina]"
 	draw_mob()
-	if(hp <= 0)
-		die()
+//	bodyparts_mapping[bodypart]
+//	if(attack_zone == "torso")
+//		if(!wep)
+//			for(var/obj/item/weapon/swep in stucked_weapon)
+//				swep.loc = attacker.loc
+//				stucked_weapon -= swep
+//				attacker.Get(swep)
+//		if(!ribs && abs(attack_hp_final) >= hp)
+//			ribs = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S);
+//			world<<"Ребра [src.name] ломаются со звучным хрустом!";
+//		var/organ_hit_dam = hp_max / 5
+//		world<< "organ_hit_dam [organ_hit_dam]"
+//		if(wep && wep.damtype == "stab")
+//			organ_hit_dam /= 2
+//		if(ribs)
+//			organ_hit_dam /= 2
+//		if(abs(attack_hp_final) >= organ_hit_dam)
+//			damage_random_organ()
+//		hp += attack_hp_final
+//			if(prob(stuck_chance))
+//				damage_random_organ()
+//				stucked_weapon += wep
+//				attacker.Drop(wep)
+//				wep.loc = src
+//				hp -= 5
+//	if(attack_zone == "head")
+//		var/obj/bodypart/human/head/head
+//		for(var/obj/bodypart/human/head/h in bodyparts)
+//			head = h
+//			if(wep && wep.damtype == "slash") head.slash_hp += attack_hp_final
+//			else head.hp += attack_hp_final
+//		if(!head) return
+//		if(!head.fracture && abs(attack_hp_final) >= head.hp)
+//			head.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S); die()
+//			world<<"Черепушка [src.name] ломается со звучным хрустом!";
+//		if(!head.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= head.slash_hp)
+//			head.artery = 1; var/list/str = list('sounds/throat.ogg','sounds/throat2.ogg','sounds/throat3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
+//		if(head.slash_hp <= 0)
+//			slash_limb("head")
+//			bodyparts -= head
+//			die()
+//		if(head.hp <= 0)
+//			explode_limb("head")
+//			bodyparts -= head
+//			die()
+//	if(attack_zone == "legs")
+//		var/list/leg_limbs = list()
+//		var/obj/bodypart/human/attacked_leg
+//		for(var/obj/bodypart/human/right_leg/h in bodyparts)
+//			leg_limbs += h
+//		for(var/obj/bodypart/human/left_leg/h in bodyparts)
+//			leg_limbs += h
+//		if(!leg_limbs.len)
+//			return
+//		attacked_leg = pick(leg_limbs)
+//		if(wep && wep.damtype == "slash") attacked_leg.slash_hp += attack_hp_final
+//		else attacked_leg.hp += attack_hp_final
+//		if(!attacked_leg.fracture && abs(attack_hp_final) >= attacked_leg.hp)
+//			attacked_leg.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
+//			world<<"Ножка [src.name] ломается со звучным хрустом!";
+//		if(!attacked_leg.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_leg.slash_hp)
+//			attacked_leg.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
+//		if(attacked_leg.slash_hp <= 0)
+//			bodyparts -= attacked_leg
+//			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
+//				slash_limb("right leg")
+//			else
+//				slash_limb("left leg")
+//		if(attacked_leg.hp <= 0)
+//			bodyparts -= attacked_leg
+//			if(istype(attacked_leg,/obj/bodypart/human/right_leg))
+//				explode_limb("right leg")
+//			else
+//				explode_limb("left leg")
+//	if(attack_zone == "hands")
+//		var/list/hand_limbs = list()
+//		var/obj/bodypart/human/attacked_hand
+//		for(var/obj/bodypart/human/right_arm/h in bodyparts)
+//			hand_limbs += h
+//		for(var/obj/bodypart/human/left_arm/h in bodyparts)
+//			hand_limbs += h
+//		if(!hand_limbs.len)
+//			return
+//		attacked_hand = pick(hand_limbs)
+//		if(wep && wep.damtype == "slash") attacked_hand.slash_hp += attack_hp_final
+//		else attacked_hand.hp += attack_hp_final
+//		if(!attacked_hand.fracture && abs(attack_hp_final) >= attacked_hand.hp)
+//			attacked_hand.fracture = 1; var/list/str = list('sounds/trauma1.ogg','sounds/trauma2.ogg','sounds/trauma3.ogg'); var/sound/S = sound(pick(str)); usr.play_sound(S)
+//			world<<"Ручка [src.name] ломается со звучным хрустом!"; Drop()
+//		if(!attacked_hand.artery && wep && (wep.damtype == "slash" || wep.damtype == "stab") && abs(attack_hp_final) >= attacked_hand.slash_hp)
+//			attacked_hand.artery = 1; var/sound/S = sound('sounds/blood_splat.ogg'); usr.play_sound(S)
+//		if(attacked_hand.slash_hp <= 0)
+//			bodyparts -= attacked_hand
+//			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
+//				slash_limb("right arm")
+//			else
+//				slash_limb("left arm")
+//			hand = LEFT_HAND; Drop(); hand = RIGHT_HAND; Drop()
+//		if(attacked_hand.hp <= 0)
+//			bodyparts -= attacked_hand
+//			if(istype(attacked_hand,/obj/bodypart/human/right_arm))
+//				explode_limb("right arm")
+//			else
+//				explode_limb("left arm")
+//			hand = LEFT_HAND; Drop(); hand = RIGHT_HAND; Drop()
+//
+//	if(abs(attack_hp_final) > st * 1.5) spawn() discard(attacker)
+//	usr<< "attacker.st = [attacker.st] damage_count = [attack_hp_final]; [src] stamina [stamina]"
+//	draw_mob()
+//	if(hp <= 0)
+//		die()
 
 obj/choped_limb
 	icon = 'img/mob.dmi'
@@ -506,13 +359,13 @@ mob/proc/slash_limb(var/limb as text)
 	var/obj/choped_limb/cl = new
 	if(limb == "head")
 		head_artery = 1; cl.name = "head"; cl.icon_state = "head_underlay"
-	if(limb == "left arm")
+	if(limb == "left_arm")
 		left_arm_artery = 1; cl.name = "left arm"; cl.icon_state = "left_arm_c"
-	if(limb == "right arm")
+	if(limb == "right_arm")
 		right_arm_artery = 1; cl.name = "right arm"; cl.icon_state = "right_arm_c"
-	if(limb == "left leg")
+	if(limb == "left_leg")
 		left_leg_artery = 1; cl.name = "left leg"; cl.icon_state = "left_leg_c"
-	if(limb == "right leg")
+	if(limb == "right_leg")
 		right_leg_artery = 1; cl.name = "right leg"; cl.icon_state = "right_leg_c"
 	var/list/near_turfs = list()
 	for(var/turf/t in range(1,src))
@@ -628,7 +481,7 @@ mob/proc/die()
 		Drop()
 	for(var/obj/o in src)
 		//Get(o)
-		mob_UNEQUIP(o)
+		unequip(o)
 		Get(o)
 		Drop()
 	for(var/obj/o in src)

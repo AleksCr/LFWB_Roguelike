@@ -59,9 +59,12 @@ mob/var/display_hud/belt/belt_h = new()
 mob/verb/check_armor()
 	for(var/obj/O in src) world<< "[O.name]"
 
-mob/var/hand = "right"
+mob/var/hand = "RIGHT_HAND"
 mob/var/hand_alt
 
+mob/var/const
+	RIGHT_HAND = "RIGHT_HAND"
+	LEFT_HAND = "LEFT_HAND"
 
 mob/var/list
 		// Lists for housing clothes and keys HUD lists.
@@ -152,7 +155,7 @@ obj/hud_left_hand
 	layer = TURF_LAYER
 	Click()
 		world<< "Left hand"
-		usr.hand = "left"
+		usr.hand = "LEFT_HAND"
 obj/hud_right_hand
 	icon = 'test.dmi'
 	icon_state = "background2"
@@ -160,7 +163,7 @@ obj/hud_right_hand
 	layer = TURF_LAYER
 	Click()
 		world<< "Right hand"
-		usr.hand = "right"
+		usr.hand = "RIGHT_HAND"
 obj/hud_drop
 	icon = 'test.dmi'
 	icon_state = "hud_drop"
@@ -325,20 +328,20 @@ display_hud/backpack
 */
 
 mob/proc/active_hand_add(var/obj/obj as obj)
-	if(usr.hand == "left")
+	if(usr.hand == LEFT_HAND)
 		left_hand_mob.Add(src, obj, src.active_hand)//usr.client.left_hand_h.Add(usr, O, usr.active_hand)
 	else
 		world<< "test"
 		right_hand_mob.Add(src, obj, src.active_hand)//usr.client.right_hand_h.Add(usr, O, usr.active_hand)
 
 mob/proc/active_hand_remove(var/obj/obj as obj)
-	if(usr.hand == "left")
+	if(usr.hand == LEFT_HAND)
 		src.left_hand_mob.Remove(src, obj, src.active_hand)//usr.client.left_hand_h.Remove(usr, O, usr.active_hand)
 	else
 		src.right_hand_mob.Remove(src, obj, src.active_hand)//usr.client.right_hand_h.Remove(usr, O, usr.active_hand)
 
 mob/proc/equip(var/text as text)
-	if(src.hand == "left") src.active_hand = src.left_hand
+	if(src.hand == LEFT_HAND) src.active_hand = src.left_hand
 	else src.active_hand = src.right_hand
 	var/obj/obj = src.active_hand.len == 1 ? src.active_hand[1] : null
 	if(!obj) return
@@ -362,23 +365,8 @@ mob/proc/equip(var/text as text)
 		src.clothes_mob.Add(src, obj, src.clothes); return
 	src.active_hand_add(obj)
 
-client/verb/UNEQUIP(var/obj/O)
+mob/verb/unequip(var/obj/O)
 	spawn(5) usr.draw_mob()
-	if(istype(O,/obj/item/armor/breastplate))
-		src.armor_h.Remove(usr, O, usr.armor)
-	if(istype(O,/obj/item/armor/cloth))
-		src.clothes_h.Remove(usr, O, usr.clothes)
-	if(istype(O,/obj/item/armor/boots))
-		src.legs_h.Remove(usr, O, usr.legs)
-	if(istype(O,/obj/item/armor/hands))
-		src.hands_h.Remove(usr, O, usr.hands)
-	if(istype(O,/obj/item/armor/helmet))
-		src.helmet_h.Remove(usr, O, usr.helmet)
-	if(istype(O,/obj/item/holders/belt))
-		src.belt_h.Remove(usr, O, usr.belt)
-
-mob/verb/mob_UNEQUIP(var/obj/O)
-	spawn(5) src.draw_mob()
 	if(istype(O,/obj/item/armor/breastplate))
 		src.armor_mob.Remove(src, O, src.armor)
 	if(istype(O,/obj/item/armor/cloth))
@@ -389,20 +377,20 @@ mob/verb/mob_UNEQUIP(var/obj/O)
 		src.hands_mob.Remove(src, O, src.hands)
 	if(istype(O,/obj/item/armor/helmet))
 		src.helmet_mob.Remove(src, O, src.helmet)
-	//if(istype(O,/obj/item/holders/belt))
-		//src.belt_mob.Remove(usr, O, usr.belt)
+//	if(istype(O,/obj/item/holders/belt))
+//		src.belt_mob.Remove(usr, O, usr.belt)
 
 
 mob
 	verb/Get(obj/O as obj)
-		if(hand == "left")
+		if(hand == LEFT_HAND)
 			for(var/obj/bodypart/human/left_arm/h in bodyparts)
 				if(src.left_hand_mob.Add(src, O, src.left_hand) && !h.fracture)
 					src << "You acquired [O]!"
 					O.loc = src
 				else
 					src << "You don't have any more room!"
-		if(hand == "right")
+		if(hand == RIGHT_HAND)
 			for(var/obj/bodypart/human/right_arm/h in bodyparts)
 				if(src.right_hand_mob.Add(src, O, src.right_hand) && !h.fracture)
 					world << "You acquired [O]!"
@@ -413,7 +401,7 @@ mob
 
 mob
 	verb/Drop()
-		if(hand == "left") active_hand = left_hand
+		if(hand == LEFT_HAND) active_hand = left_hand
 		else active_hand = right_hand
 		var/obj/O
 		for(var/obj/i as obj in src.active_hand)

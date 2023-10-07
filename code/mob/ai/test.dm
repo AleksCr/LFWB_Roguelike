@@ -27,6 +27,9 @@ mob/verb/RAAGEEE()
 		bloodlust = 1
 		world<< "Теперь они злятся"
 
+client/verb/initiate_turn_based_mode()
+	global_turn_base_mode = 1
+
 mob/var/mob/target
 //mob/var/turf/move_target
 mob/var/list/targets = new()
@@ -101,8 +104,8 @@ mob/proc/fight_ai()
 mob/proc/ai_imitate_walking()
 	if(prob(10))
 		say("Мне приказали. Я делаю.")
-	var/rand_x = rand(1, mapx)
-	var/rand_y = rand(1, mapy)
+	var/rand_x = rand(1, global_map_x)
+	var/rand_y = rand(1, global_map_y)
 	//var/current_x = x, current_y = y
 	//var/patience = 3
 	while(x != rand_x || y != rand_y)

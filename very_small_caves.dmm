@@ -4,6 +4,7 @@
 "d" = (/obj/floor,/turf,/area)
 "e" = (/obj/floor,/obj/exit,/turf,/area)
 "f" = (/turf,/area)
+"g" = (/obj/floor/cave,/mob{ai = 0},/turf,/area)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
@@ -19,7 +20,7 @@ aaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
+agaaaaaaaaaaaaa
 aaaaaaaaaaaaaaa
 "}
 

@@ -48,7 +48,6 @@ obj/wall/cave
 				if(r==3) new/obj/item/ore/silver(src.loc)
 				if(r==4) new/obj/item/coal(src.loc)
 			else new/obj/item/stone(src.loc)
-			usr.grind_skill("mining")
 			del src
 
 
@@ -93,7 +92,7 @@ obj/spawn_point
 
 obj/ladder/proc/gen_caves()
 	var/inter_point_x = x; var/inter_point_y = y;
-	x = rand(3,mapx); y = rand(4,mapy)
+	x = rand(3, global_map_x); y = rand(4, global_map_y)
 	clear_map()
 	for(var/obj/floor/cave/f in world)
 		var/obj/cell_automato/C = new(f.loc)
@@ -155,7 +154,7 @@ obj/ladder/proc/gen_caves()
 
 	//делаем дырки-спавн-точки с мобами
 	for(var/i =0;i<1;i++)
-		var/obj/spawn_point/spawn_point = new (locate(rand(1,mapx),rand(1,mapy),1))
+		var/obj/spawn_point/spawn_point = new (locate(rand(1, global_map_x),rand(1, global_map_y),1))
 		for(var/obj/wall/cave/cave_tile in range (1, spawn_point)) del cave_tile // не даем мобу появиться внутри стены
 		spawn() spawn_npc(spawn_point, 1, pick("bare hands","dagger","sword","axe","spear","hammer","club"), pick("nothing","cloth","full armor"), 1) //pick("nothing","cloth","full_armor"), 1)
 

@@ -102,21 +102,3 @@ mob/Topic(href, list/href_list)
 		dx++; recalculate(1); level_up()
 	if(action == "upht")
 		ht++; recalculate(1); level_up()
-	if(action == "teach_melee")
-		for(var/datum/skill/melee/melee in skills)
-			melee.skill_lvl++; usr<< "Мой навык заметно улучшился!"; melee.progress = 0
-	if(action == "teach_sword")
-		for(var/datum/skill/sword/sword in skills)
-			sword.skill_lvl++; usr<< "Мой навык заметно улучшился!"; sword.progress = 0
-	if(action == "teach_spear")
-		for(var/datum/skill/spear/spear in skills)
-			spear.skill_lvl++; usr<< "Мой навык заметно улучшился!"; spear.progress = 0
-	if(action == "teach_axe")
-		for(var/datum/skill/axe/axe in skills)
-			axe.skill_lvl++; usr<< "Мой навык заметно улучшился!"; axe.progress = 0
-	if(action == "teach_dagger")
-		for(var/datum/skill/dagger/dagger in skills)
-			dagger.skill_lvl++; usr<< "Мой навык заметно улучшился!"; dagger.progress = 0
-	if(action == "teach_club")
-		for(var/datum/skill/club/club in skills)
-			club.skill_lvl++; usr<< "Мой навык заметно улучшился!"; club.progress = 0

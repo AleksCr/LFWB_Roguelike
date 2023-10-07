@@ -25,4 +25,6 @@ mob
 obj
 	step_size = 32
 
-var/mapx = 14; var/mapy = 14
+var/global_map_x = 14;
+var/global_map_y = 14
+var/global_turn_base_mode = 0

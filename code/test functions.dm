@@ -71,7 +71,7 @@ mob/verb/noclip()
 mob/verb/heal()
 	for(var/obj/bodypart/human/h in bodyparts)
 		h.artery = 0
-		h.hp = h.hp_max; h.slash_hp = h.slash_hp_max; h.fracture = 0
+		h.hp = h.hp_max; h.fracture = 0
 	artery_head = 0; right_arm_artery = 0; left_arm_artery = 0; right_leg_artery = 0; left_leg_artery = 0;
 	blood = 500;
 	hp = hp_max
@@ -187,7 +187,7 @@ proc/spawn_npc(var/obj/l, var/num, var/holding_weapon, var/cloth_type, var/guy_t
 mob/verb/dice()
 	usr<< roll_dice(3, 6, -1)
 
-proc/roll_dice(var/num_rolls, var/num_faces, var/advantage)
+proc/roll_dice(var/num_rolls, var/num_faces, var/advantage = 0)
 	//3d6 = roll_dice(3, 6)
 	var/result = 0
 	for(var/i = 0, i < num_rolls, i++)
